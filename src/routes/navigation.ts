@@ -10,6 +10,7 @@ export const mainNavigationItems = [
     label: 'Game',
     path: RoutePath.game,
   },
+
   {
     label: 'Profile',
     path: RoutePath.profile,

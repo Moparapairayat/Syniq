@@ -5,6 +5,8 @@ export const defaultThemeMode: ThemeMode = 'dark'
 
 export const ThemeContext = createContext<ThemeContextValue>({
   themeMode: defaultThemeMode,
+  toggleTheme: () => {},
+  setThemeMode: () => {},
 })
 
 export function useTheme() {

@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { SimonColor } from '@/core/game/SimonColor'
 import { GameStatus } from '@/core/game/GameStatus'
 import { useSettings } from '@/hooks/useSettings'
-import { cn } from '@/utils/classNames'
+import { audioService } from '@/services'
 
 export interface GameBoardProps {
   readonly activeLitColor: SimonColor | null
@@ -12,188 +12,214 @@ export interface GameBoardProps {
   readonly timeLeft: number | null
   readonly status: GameStatus
   readonly round: number
+  readonly onCenterHubClick?: () => void
 }
 
 /* ══════════════════════════════════════════
-   ZEN BUTTON THEME CONFIG
-   Soft, muted earth tones — natural palette
+   PREMIUM ULTRA CLEAN COLOR PAD CONFIG
 ══════════════════════════════════════════ */
-const zenConfig = {
-  [SimonColor.Red]: {
-    fill: ['#d4957a', '#c67b5c'],
-    shadow: '#a05c3f',
-    border: 'rgba(160,92,63,0.25)',
-    glow: 'rgba(198,123,92,0.20)',
-    glowSoft: 'rgba(198,123,92,0.10)',
-    ariaLabel: 'Terracotta',
-    cls: 'zen-btn-terracotta',
-  },
+const padConfig = {
   [SimonColor.Green]: {
-    fill: ['#8ab08e', '#7a9e7e'],
-    shadow: '#5a7e5e',
-    border: 'rgba(90,126,94,0.25)',
-    glow: 'rgba(122,158,126,0.20)',
-    glowSoft: 'rgba(122,158,126,0.10)',
-    ariaLabel: 'Sage',
-    cls: 'zen-btn-sage',
+    label: 'GREEN',
+    keyHint: '1',
+    normalGrad: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
+    activeGrad: 'linear-gradient(135deg, #6ee7b7 0%, #10b981 100%)',
+    borderColor: '#059669',
+    ariaLabel: 'Green Pad (Key 1)',
+    corners: 'rounded-tl-[38px] rounded-tr-2xl rounded-bl-2xl rounded-br-md',
+  },
+  [SimonColor.Red]: {
+    label: 'RED',
+    keyHint: '2',
+    normalGrad: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
+    activeGrad: 'linear-gradient(135deg, #fda4af 0%, #f43f5e 100%)',
+    borderColor: '#e11d48',
+    ariaLabel: 'Red Pad (Key 2)',
+    corners: 'rounded-tr-[38px] rounded-tl-2xl rounded-br-2xl rounded-bl-md',
   },
   [SimonColor.Blue]: {
-    fill: ['#8aafc2', '#7a9eb0'],
-    shadow: '#5a7a94',
-    border: 'rgba(90,122,148,0.25)',
-    glow: 'rgba(122,158,176,0.20)',
-    glowSoft: 'rgba(122,158,176,0.10)',
-    ariaLabel: 'Mist',
-    cls: 'zen-btn-mist',
+    label: 'BLUE',
+    keyHint: '3',
+    normalGrad: 'linear-gradient(135deg, #38bdf8 0%, #0284c7 100%)',
+    activeGrad: 'linear-gradient(135deg, #bae6fd 0%, #38bdf8 100%)',
+    borderColor: '#0284c7',
+    ariaLabel: 'Blue Pad (Key 3)',
+    corners: 'rounded-bl-[38px] rounded-tl-2xl rounded-br-2xl rounded-tr-md',
   },
   [SimonColor.Yellow]: {
-    fill: ['#e0b87a', '#d4a76a'],
-    shadow: '#b48a4a',
-    border: 'rgba(180,138,74,0.25)',
-    glow: 'rgba(212,167,106,0.20)',
-    glowSoft: 'rgba(212,167,106,0.10)',
-    ariaLabel: 'Sand',
-    cls: 'zen-btn-sand',
+    label: 'YELLOW',
+    keyHint: '4',
+    normalGrad: 'linear-gradient(135deg, #fbbf24 0%, #b45309 100%)',
+    activeGrad: 'linear-gradient(135deg, #fef08a 0%, #fbbf24 100%)',
+    borderColor: '#d97706',
+    ariaLabel: 'Yellow Pad (Key 4)',
+    corners: 'rounded-br-[38px] rounded-tr-2xl rounded-bl-2xl rounded-tl-md',
   },
 } as const
 
 /* ══════════════════════════════════════════
-   ZEN BUTTON — Soft, minimal, natural
+   STATIONARY ENHANCED SECTOR BUTTON
 ══════════════════════════════════════════ */
-function ZenButton({
+function SectorButton({
   color,
   isActive,
   isDisabled,
   onClick,
-  shouldReduceMotion,
 }: {
   color: SimonColor
   isActive: boolean
   isDisabled: boolean
   onClick: () => void
-  shouldReduceMotion: boolean | null
 }) {
-  const c = zenConfig[color]
-   return (
-     <motion.button
-       type="button"
-       aria-label={c.ariaLabel}
-       disabled={isDisabled}
-       onClick={() => !isDisabled && onClick()}
-       onKeyDown={(e) => {
-         if (!isDisabled && (e.key === 'Enter' || e.key === ' ')) onClick()
-       }}
-       className={cn(
-         'zen-btn select-none focus:outline-none',
-         c.cls,
-         isActive && 'zen-btn-active'
-       )}
-       style={{
-         width: '100%',
-         aspectRatio: '1',
-         cursor: isDisabled ? 'default' : 'pointer',
-       }}
-       whileHover={!shouldReduceMotion && !isDisabled && !isActive ? { scale: 1.04, y: -3 } : {}}
-       whileTap={!shouldReduceMotion && !isDisabled ? { scale: 0.96, y: 2 } : {}}
-     >
-       {/* Soft active bloom */}
-       {isActive && (
-         <motion.div
-           className="pointer-events-none absolute inset-0 rounded-[20px]"
-           initial={{ opacity: 0 }}
-           animate={{ opacity: 1 }}
-           exit={{ opacity: 0 }}
-           transition={{ duration: 0.3 }}
-           style={{
-             background: `radial-gradient(ellipse at 50% 40%, ${c.glow} 0%, transparent 70%)`,
-           }}
-         />
-       )}
-     </motion.button>
-   )
- 
+  const c = padConfig[color]
+
+  const handleClick = () => {
+    if (isDisabled) return
+    audioService.playColor(color)
+    onClick()
+  }
+
+  return (
+    <button
+      type="button"
+      aria-label={c.ariaLabel}
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (!isDisabled && (e.key === 'Enter' || e.key === ' ')) handleClick()
+      }}
+      className="relative select-none focus:outline-none w-full h-full cursor-pointer"
+      style={{
+        aspectRatio: '1',
+        cursor: isDisabled ? 'not-allowed' : 'pointer',
+      }}
+    >
+      {/* Pad Surface */}
+      <div
+        className={`relative z-10 h-full w-full overflow-hidden ${c.corners}`}
+        style={{
+          background: isActive ? c.activeGrad : c.normalGrad,
+          border: `2px solid ${c.borderColor}`,
+          boxShadow: isActive
+            ? 'inset 0 0 0 3px rgba(255,255,255,0.7), inset 0 4px 12px rgba(0,0,0,0.4)'
+            : 'inset 0 1.5px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.3)',
+          transition: 'background 0.08s ease, box-shadow 0.08s ease',
+        }}
+      >
+        {/* Top subtle glare line */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+          style={{
+            top: '6%',
+            width: '64%',
+            height: '22%',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%)',
+          }}
+        />
+
+        {/* Keystroke Hint Badge */}
+        <span className="absolute top-3 right-3 font-mono text-[9px] font-extrabold text-slate-100 bg-slate-950/70 border border-white/20 rounded-md px-1.5 py-0.5 backdrop-none">
+          {c.keyHint}
+        </span>
+
+        {/* Center Pad Label */}
+        <div className="relative z-10 flex h-full w-full items-center justify-center">
+          <span
+            className="font-mono text-xs font-black tracking-widest text-white uppercase drop-shadow-md"
+            style={{
+              color: isActive ? '#0f172a' : '#ffffff',
+            }}
+          >
+            {c.label}
+          </span>
+        </div>
+      </div>
+    </button>
+  )
 }
 
 /* ══════════════════════════════════════════
-   ZEN HUB — Soft stone center
+   STATIONARY ENHANCED CENTER HUB
 ══════════════════════════════════════════ */
-function ZenHub({
+function CenterHub({
   status,
   round,
   timeLeft,
-  activeLitColor,
+  onClick,
 }: {
   status: GameStatus
   round: number
   timeLeft: number | null
-  activeLitColor: SimonColor | null
+  onClick?: () => void
 }) {
-  const activeGlow = activeLitColor ? zenConfig[activeLitColor].glow : null
-
   const content = () => {
-    if (status === GameStatus.Idle)     return { main: '🧘', sub: 'Ready' }
-    if (status === GameStatus.GameOver) return { main: '🍂', sub: 'End' }
-    if (timeLeft !== null)              return { main: `${timeLeft}`, sub: 'Sec' }
-    return                               { main: `${round}`, sub: 'Round' }
+    if (status === GameStatus.Idle)     return { main: 'START', sub: 'TAP HERE' }
+    if (status === GameStatus.GameOver) return { main: 'AGAIN', sub: 'TAP HERE' }
+    if (timeLeft !== null)              return { main: `${timeLeft}`, sub: 'SEC' }
+    return                               { main: `${round}`, sub: 'ROUND' }
   }
   const c = content()
+  const isClickable = status === GameStatus.Idle || status === GameStatus.GameOver
 
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-20">
-      {/* Soft outer glow */}
-      {activeGlow && (
-        <div
-          className="absolute rounded-full"
-          style={{
-            width: 90, height: 90,
-            background: `radial-gradient(circle, ${activeGlow} 0%, transparent 70%)`,
-            filter: 'blur(8px)',
-            transition: 'all 0.5s ease',
-          }}
-        />
-      )}
-
-      {/* Hub body — stone */}
+      {/* Outer Metallic Ring */}
       <div
-        className="zen-hub"
-        style={{
-          width: 72, height: 72,
-        }}
+        className="flex items-center justify-center rounded-full p-1 bg-slate-900 border-2 border-slate-700 shadow-xl"
       >
-        {/* Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={c.main}
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.15 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            className="relative z-10 flex flex-col items-center leading-none"
-          >
-            <span
-              className="text-2xl font-semibold"
-              style={{
-                color: '#5a4a38',
-                fontFamily: "'Inter', sans-serif",
-              }}
+        <button
+          type="button"
+          onClick={onClick}
+          className="pointer-events-auto relative flex flex-col items-center justify-center rounded-full outline-none"
+          style={{
+            width: 82, height: 82,
+            background: 'linear-gradient(180deg, #fef08a 0%, #fbbf24 50%, #d97706 100%)',
+            border: '2px solid #fef08a',
+            boxShadow: 'inset 0 2px 0 rgba(255,255,255,0.8), 0 4px 14px rgba(0,0,0,0.4)',
+            cursor: isClickable ? 'pointer' : 'default',
+          }}
+        >
+          <div
+            className="absolute top-[8%] left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+            style={{
+              width: '55%', height: '24%',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.75) 0%, transparent 100%)',
+            }}
+          />
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={c.main}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              transition={{ duration: 0.15 }}
+              className="relative z-10 flex flex-col items-center leading-none pointer-events-none"
             >
-              {c.main}
-            </span>
-            <span
-              className="text-[8px] font-semibold tracking-widest uppercase"
-              style={{ color: '#8a7a68', marginTop: 2 }}
-            >
-              {c.sub}
-            </span>
-          </motion.div>
-        </AnimatePresence>
+              <span
+                className="font-mono font-black text-slate-950"
+                style={{
+                  fontSize: c.main.length > 2 ? '14px' : '26px',
+                }}
+              >
+                {c.main}
+              </span>
+              {c.sub && (
+                <span
+                  className="text-[7.5px] font-black tracking-widest uppercase text-slate-950 mt-0.5"
+                >
+                  {c.sub}
+                </span>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </button>
       </div>
     </div>
   )
 }
 
 /* ══════════════════════════════════════════
-   MAIN GAME BOARD — Zen / Natural Style
+   MAIN GAME BOARD
 ══════════════════════════════════════════ */
 export function GameBoard({
   activeLitColor,
@@ -202,38 +228,48 @@ export function GameBoard({
   timeLeft,
   status,
   round,
+  onCenterHubClick,
 }: GameBoardProps) {
-  const shouldReduceMotion = useReducedMotion()
   useSettings()
 
-  /* Keyboard shortcuts */
   useEffect(() => {
     if (isDisabled) return
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
+      let targetColor: SimonColor | null = null
       switch (e.key) {
-        case '1': case 'ArrowUp':    e.preventDefault(); onColorClick(SimonColor.Red);    break
-        case '2': case 'ArrowLeft':  e.preventDefault(); onColorClick(SimonColor.Green);  break
-        case '3': case 'ArrowRight': e.preventDefault(); onColorClick(SimonColor.Blue);   break
-        case '4': case 'ArrowDown':  e.preventDefault(); onColorClick(SimonColor.Yellow); break
+        case '1': case 'ArrowUp':    targetColor = SimonColor.Red;    break
+        case '2': case 'ArrowLeft':  targetColor = SimonColor.Green;  break
+        case '3': case 'ArrowRight': targetColor = SimonColor.Blue;   break
+        case '4': case 'ArrowDown':  targetColor = SimonColor.Yellow; break
         default: break
+      }
+      if (targetColor) {
+        e.preventDefault()
+        audioService.playColor(targetColor)
+        onColorClick(targetColor)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isDisabled, onColorClick])
 
-  const activeConfig = activeLitColor ? zenConfig[activeLitColor] : null
-
   return (
     <div
       aria-label="Simon Game Board"
       role="region"
-      className="relative mx-auto w-full max-w-[340px] select-none"
+      className="relative mx-auto w-full max-w-[350px] select-none"
     >
-      {/* ── Zen Board Panel ── */}
-      <div className="zen-board">
-        {/* ── 2x2 Zen Button Grid ── */}
+      {/* Outer Bezel */}
+      <div
+        className="game-bezel relative overflow-hidden rounded-[42px] p-4"
+        style={{
+          background: '#1e293b',
+          border: '1.5px solid #334155',
+          boxShadow: '0 12px 32px -4px rgba(0,0,0,0.5)',
+        }}
+      >
+        {/* 2x2 Sector Grid */}
         <div
           className="relative z-10"
           style={{
@@ -244,64 +280,45 @@ export function GameBoard({
             aspectRatio: '1',
           }}
         >
-          {/* TOP-LEFT: SAGE */}
-          <ZenButton
+          {/* TOP-LEFT: GREEN (Key 1) */}
+          <SectorButton
             color={SimonColor.Green}
             isActive={activeLitColor === SimonColor.Green}
             isDisabled={isDisabled}
             onClick={() => onColorClick(SimonColor.Green)}
-            shouldReduceMotion={shouldReduceMotion}
           />
 
-          {/* TOP-RIGHT: TERRACOTTA */}
-          <ZenButton
+          {/* TOP-RIGHT: RED (Key 2) */}
+          <SectorButton
             color={SimonColor.Red}
             isActive={activeLitColor === SimonColor.Red}
             isDisabled={isDisabled}
             onClick={() => onColorClick(SimonColor.Red)}
-            shouldReduceMotion={shouldReduceMotion}
           />
 
-          {/* BOTTOM-LEFT: MIST */}
-          <ZenButton
+          {/* BOTTOM-LEFT: BLUE (Key 3) */}
+          <SectorButton
             color={SimonColor.Blue}
             isActive={activeLitColor === SimonColor.Blue}
             isDisabled={isDisabled}
             onClick={() => onColorClick(SimonColor.Blue)}
-            shouldReduceMotion={shouldReduceMotion}
           />
 
-          {/* BOTTOM-RIGHT: SAND */}
-          <ZenButton
+          {/* BOTTOM-RIGHT: YELLOW (Key 4) */}
+          <SectorButton
             color={SimonColor.Yellow}
             isActive={activeLitColor === SimonColor.Yellow}
             isDisabled={isDisabled}
             onClick={() => onColorClick(SimonColor.Yellow)}
-            shouldReduceMotion={shouldReduceMotion}
           />
         </div>
 
-        {/* ── Soft ambient bloom when active ── */}
-        {activeLitColor && (
-          <motion.div
-            key={activeLitColor}
-            className="pointer-events-none absolute inset-0 rounded-[28px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            style={{
-              background: `radial-gradient(ellipse at 50% 50%, ${activeConfig?.glowSoft} 0%, transparent 65%)`,
-            }}
-          />
-        )}
-
-        {/* ── Center Hub (Stone) ── */}
-        <ZenHub
+        {/* Center Orb Hub */}
+        <CenterHub
           status={status}
           round={round}
           timeLeft={timeLeft}
-          activeLitColor={activeLitColor}
+          onClick={onCenterHubClick}
         />
       </div>
     </div>

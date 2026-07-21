@@ -1,149 +1,163 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { RoutePath } from '@/routes/routePaths'
-import { GameMode } from '@/core/game/GameMode'
-import { playerService } from '@/services'
+import { playerService, leaderboardService } from '@/services'
+import type { ScoreEntry } from '@/models/ScoreEntry'
 import { AvatarDisplay } from '@/layouts/AppLayout'
 
-function getRankInfo(score: number): { label: string; icon: string; color: string } {
-  if (score === 0) return { label: 'Novice', icon: '🔰', color: '#9ca3af' }
-  if (score < 50)  return { label: 'Expert', icon: '⚡', color: '#4ade80' }
-  if (score < 200) return { label: 'Master', icon: '💎', color: '#c084fc' }
-  return              { label: 'Legend', icon: '👑', color: '#fbbf24' }
-}
-
-const AVATAR_RING_COLORS = ['avatar-ring-red', 'avatar-ring-purple', 'avatar-ring-yellow', 'avatar-ring-neon']
-
 export default function HomePage() {
-  useDocumentTitle('Syniq — Home')
+  useDocumentTitle('Syniq - Memory Training')
   const navigate = useNavigate()
+
   const [playerName, setPlayerName] = useState('Player')
+  const [avatarId, setAvatarId] = useState(1)
   const [highScore, setHighScore] = useState(0)
   const [gamesPlayed, setGamesPlayed] = useState(0)
-  const [avatarId, setAvatarId] = useState(1)
+  const [highestLevel, setHighestLevel] = useState(1)
+  const [topScore, setTopScore] = useState<ScoreEntry | null>(null)
 
   useEffect(() => {
-    playerService.getOrCreateProfile().then((p) => {
-      setPlayerName(p.name)
-      setHighScore(p.highestScore)
-      setGamesPlayed(p.gamesPlayed)
-      const stored = localStorage.getItem('syniq-avatar-id')
-      if (stored) setAvatarId(parseInt(stored, 10))
-    }).catch(() => {})
+    let active = true
+    async function loadStats() {
+      try {
+        const [profile, topScores] = await Promise.all([
+          playerService.getOrCreateProfile(),
+          leaderboardService.getTopScores(),
+        ])
+        if (!active) return
+        setPlayerName(profile.name)
+        setHighScore(profile.highestScore)
+        setGamesPlayed(profile.totalGamesPlayed)
+        setHighestLevel(profile.highestLevel || 1)
+        const storedAvatar = localStorage.getItem('syniq-avatar-id')
+        if (storedAvatar) setAvatarId(parseInt(storedAvatar, 10))
+
+        if (topScores.length > 0) {
+          setTopScore(topScores[0])
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    loadStats()
+    return () => { active = false }
   }, [])
 
-  const rank = getRankInfo(highScore)
-
   return (
-    <div className="flex flex-col gap-3 pb-2">
+    <div className="flex flex-col gap-4 pb-4 select-none">
 
-      {/* ── Player Profile Card ── */}
+      {/* ── 1. WARM PERSONAL GREETING BANNER ── */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
-        className="game-card game-card-glow p-4"
+        className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-slate-800 to-slate-900 dark:from-slate-800 dark:to-slate-900 border border-slate-700/60 p-4 text-white shadow-md"
       >
-        {/* Avatar + name + edit */}
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <AvatarDisplay avatarId={avatarId} size={54} ringClass="avatar-ring-red" />
-            <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-[#080f0b] bg-emerald-400 shadow-[0_0_8px_#4ade80]" />
+          <AvatarDisplay avatarId={avatarId} size={42} ringClass="avatar-ring-neon" />
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider">Welcome back</span>
+            <h2 className="text-base font-bold text-white">{playerName} 👋</h2>
           </div>
-          <div className="flex-1 min-w-0">
-            <h1 className="text-base font-black text-white truncate">{playerName}</h1>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-[10px] font-bold" style={{ color: rank.color }}>
-                {rank.icon} {rank.label}
-              </span>
-              <span className="text-white/20">•</span>
-              <span className="text-[10px] text-white/40">{gamesPlayed} games</span>
-            </div>
-          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 px-3 py-1 text-xs font-bold text-amber-300">
+          <span>🔥</span>
+          <span>3 Day Streak</span>
+        </div>
+      </motion.div>
+
+      {/* ── 2. HERO GAME START CARD ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.05 }}
+        className="cyber-card p-6 flex flex-col items-center text-center"
+      >
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 px-3 py-1 text-[11px] font-bold text-[#38bdf8] mb-3">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8] animate-pulse" />
+          Classic Simon Game
+        </div>
+
+        <h1 className="text-2xl font-extrabold text-white tracking-tight">
+          Memory Challenge
+        </h1>
+        <p className="text-xs text-slate-300 dark:text-slate-400 mt-1 max-w-[290px] leading-relaxed">
+          Listen to the sound tones, remember the light pattern sequence, and test your memory limit!
+        </p>
+
+        {/* Large Play Button */}
+        <div className="my-5">
           <button
-            onClick={() => navigate('/profile')}
-            className="rounded-xl px-3 py-1.5 text-[10px] font-black tracking-wider uppercase text-white/70 border border-white/10 hover:border-white/20 transition"
+            onClick={() => navigate(RoutePath.game)}
+            type="button"
+            className="flex h-24 w-24 flex-col items-center justify-center rounded-full bg-[#38bdf8] text-[#0f172a] shadow-lg cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-[#7dd3fc] active:scale-95 outline-none"
           >
-            Edit Profile
+            <span className="text-2xl font-black ml-1">▶</span>
+            <span className="text-[10px] font-extrabold tracking-wider uppercase mt-0.5">
+              PLAY GAME
+            </span>
           </button>
         </div>
 
-        {/* Score row */}
-        <div className="mt-3 flex items-center gap-2">
-          <div className="flex-1 rounded-xl p-3 flex items-center justify-between"
-            style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.15)' }}
-          >
-            <div>
-              <p className="text-[9px] font-black tracking-widest text-white/30 uppercase">Best Score</p>
-              <p className="font-game neon-gold text-xl font-black leading-tight">{highScore.toLocaleString()}</p>
-            </div>
-            <div className="coin-icon text-base">⭐</div>
-          </div>
-          <div className="flex-1 rounded-xl p-3 flex items-center justify-between"
-            style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.12)' }}
-          >
-            <div>
-              <p className="text-[9px] font-black tracking-widest text-white/30 uppercase">Games</p>
-              <p className="font-game text-xl font-black leading-tight text-white">{gamesPlayed}</p>
-            </div>
-            <span className="text-lg">🎮</span>
-          </div>
+        {/* High Score Footer */}
+        <div className="flex items-center gap-2 rounded-xl bg-slate-800/50 dark:bg-slate-800/50 border border-slate-700/40 px-3.5 py-1.5 text-xs">
+          <span className="text-slate-400">Best Score:</span>
+          <span className="font-bold text-amber-300">⭐ {highScore.toLocaleString()} PTS</span>
         </div>
       </motion.div>
 
-      {/* ── Play Button ── */}
-      <motion.button
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15 }}
-        onClick={() => navigate(RoutePath.game, { state: { mode: GameMode.Classic } })}
-        type="button"
-        whileHover={{ scale: 1.02, y: -2 }}
-        whileTap={{ scale: 0.97, y: 3 }}
-        className="btn-game-primary py-5 text-base"
-      >
-        🎮 Play Now →
-      </motion.button>
-
-      {/* ── Quick Stats Summary ── */}
+      {/* ── 3. CAREER STATS GRID ── */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="game-card p-4 flex items-center justify-between"
+        transition={{ delay: 0.1 }}
+        className="grid grid-cols-3 gap-2.5"
       >
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">🧠</span>
-          <div>
-            <p className="text-xs font-black text-white">Memory Challenge</p>
-            <p className="text-[10px] text-white/40">Standard Simon pattern sequence</p>
+        <div className="cyber-card p-3.5 flex flex-col items-center text-center">
+          <span className="text-xl mb-1">🎮</span>
+          <span className="text-lg font-bold text-white">{gamesPlayed}</span>
+          <span className="text-[10px] text-slate-400 font-semibold">Played</span>
+        </div>
+
+        <div className="cyber-card p-3.5 flex flex-col items-center text-center">
+          <span className="text-xl mb-1">⭐</span>
+          <span className="text-lg font-bold text-[#38bdf8]">{highScore.toLocaleString()}</span>
+          <span className="text-[10px] text-slate-400 font-semibold">Best Score</span>
+        </div>
+
+        <div className="cyber-card p-3.5 flex flex-col items-center text-center">
+          <span className="text-xl mb-1">⚡</span>
+          <span className="text-lg font-bold text-purple-300">Level {highestLevel}</span>
+          <span className="text-[10px] text-slate-400 font-semibold">Max Level</span>
+        </div>
+      </motion.div>
+
+      {/* ── 4. LEADERBOARD TOP PLAYER PREVIEW ── */}
+      {topScore && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          onClick={() => navigate(RoutePath.leaderboard)}
+          className="cyber-card p-4 flex items-center justify-between cursor-pointer hover:border-slate-500 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/30 text-xl">
+              👑
+            </div>
+            <div>
+              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Current Leader</span>
+              <p className="text-sm font-bold text-white">{topScore.playerName}</p>
+            </div>
           </div>
-        </div>
-        <span className="rounded-full px-2.5 py-1 text-[9px] font-black text-[#22c55e] bg-emerald-500/10 border border-emerald-500/20">
-          Ready
-        </span>
-      </motion.div>
-
-      {/* ── Friends online ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="game-card p-4 flex items-center gap-3"
-      >
-        <div className="flex -space-x-2">
-          {[1, 2, 3].map((id) => (
-            <AvatarDisplay key={id} avatarId={id} size={32} ringClass={AVATAR_RING_COLORS[id % 4]} />
-          ))}
-        </div>
-        <div className="flex-1">
-          <p className="text-xs font-black text-white">3 Players Online</p>
-          <p className="text-[10px] text-white/40">Challenge them now!</p>
-        </div>
-        <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" style={{ boxShadow: '0 0 8px #4ade80' }} />
-      </motion.div>
-
+          <div className="coin-badge">
+            <div className="coin-icon text-[8px]">⭐</div>
+            <span>{topScore.score.toLocaleString()}</span>
+          </div>
+        </motion.div>
+      )}
     </div>
   )
 }

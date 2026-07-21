@@ -9,34 +9,34 @@ export interface StatusPanelProps {
 
 const STATUS_CONFIG = {
   [GameStatus.Idle]: {
-    label: '🧘 Ready',
-    desc: 'Press begin to start your practice',
-    cls: 'zen-chip-idle',
-    dot: 'bg-stone-400',
+    label: '🎮 READY TO PLAY',
+    desc: 'Press START GAME to begin sequence',
+    cls: 'status-idle',
+    dot: 'bg-emerald-400',
   },
   [GameStatus.ShowingSequence]: {
-    label: '👁 Observe',
-    desc: 'Watch the pattern mindfully',
-    cls: 'zen-chip-showing',
-    dot: 'bg-blue-300',
+    label: '👁 OBSERVE PATTERN',
+    desc: 'Memorize the color sequence closely',
+    cls: 'status-showing',
+    dot: 'bg-blue-400 animate-ping',
   },
   [GameStatus.PlayerTurn]: {
-    label: '🌿 Your Turn',
-    desc: 'Repeat with intention',
-    cls: 'zen-chip-player',
-    dot: 'bg-emerald-300',
+    label: '⚡ YOUR TURN!',
+    desc: 'Tap the colors in exact order',
+    cls: 'status-player',
+    dot: 'bg-emerald-400 animate-pulse',
   },
   [GameStatus.RoundCompleted]: {
-    label: '🍃 Round Clear',
-    desc: 'Well done. Breathe.',
-    cls: 'zen-chip-round',
-    dot: 'bg-amber-300',
+    label: '🎉 ROUND CLEAR!',
+    desc: 'Awesome! Next round starting...',
+    cls: 'status-round',
+    dot: 'bg-amber-400',
   },
   [GameStatus.GameOver]: {
-    label: '🍂 Stillness',
-    desc: 'The pattern fades. Try again.',
-    cls: 'zen-chip-gameover',
-    dot: 'bg-orange-300',
+    label: '💥 GAME OVER',
+    desc: 'Incorrect sequence! Try again.',
+    cls: 'status-gameover',
+    dot: 'bg-rose-500',
   },
 } as const
 
@@ -46,15 +46,15 @@ export function StatusPanel({ status, playerInputLength, targetSequenceLength }:
   const progress = targetSequenceLength > 0 ? playerInputLength / targetSequenceLength : 0
 
   return (
-    <div className="flex w-full flex-col items-center gap-2.5">
-      {/* Status chip — soft pill */}
+    <div className="flex w-full flex-col items-center gap-2">
+      {/* Status chip */}
       <motion.div
-        className={`zen-chip ${cfg.cls}`}
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
+        className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-[10px] font-black tracking-wider uppercase ${cfg.cls}`}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
       >
-        <span className={`h-1.5 w-1.5 rounded-full ${cfg.dot}`} />
+        <span className={`h-2 w-2 rounded-full ${cfg.dot}`} />
         {cfg.label}
       </motion.div>
 
@@ -65,34 +65,33 @@ export function StatusPanel({ status, playerInputLength, targetSequenceLength }:
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 3 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -3 }}
-          transition={{ duration: 0.25, ease: 'easeInOut' }}
-          className="text-center text-[11px] font-normal"
-          style={{ color: 'var(--color-text-tertiary)', opacity: 0.75 }}
+          transition={{ duration: 0.2 }}
+          className="text-center text-[10px] font-bold text-white/50"
         >
           {cfg.desc}
         </motion.p>
       </AnimatePresence>
 
-      {/* Progress bar — soft sage */}
+      {/* Progress bar */}
       <AnimatePresence>
         {status === GameStatus.PlayerTurn && targetSequenceLength > 0 && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="w-full"
+            className="w-full max-w-[320px]"
           >
-            <div className="zen-progress-track">
+            <div className="xp-bar-track">
               <motion.div
-                className="zen-progress-fill"
+                className="xp-bar-fill"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress * 100}%` }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
               />
             </div>
-            <div className="mt-1.5 flex justify-between text-[8px] font-medium" style={{ color: 'var(--color-text-tertiary)', opacity: 0.55 }}>
-              <span>{playerInputLength} tapped</span>
-              <span>{targetSequenceLength} needed</span>
+            <div className="mt-1 flex justify-between text-[8px] font-black tracking-widest text-white/40 uppercase">
+              <span>{playerInputLength} TAPPED</span>
+              <span>{targetSequenceLength} TARGET</span>
             </div>
           </motion.div>
         )}

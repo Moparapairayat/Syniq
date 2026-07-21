@@ -7,6 +7,12 @@ import { playerRepository } from '@/repositories/PlayerRepository'
 export class PlayerService {
   readonly #defaultId = 'local_user'
 
+  private notifyUpdate() {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('syniq-profile-updated'))
+    }
+  }
+
   /**
    * Loads the existing default player profile from storage, creating it if missing.
    */
@@ -17,7 +23,7 @@ export class PlayerService {
 
       const newProfile: PlayerProfile = {
         id: this.#defaultId,
-        name: 'Player 1',
+        name: 'Agent 1',
         createdAt: new Date(),
         gamesPlayed: 0,
         highestScore: 0,
@@ -29,7 +35,7 @@ export class PlayerService {
       console.warn('Failed to load profile from IndexedDB, using fallback:', error)
       return {
         id: this.#defaultId,
-        name: 'Player 1 (Fallback)',
+        name: 'Agent 1',
         createdAt: new Date(),
         gamesPlayed: 0,
         highestScore: 0,
@@ -50,6 +56,7 @@ export class PlayerService {
       highestLevel: Math.max(profile.highestLevel, level),
     }
     await playerRepository.put(updatedProfile)
+    this.notifyUpdate()
     return updatedProfile
   }
 
@@ -60,9 +67,10 @@ export class PlayerService {
     const profile = await this.getOrCreateProfile()
     const updatedProfile: PlayerProfile = {
       ...profile,
-      name: newName.trim() || 'Player 1',
+      name: newName.trim() || 'Agent 1',
     }
     await playerRepository.put(updatedProfile)
+    this.notifyUpdate()
     return updatedProfile
   }
 }

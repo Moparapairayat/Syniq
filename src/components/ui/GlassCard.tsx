@@ -6,15 +6,14 @@ export interface GlassCardProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 /**
- * Premium glassmorphic container with background blur, subtle gradients, and clean borders.
+  Ultra Clean Modern Minimal Container — flat solid slate surface with crisp subtle borders.
  */
 export function GlassCard({ className, hoverEffect = false, ...props }: GlassCardProps) {
   return (
     <div
       className={cn(
-        'rounded-2xl border border-white/[0.04] bg-white/[0.01] p-6 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-300',
-        hoverEffect &&
-          'hover:border-white/[0.08] hover:bg-white/[0.02] hover:shadow-[0_20px_48px_-8px_rgba(0,0,0,0.6)]',
+        'rounded-2xl border border-[#334155] bg-[#1e293b] p-5 shadow-md transition-all duration-200',
+        hoverEffect && 'hover:border-[#475569] hover:bg-[#273549]',
         className,
       )}
       {...props}

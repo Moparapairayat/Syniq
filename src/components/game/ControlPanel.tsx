@@ -15,46 +15,48 @@ export function ControlPanel({ status, onStart, onNextRound, onReset }: ControlP
   const isInProgress  = !isIdle && !isGameOver && !isRoundDone
 
   const primaryAction = isRoundDone ? onNextRound : onStart
-  const primaryLabel  = isIdle ? 'Begin' : isGameOver ? 'Begin Again' : 'Next Step'
-  const primaryIcon   = isIdle ? '🍃' : isGameOver ? '🍂' : '🌿'
+  const primaryLabel  = isIdle ? 'START GAME' : isGameOver ? 'PLAY AGAIN' : 'NEXT ROUND →'
+  const primaryIcon   = isIdle ? '🎮' : isGameOver ? '🔄' : '🚀'
 
   return (
     <div className="flex w-full flex-col gap-2.5">
-      {/* Primary zen button */}
+      {/* Primary 3D Cyber Action Button */}
       {(isIdle || isGameOver || isRoundDone) && (
         <motion.button
-          whileHover={{ scale: 1.01, y: -1 }}
-          whileTap={{ scale: 0.98, y: 2 }}
+          whileHover={{ scale: 1.02, y: -2 }}
+          whileTap={{ scale: 0.96, y: 3 }}
           onClick={primaryAction}
           type="button"
-          className={isGameOver ? 'zen-primary zen-primary-danger' : 'zen-primary'}
+          className="btn-cyber-primary"
         >
-          <span className="text-sm">{primaryIcon}</span>
-          {primaryLabel}
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-base">{primaryIcon}</span>
+            <span>{primaryLabel}</span>
+          </div>
         </motion.button>
       )}
 
-      {/* Quit — shown while playing */}
+      {/* Pause/Quit while playing */}
       {isInProgress && (
         <motion.button
-          whileTap={{ scale: 0.98 }}
+          whileTap={{ scale: 0.96 }}
           onClick={onReset}
           type="button"
-          className="zen-secondary"
+          className="btn-cyber-secondary"
         >
-          ✕ Pause
+          ✕ PAUSE MATCH
         </motion.button>
       )}
 
-      {/* Back to menu — after game over or round done */}
+      {/* Return to menu */}
       {(isGameOver || isRoundDone) && (
         <motion.button
-          whileTap={{ scale: 0.98 }}
+          whileTap={{ scale: 0.96 }}
           onClick={onReset}
           type="button"
-          className="zen-secondary"
+          className="btn-cyber-secondary"
         >
-          🏠 Return
+          🏠 RETURN TO DASHBOARD
         </motion.button>
       )}
     </div>

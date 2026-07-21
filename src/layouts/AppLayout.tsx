@@ -4,22 +4,23 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { mainNavigationItems } from '@/routes/navigation'
 import { cn } from '@/utils/classNames'
 import { playerService } from '@/services'
+import { useTheme } from '@/context/themeStore'
+import { NicknameAuthModal } from '@/components/auth/NicknameAuthModal'
 import bgHero from '@/assets/bg-hero.png'
 
-/* ── Avatar data ── */
 export const AVATARS = [
-  { id: 1,  label: 'Cyberpunk', set: 1, pos: '0% 0%' },
-  { id: 2,  label: 'Android',   set: 1, pos: '100% 0%' },
-  { id: 3,  label: 'Mage',      set: 1, pos: '0% 100%' },
-  { id: 4,  label: 'Alien',     set: 1, pos: '100% 100%' },
-  { id: 5,  label: 'Marine',    set: 2, pos: '0% 0%' },
-  { id: 6,  label: 'AI Entity', set: 2, pos: '100% 0%' },
-  { id: 7,  label: 'Dragon',    set: 2, pos: '0% 100%' },
-  { id: 8,  label: 'Space Elf', set: 2, pos: '100% 100%' },
-  { id: 9,  label: 'Samurai',   set: 3, pos: '0% 0%' },
-  { id: 10, label: 'Phantom',   set: 3, pos: '100% 0%' },
-  { id: 11, label: 'Cyber Wolf',set: 3, pos: '0% 100%' },
-  { id: 12, label: 'Cosmic',    set: 3, pos: '100% 100%' },
+  { id: 1, label: 'Cyberpunk', set: 1, pos: '0% 0%' },
+  { id: 2, label: 'Android', set: 1, pos: '100% 0%' },
+  { id: 3, label: 'Mage', set: 1, pos: '0% 100%' },
+  { id: 4, label: 'Alien', set: 1, pos: '100% 100%' },
+  { id: 5, label: 'Marine', set: 2, pos: '0% 0%' },
+  { id: 6, label: 'AI Entity', set: 2, pos: '100% 0%' },
+  { id: 7, label: 'Dragon', set: 2, pos: '0% 100%' },
+  { id: 8, label: 'Space Elf', set: 2, pos: '100% 100%' },
+  { id: 9, label: 'Samurai', set: 3, pos: '0% 0%' },
+  { id: 10, label: 'Phantom', set: 3, pos: '100% 0%' },
+  { id: 11, label: 'Cyber Wolf', set: 3, pos: '0% 100%' },
+  { id: 12, label: 'Cosmic', set: 3, pos: '100% 100%' },
 ]
 
 import avatarSet1 from '@/assets/avatars-set1.png'
@@ -32,7 +33,6 @@ export const AVATAR_SETS: Record<number, string> = {
   3: avatarSet3,
 }
 
-/* ── Avatar display helper ── */
 export function AvatarDisplay({
   avatarId,
   size = 34,
@@ -64,53 +64,51 @@ export function AvatarDisplay({
   )
 }
 
-/* ── Coin badge component ── */
 function CoinBadge({ amount }: { amount: number }) {
   return (
-    <div className="flex items-center gap-1.5 rounded-full px-3 py-1"
-      style={{
-        background: 'linear-gradient(180deg, #fef08a 0%, #fbbf24 50%, #d97706 100%)',
-        border: '2px solid #92400e',
-        boxShadow: '0 3px 0 #78350f, 0 5px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.50)',
-      }}
-    >
-      <div className="coin-icon">⭐</div>
-      <span className="text-[11px] font-black text-[#78350f]">
-        {amount.toLocaleString()}
-      </span>
+    <div className="coin-badge">
+      <div className="coin-icon text-[8px]">⭐</div>
+      <span>{amount.toLocaleString()}</span>
     </div>
   )
 }
 
-/* ── Nav icons ── */
 const NavIcons: Record<string, (active: boolean) => React.ReactNode> = {
   '/': (a) => (
-    <svg viewBox="0 0 24 24" fill={a ? '#22c55e' : 'none'} stroke={a ? 'none' : 'currentColor'} strokeWidth="1.8" className="h-5 w-5">
-      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z" />
-      <path d="M9 21V12h6v9" stroke={a ? '#fff' : 'currentColor'} strokeWidth="1.8" fill="none" />
+    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#0f172a' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
     </svg>
   ),
   '/game': (a) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#22c55e' : 'currentColor'} strokeWidth="1.8" className="h-5 w-5">
-      <rect x="2" y="7" width="20" height="14" rx="4" />
-      <path d="M8 14h2m2 0h2M12 12v4M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2" />
+    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#0f172a' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <line x1="6" y1="12" x2="10" y2="12" />
+      <line x1="8" y1="10" x2="8" y2="14" />
+      <circle cx="15" cy="13" r="1" fill={a ? '#0f172a' : 'currentColor'} />
+      <circle cx="18" cy="11" r="1" fill={a ? '#0f172a' : 'currentColor'} />
+      <rect x="2" y="6" width="20" height="12" rx="6" />
     </svg>
   ),
   '/profile': (a) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#22c55e' : 'currentColor'} strokeWidth="1.8" className="h-5 w-5">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#0f172a' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
     </svg>
   ),
   '/leaderboard': (a) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#22c55e' : 'currentColor'} strokeWidth="1.8" className="h-5 w-5">
-      <path d="M8 18V10M12 18V6M16 18v-6" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#0f172a' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+      <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+      <path d="M4 22h16" />
+      <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+      <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+      <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" />
     </svg>
   ),
   '/settings': (a) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#22c55e' : 'currentColor'} strokeWidth="1.8" className="h-5 w-5">
+    <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#0f172a' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
       <circle cx="12" cy="12" r="3" />
-      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
     </svg>
   ),
 }
@@ -118,9 +116,11 @@ const NavIcons: Record<string, (active: boolean) => React.ReactNode> = {
 export function AppLayout() {
   const [showSplash, setShowSplash] = useState(true)
   const [splashProgress, setSplashProgress] = useState(0)
-  const [playerName, setPlayerName] = useState('Player')
+  const [playerName, setPlayerName] = useState('Agent')
   const [highScore, setHighScore] = useState(0)
   const [avatarId, setAvatarId] = useState(1)
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const { themeMode, toggleTheme } = useTheme()
   const location = useLocation()
   const shouldReduceMotion = useReducedMotion()
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -131,7 +131,12 @@ export function AppLayout() {
       setHighScore(p.highestScore)
       const stored = localStorage.getItem('syniq-avatar-id')
       if (stored) setAvatarId(parseInt(stored, 10))
-    }).catch(() => {})
+
+      const isAuthSet = localStorage.getItem('syniq-nickname-set')
+      if (!isAuthSet || p.name.startsWith('Player 1')) {
+        setTimeout(() => setShowAuthModal(true), 1500)
+      }
+    }).catch(() => { })
   }, [location.pathname])
 
   useEffect(() => {
@@ -143,15 +148,13 @@ export function AppLayout() {
     }
   }, [])
 
-  return (
-    <div className="relative flex min-h-screen flex-col select-none" style={{ background: '#080f0b' }}>
-      {/* Radial green ambient glow */}
-      <div className="pointer-events-none fixed inset-0 -z-20"
-        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.08) 0%, transparent 60%)' }}
-      />
-      {/* Grid overlay */}
-      <div className="bg-grid-pattern pointer-events-none fixed inset-0 -z-10 opacity-100" />
+  const handleAuthSuccess = (newTitle: string, newAvatarId: number) => {
+    setPlayerName(newTitle)
+    setAvatarId(newAvatarId)
+  }
 
+  return (
+    <div className="relative flex min-h-screen flex-col select-none bg-[#0f172a]">
       {/* ── Cinematic Splash ── */}
       <AnimatePresence>
         {showSplash && (
@@ -159,32 +162,27 @@ export function AppLayout() {
             key="splash"
             exit={{ opacity: 0, scale: 1.04 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
-            style={{ background: '#080f0b', backgroundImage: `url(${bgHero})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0f172a]"
           >
-            <div className="absolute inset-0 bg-[#080f0b]/85 backdrop-blur-md" />
             <div className="relative z-10 flex flex-col items-center gap-6">
-              <div className="absolute h-48 w-48 rounded-full bg-emerald-500/20 blur-[24px]" />
-
               <motion.div
-                animate={shouldReduceMotion ? {} : { scale: [1, 1.04, 1] }}
+                animate={shouldReduceMotion ? {} : { scale: [1, 1.05, 1] }}
                 transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
                 className="flex flex-col items-center gap-2"
               >
-                <span className="font-game brand-gradient text-6xl font-black tracking-tight"
-                  style={{ textShadow: '0 0 60px rgba(34,197,94,0.5)' }}
+                <span className="font-mono text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-purple-400 tracking-wider"
+                  style={{ filter: 'drop-shadow(0 0 40px rgba(0,243,255,0.6))' }}
                 >
                   SYNIQ
                 </span>
-                <span className="text-[10px] font-black tracking-[0.5em] text-white/40 uppercase">
-                  Memory Challenge
+                <span className="font-mono text-[10px] font-black tracking-[0.5em] text-cyan-400/60 uppercase">
+                  NEXT-GEN ARENA
                 </span>
               </motion.div>
 
-              {/* Progress bar */}
-              <div className="mt-2 w-40">
+              <div className="mt-2 w-44">
                 <div className="xp-bar-track">
-                  <div className="xp-bar-fill" style={{ width: `${splashProgress}%`, animationName: 'none' }} />
+                  <div className="xp-bar-fill" style={{ width: `${splashProgress}%` }} />
                 </div>
               </div>
             </div>
@@ -192,64 +190,69 @@ export function AppLayout() {
         )}
       </AnimatePresence>
 
+      {/* ── Nickname Auth Modal ── */}
+      <NicknameAuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialName={playerName}
+        initialAvatarId={avatarId}
+        onAuthSuccess={handleAuthSuccess}
+      />
+
       <a className="skip-link" href="#main-content">Skip to content</a>
 
-      {/* ── Header (Shared Across All Pages) ── */}
-      <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-2.5"
-        style={{
-          background: 'rgba(8,15,11,0.92)',
-          borderBottom: '1px solid rgba(34,197,94,0.10)',
-          backdropFilter: 'blur(24px)',
-        }}
-      >
-        {/* Avatar + name */}
-        <NavLink to="/profile" className="flex items-center gap-2.5 outline-none">
-          <div className="relative">
-            <AvatarDisplay avatarId={avatarId} size={34} ringClass="avatar-ring-neon" />
-            <span className="absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#080f0b] bg-emerald-400 shadow-[0_0_6px_#4ade80]" />
-          </div>
-          <div className="hidden flex-col sm:flex">
-            <span className="text-[9px] font-black tracking-widest text-white/30 uppercase">Agent</span>
-            <span className="text-xs font-bold text-white truncate max-w-[70px]">{playerName}</span>
-          </div>
-        </NavLink>
+      {/* ── Top Bar Header (Ultra-Clean & Natural) ── */}
+      <header className="sticky top-0 z-30 w-full bg-[#0f172a] border-b border-[#1e293b] transition-all">
+        <div className="mx-auto flex w-full max-w-[480px] items-center justify-between px-3.5 py-2">
+          {/* Left: User Profile Pill */}
+          <button
+            type="button"
+            onClick={() => setShowAuthModal(true)}
+            className="flex items-center gap-2 rounded-full border border-[#334155] bg-[#1e293b] px-2.5 py-1 outline-none cursor-pointer hover:border-[#475569] transition-colors group text-left"
+          >
+            <div className="relative">
+              <AvatarDisplay avatarId={avatarId} size={28} ringClass="avatar-ring-neon group-hover:scale-105 transition-transform" />
+              <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full border border-[#0f172a] bg-emerald-400" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-bold text-white truncate max-w-[70px] sm:max-w-[100px]">
+                {playerName}
+              </span>
+            </div>
+          </button>
 
-        {/* Brand */}
-        <NavLink to="/" className="flex items-center gap-2 outline-none">
-          <span className="font-game brand-gradient text-sm font-black tracking-[0.2em] uppercase">
-            Syniq
-          </span>
-        </NavLink>
+          {/* Center: SYNIQ Brand Logo */}
+          <NavLink to="/" className="flex items-center gap-1.5 outline-none px-2 py-1 rounded-xl hover:bg-slate-800/50 transition-colors">
+            <span className="text-[#38bdf8] text-sm">⚡</span>
+            <span className="text-base font-extrabold text-[#38bdf8] tracking-widest uppercase">
+              SYNIQ
+            </span>
+          </NavLink>
 
-        {/* Coin counter */}
-        <CoinBadge amount={highScore} />
+          {/* Right: Controls (Theme Toggle + High Score) */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              type="button"
+              title={`Switch to ${themeMode === 'dark' ? 'Light' : 'Dark'} Mode`}
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#334155] bg-[#1e293b] text-sm cursor-pointer hover:bg-[#2d3d52] transition-colors outline-none"
+            >
+              {themeMode === 'dark' ? '☀️' : '🌙'}
+            </button>
+
+            <CoinBadge amount={highScore} />
+          </div>
+        </div>
       </header>
 
       {/* ── Main View Container ── */}
       <main id="main-content" className="mx-auto w-full max-w-[480px] flex-1 px-4 py-4 pb-28 outline-none">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -8 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
-          >
-            <Outlet />
-          </motion.div>
-        </AnimatePresence>
+        <Outlet />
       </main>
 
-      {/* ── Bottom Navigation (Shared Across All Pages) ── */}
+      {/* ── Floating Modern Navigation ── */}
       <nav className="fixed bottom-3 left-1/2 z-30 -translate-x-1/2" style={{ width: 'calc(100% - 32px)', maxWidth: '420px' }}>
-        <div className="flex items-center justify-around rounded-[24px] px-2 py-2"
-          style={{
-            background: 'rgba(8,15,11,0.95)',
-            border: '1.5px solid rgba(34,197,94,0.12)',
-            backdropFilter: 'blur(28px)',
-            boxShadow: '0 8px 40px rgba(0,0,0,0.60), 0 0 0 0.5px rgba(34,197,94,0.06)',
-          }}
-        >
+        <div className="flex items-center justify-around rounded-2xl px-2 py-2 border border-[#334155] bg-[#1e293b] shadow-2xl">
           {mainNavigationItems.map((item) => {
             const IconFn = NavIcons[item.path]
             return (
@@ -258,22 +261,17 @@ export function AppLayout() {
                 to={item.path}
                 className={({ isActive }) =>
                   cn(
-                    'flex flex-col items-center gap-0.5 rounded-2xl px-3 py-2 transition-all duration-200 outline-none',
-                    isActive ? 'nav-pill-active' : 'text-white/30 hover:text-white/60',
+                    'flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-all duration-150 outline-none',
+                    isActive
+                      ? 'bg-[#38bdf8] text-[#0f172a] font-bold shadow-sm'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/50',
                   )
                 }
               >
                 {({ isActive }) => (
                   <>
                     {IconFn ? IconFn(isActive) : <span>❓</span>}
-                    <span
-                      className="h-0.5 w-4 rounded-full transition-all duration-200"
-                      style={{
-                        background: isActive ? '#22c55e' : 'transparent',
-                        boxShadow: isActive ? '0 0 6px #22c55e' : 'none',
-                      }}
-                    />
-                    <span className={cn('text-[7px] font-black tracking-wider uppercase', isActive ? 'text-[#22c55e]' : 'text-white/30')}>
+                    <span className={cn('text-[10px] font-bold tracking-wide uppercase', isActive ? 'text-[#0f172a]' : 'text-slate-400')}>
                       {item.label}
                     </span>
                   </>

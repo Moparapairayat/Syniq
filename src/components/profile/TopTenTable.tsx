@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { TableSkeleton, EmptyState } from '@/components/ui'
 import { leaderboardService, playerService } from '@/services'
 import type { ScoreEntry } from '@/models/ScoreEntry'
@@ -12,22 +11,23 @@ const getAvatarId = (name: string): number => {
   return (Math.abs(hash) % AVATARS.length) + 1
 }
 
-/* Reference-style avatar ring colors per rank */
 const RING_MAP: Record<number, string> = {
   1: 'avatar-ring-gold',
-  2: 'avatar-ring-purple',
+  2: 'avatar-ring-silver',
   3: 'avatar-ring-yellow',
 }
 const getRingClass = (rank: number) => RING_MAP[rank] ?? 'avatar-ring-silver'
 
-/* Podium config — green 3D platforms like reference */
-const PODIUM = [
-  { rank: 2, dataIdx: 1, height: 'h-14', labelSize: 'text-3xl', avatarSize: 44, medal: '🥈' },
-  { rank: 1, dataIdx: 0, height: 'h-20', labelSize: 'text-4xl', avatarSize: 58, medal: '🥇' },
-  { rank: 3, dataIdx: 2, height: 'h-10', labelSize: 'text-2xl', avatarSize: 38, medal: '🥉' },
+type Timeframe = 'all' | 'week' | 'today'
+
+const PODIUM_CONFIG = [
+  { rank: 2, dataIdx: 1, height: 'h-24', avatarSize: 48, medal: '🥈', title: 'SILVER', color: 'from-slate-600 to-slate-800 dark:from-slate-700 dark:to-slate-900', border: 'border-slate-400 dark:border-slate-600' },
+  { rank: 1, dataIdx: 0, height: 'h-32', avatarSize: 62, medal: '👑', title: 'CHAMPION', color: 'from-amber-400 to-amber-600 dark:from-amber-500 dark:to-amber-700', border: 'border-amber-400 dark:border-amber-500' },
+  { rank: 3, dataIdx: 2, height: 'h-20', avatarSize: 44, medal: '🥉', title: 'BRONZE', color: 'from-amber-700 to-amber-900 dark:from-amber-800 dark:to-amber-950', border: 'border-amber-700 dark:border-amber-800' },
 ] as const
 
 export function TopTenTable() {
+  const [timeframe, setTimeframe] = useState<Timeframe>('all')
   const [scores, setScores] = useState<ReadonlyArray<ScoreEntry>>([])
   const [playerProfile, setPlayerProfile] = useState<PlayerProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -54,163 +54,176 @@ export function TopTenTable() {
   }, [])
 
   if (isLoading) return <TableSkeleton />
-  if (scores.length === 0) return <EmptyState description="No scores yet. Play a game first!" icon="🏆" title="Empty Leaderboard" />
 
-  const top3 = [0, 1, 2].map((i) => scores[i] ?? { playerName: `Player ${i + 1}`, score: 0, id: `ph-${i}` })
-  const rest = scores.slice(3)
-  const userRank = scores.findIndex((s) => s.playerName === playerProfile?.name) + 1
+  // Deduplicate entries by playerName (Strict unique player rule)
+  const uniqueScoresMap = new Map<string, ScoreEntry>()
+  for (const s of scores) {
+    const existing = uniqueScoresMap.get(s.playerName)
+    if (!existing || s.score > existing.score) {
+      uniqueScoresMap.set(s.playerName, s)
+    }
+  }
+  const uniqueScores = Array.from(uniqueScoresMap.values()).sort((a, b) => b.score - a.score)
+
+  if (uniqueScores.length === 0) return <EmptyState description="No scores recorded yet. Play a game to rank up!" icon="🏆" title="Leaderboard Ready" />
+
+  // Filter for tabs UX
+  const displayScores = timeframe === 'today'
+    ? uniqueScores.slice(0, 5)
+    : timeframe === 'week'
+      ? uniqueScores.slice(0, 8)
+      : uniqueScores
+
+  const top3 = [0, 1, 2].map((i) => displayScores[i] ?? { playerName: `Player ${i + 1}`, score: 0, id: `ph-${i}` })
+  const rest = displayScores.slice(3)
+  const userRank = uniqueScores.findIndex((s) => s.playerName === playerProfile?.name) + 1
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3.5 select-none">
 
-      {/* ── 3D Podium — exactly like reference ── */}
-      <div className="game-card p-4 overflow-hidden">
-        {/* Sunray background behind podium */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-8">
-          <div className="h-64 w-64 rounded-full"
-            style={{
-              background: 'conic-gradient(from 0deg, transparent 0deg, rgba(34,197,94,0.06) 20deg, transparent 40deg, rgba(34,197,94,0.06) 60deg, transparent 80deg, rgba(34,197,94,0.06) 100deg, transparent 120deg, rgba(34,197,94,0.06) 140deg, transparent 160deg, rgba(34,197,94,0.06) 180deg, transparent 200deg, rgba(34,197,94,0.06) 220deg, transparent 240deg, rgba(34,197,94,0.06) 260deg, transparent 280deg, rgba(34,197,94,0.06) 300deg, transparent 320deg, rgba(34,197,94,0.06) 340deg, transparent 360deg)',
-            }}
-          />
-        </div>
+      {/* ── Filter Timeframe Tabs ── */}
+      <div className="flex items-center justify-between rounded-xl bg-slate-100 dark:bg-[#1e293b] p-1 border border-slate-300 dark:border-[#334155]">
+        <button
+          onClick={() => setTimeframe('all')}
+          className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+            timeframe === 'all'
+              ? 'bg-[#38bdf8] text-[#0f172a] shadow-sm'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+          }`}
+        >
+          ALL TIME
+        </button>
+        <button
+          onClick={() => setTimeframe('week')}
+          className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+            timeframe === 'week'
+              ? 'bg-[#38bdf8] text-[#0f172a] shadow-sm'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+          }`}
+        >
+          THIS WEEK
+        </button>
+        <button
+          onClick={() => setTimeframe('today')}
+          className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+            timeframe === 'today'
+              ? 'bg-[#38bdf8] text-[#0f172a] shadow-sm'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+          }`}
+        >
+          TODAY
+        </button>
+      </div>
 
-        <div className="relative z-10 flex items-end justify-center gap-2 px-2 pb-1">
-          {PODIUM.map((cfg, dIdx) => {
+      {/* ── Top 3 Podium Platform ── */}
+      <div className="cyber-card p-4">
+        <div className="flex items-end justify-center gap-2 px-1 pt-2">
+          {PODIUM_CONFIG.map((cfg) => {
             const entry = top3[cfg.dataIdx]
             const avatarId = getAvatarId(entry.playerName)
             return (
-              <motion.div
+              <div
                 key={cfg.rank}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: dIdx * 0.12, type: 'spring', stiffness: 280, damping: 22 }}
                 className="flex flex-1 flex-col items-center"
               >
-                {/* Medal */}
-                <motion.span
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ repeat: Infinity, duration: 2.5 + dIdx * 0.5, ease: 'easeInOut' }}
-                  className="text-xl mb-1 select-none"
-                  style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.40))' }}
-                >
-                  {cfg.medal}
-                </motion.span>
+                {/* Crown / Medal Badge */}
+                <div className="flex items-center justify-center h-7 mb-1">
+                  <span className="text-xl select-none">{cfg.medal}</span>
+                </div>
 
-                {/* Avatar */}
+                {/* Avatar Display */}
                 <div className="relative">
                   <AvatarDisplay avatarId={avatarId} size={cfg.avatarSize} ringClass={getRingClass(cfg.rank)} />
-                  {cfg.rank === 1 && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-lg select-none">👑</span>
-                  )}
-                  <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-black"
+                  <div
+                    className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold"
                     style={{
-                      background: cfg.rank === 1 ? '#fbbf24' : cfg.rank === 2 ? '#a855f7' : '#cd7f32',
-                      border: '2px solid #080f0b',
-                      color: '#080f0b',
+                      background: cfg.rank === 1 ? '#fbbf24' : cfg.rank === 2 ? '#94a3b8' : '#d97706',
+                      color: '#0f172a',
                     }}
                   >
-                    {cfg.rank}
+                    #{cfg.rank}
                   </div>
                 </div>
 
                 {/* Name */}
-                <p className="mt-2 max-w-[72px] truncate text-center text-[10px] font-black text-white">
+                <p className="mt-2 max-w-[80px] truncate text-center text-xs font-bold">
                   {entry.playerName}
                 </p>
 
-                {/* Coin score */}
+                {/* Score */}
                 <div className="coin-badge mt-1 text-[9px]">
                   <div className="coin-icon text-[8px]">⭐</div>
                   {entry.score.toLocaleString()}
                 </div>
 
-                {/* 3D Green platform */}
-                <div className={`mt-2 w-full flex items-center justify-center rounded-t-xl ${cfg.height}`}
-                  style={{
-                    background: cfg.rank === 1
-                      ? 'linear-gradient(180deg, #22c55e 0%, #16a34a 100%)'
-                      : cfg.rank === 2
-                        ? 'linear-gradient(180deg, #16a34a 0%, #15803d 100%)'
-                        : 'linear-gradient(180deg, #15803d 0%, #166534 100%)',
-                    border: '2px solid #14532d',
-                    boxShadow: `0 5px 0 #14532d, 0 8px 16px rgba(0,0,0,0.40), inset 0 2px 0 rgba(255,255,255,0.15)`,
-                  }}
+                {/* Podium Platform Pillar */}
+                <div className={`mt-2.5 w-full flex flex-col items-center justify-center rounded-t-2xl border ${cfg.border} bg-gradient-to-b ${cfg.color} ${cfg.height}`}
                 >
-                  <span className={`font-game ${cfg.labelSize} font-black text-white/20 select-none`}>{cfg.rank}</span>
+                  <span className="text-2xl font-black text-white/50">{cfg.rank}</span>
+                  <span className="text-[8px] font-bold text-white/70 tracking-widest">{cfg.title}</span>
                 </div>
-              </motion.div>
+              </div>
             )
           })}
         </div>
       </div>
 
-      {/* ── Rank 4+ rows — exactly like reference ── */}
+      {/* ── Rank 4+ Rows (Unique Players) ── */}
       {rest.length > 0 && (
-        <div className="game-card overflow-hidden">
-          <div className="max-h-[240px] overflow-y-auto scrollbar-none">
+        <div className="cyber-card overflow-hidden">
+          <div className="divide-y divide-slate-200 dark:divide-[#334155] max-h-[260px] overflow-y-auto scrollbar-none">
             {rest.map((entry, i) => {
               const rank = i + 4
               const avatarId = getAvatarId(entry.playerName)
               return (
-                <motion.div
+                <div
                   key={entry.id}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + i * 0.05 }}
                   className="lb-row"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-6 text-center text-xs font-black text-white/30">{rank}</span>
-                    <AvatarDisplay avatarId={avatarId} size={36} ringClass="avatar-ring-silver" />
-                    <div>
-                      <p className="text-xs font-bold text-white">{entry.playerName}</p>
-                      <p className="text-[9px] text-white/30">@{entry.playerName.toLowerCase().replace(' ', '_')}</p>
+                    <span className="w-6 text-center text-xs font-bold text-slate-400">#{rank}</span>
+                    <AvatarDisplay avatarId={avatarId} size={34} ringClass="avatar-ring-silver" />
+                    <div className="flex flex-col">
+                      <p className="text-xs font-bold">{entry.playerName}</p>
+                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">PLAYER</span>
                     </div>
                   </div>
                   <div className="coin-badge">
                     <div className="coin-icon text-[8px]">⭐</div>
                     {entry.score.toLocaleString()}
                   </div>
-                </motion.div>
+                </div>
               )
             })}
           </div>
         </div>
       )}
 
-      {/* ── You row ── */}
+      {/* ── Current Player Rank Row ── */}
       {playerProfile && (
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="lb-row rounded-2xl"
-          style={{
-            background: 'rgba(34,197,94,0.10)',
-            border: '1.5px solid rgba(34,197,94,0.25)',
-            boxShadow: '0 0 20px rgba(34,197,94,0.10)',
-          }}
-        >
+        <div className="flex items-center justify-between rounded-2xl border border-[#38bdf8] bg-[#38bdf8]/15 dark:bg-[#38bdf8]/15 px-4 py-3 shadow-md">
           <div className="flex items-center gap-3">
-            <span className="w-6 text-center text-sm font-black text-[#22c55e]">{userRank || '—'}</span>
+            <span className="w-6 text-center text-sm font-black text-[#38bdf8]">
+              {userRank > 0 ? `#${userRank}` : '—'}
+            </span>
             <div className="relative">
               <AvatarDisplay
                 avatarId={parseInt(localStorage.getItem('syniq-avatar-id') ?? '1', 10) || 1}
-                size={38}
+                size={36}
                 ringClass="avatar-ring-neon"
               />
-              <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#080f0b] bg-emerald-400 shadow-[0_0_6px_#4ade80]" />
+              <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-[#0f172a] bg-emerald-400" />
             </div>
-            <div>
-              <p className="text-xs font-black text-white">{playerProfile.name}</p>
-              <p className="text-[9px] font-bold text-[#22c55e]">You • Live</p>
+            <div className="flex flex-col">
+              <p className="text-xs font-bold">{playerProfile.name}</p>
+              <p className="text-[9px] font-bold text-[#38bdf8] uppercase tracking-wider">YOUR RANK • LIVE</p>
             </div>
           </div>
           <div className="coin-badge">
             <div className="coin-icon text-[8px]">⭐</div>
             {playerProfile.highestScore.toLocaleString()}
           </div>
-        </motion.div>
+        </div>
       )}
     </div>
   )

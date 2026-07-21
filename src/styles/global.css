@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import 'tailwindcss';
 @import './theme.css';
 
@@ -8,18 +8,18 @@
   html {
     min-width: 320px;
     min-height: 100%;
-    background: var(--color-background);
+    background: #0f172a;
+    color: #f8fafc;
+    transition: background 0.25s ease, color 0.25s ease;
   }
 
   body {
     min-height: 100%;
     margin: 0;
     overflow-x: hidden;
-    background: var(--color-background);
-    background-attachment: fixed;
-    color: var(--color-text-primary);
+    background: #0f172a;
+    color: #f8fafc;
     font-family: 'Inter', var(--font-sans);
-    font-weight: 400;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -31,58 +31,325 @@
   button, input { font: inherit; }
 
   ::selection {
-    background: rgba(122, 158, 126, 0.25);
-    color: #f0ece4;
+    background: #38bdf8;
+    color: #0f172a;
   }
 
-  ::-webkit-scrollbar { width: 3px; height: 3px; }
-  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #0f172a; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(122, 158, 126, 0.20);
+    background: #334155;
     border-radius: 99px;
   }
 }
 
 /* ══════════════════════════════════════════
-   KEYFRAMES — Soft, meditative motion
+   PREMIUM LIGHT MODE DESIGN SYSTEM (APPLE/STRIPE STYLE)
 ══════════════════════════════════════════ */
-@keyframes particle-float {
-  0%   { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.4; }
-  50%  { transform: translateY(-14px) translateX(6px) scale(1.05); opacity: 0.7; }
-  100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.4; }
+[data-theme="light"],
+[data-theme="light"] body,
+[data-theme="light"] #root {
+  background-color: #f8fafc !important;
+  background-image: none !important;
+  color: #0f172a !important;
 }
 
-@keyframes xp-fill {
-  from { width: 0%; }
-  to   { width: var(--xp-pct, 60%); }
+[data-theme="light"] main {
+  background-color: transparent !important;
+  color: #0f172a !important;
 }
 
-@keyframes screen-flash {
-  0%   { opacity: 0; }
-  20%  { opacity: 0.25; }
-  60%  { opacity: 0.05; }
-  100% { opacity: 0; }
+/* ── Light Mode Universal Class Overrides ── */
+[data-theme="light"] .bg-\[\#1e293b\],
+[data-theme="light"] .bg-\[\#0f172a\],
+[data-theme="light"] .bg-\[\#111827\],
+[data-theme="light"] .bg-\[\#0d1527\],
+[data-theme="light"] .bg-\[\#090d16\],
+[data-theme="light"] .bg-slate-900,
+[data-theme="light"] .bg-slate-800 {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
 }
 
-@keyframes breathe {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50%       { transform: scale(1.04); opacity: 0.9; }
+[data-theme="light"] .border-\[\#334155\],
+[data-theme="light"] .border-\[\#1e293b\],
+[data-theme="light"] .border-slate-800,
+[data-theme="light"] .border-slate-700 {
+  border-color: #e2e8f0 !important;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+[data-theme="light"] .text-white,
+[data-theme="light"] .text-slate-100,
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300 {
+  color: #0f172a !important;
 }
 
-@keyframes drift {
-  0%, 100% { transform: translate(0, 0); }
-  50%       { transform: translate(6px, -8px); }
+[data-theme="light"] .text-slate-400 {
+  color: #64748b !important;
 }
 
-@keyframes pulse-soft {
-  0%, 100% { opacity: 0.5; }
-  50%       { opacity: 0.9; }
+/* ── Light Mode Top Header ── */
+[data-theme="light"] header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
 }
+
+[data-theme="light"] header button {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] header button:hover {
+  background: #e2e8f0 !important;
+}
+
+/* ── Light Mode Floating Bottom Navigation Bar ── */
+[data-theme="light"] nav > div {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] nav a.active {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3) !important;
+}
+
+[data-theme="light"] nav a.active span,
+[data-theme="light"] nav a.active svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+[data-theme="light"] nav a:not(.active) {
+  color: #64748b !important;
+}
+
+[data-theme="light"] nav a:not(.active):hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* ── Light Mode Cards & Containers ── */
+[data-theme="light"] .cyber-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.02) !important;
+}
+
+[data-theme="light"] .game-bezel {
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ── Light Mode Buttons ── */
+[data-theme="light"] .btn-cyber-primary {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35) !important;
+}
+[data-theme="light"] .btn-cyber-primary:hover {
+  background: #0369a1 !important;
+}
+
+[data-theme="light"] .btn-cyber-secondary {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+[data-theme="light"] .btn-cyber-secondary:hover {
+  background: #e2e8f0 !important;
+}
+
+/* ── Light Mode Form Inputs ── */
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* ── Light Mode Leaderboard Rows ── */
+[data-theme="light"] .lb-row {
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+[data-theme="light"] .lb-row:hover {
+  background: #f8fafc !important;
+}
+
+/* ── Light Mode Badges ── */
+[data-theme="light"] .coin-badge {
+  background: #fef3c7 !important;
+  border: 1px solid #fde047 !important;
+  color: #92400e !important;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track { background: #f8fafc; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+
+/* ══════════════════════════════════════════
+   FONT HELPERS
+══════════════════════════════════════════ */
+.font-game { font-family: 'Inter', monospace; font-weight: 800; }
+
+/* ══════════════════════════════════════════
+   ULTRA CLEAN MODERN CARDS
+══════════════════════════════════════════ */
+.cyber-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cyber-card-glow {
+  border-color: #475569;
+  box-shadow: 0 14px 30px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* ══════════════════════════════════════════
+   ULTRA CLEAN MODERN BUTTONS
+══════════════════════════════════════════ */
+.btn-cyber-primary {
+  position: relative;
+  width: 100%;
+  padding: 13px 22px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #0f172a;
+  cursor: pointer;
+  background: #38bdf8;
+  border: none;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+  transition: all 0.15s ease;
+}
+.btn-cyber-primary:hover {
+  background: #7dd3fc;
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
+}
+.btn-cyber-primary:active {
+  background: #38bdf8;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
+}
+
+.btn-cyber-secondary {
+  position: relative;
+  width: 100%;
+  padding: 11px 18px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #f8fafc;
+  cursor: pointer;
+  background: #334155;
+  border: 1px solid #475569;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.15s ease;
+}
+.btn-cyber-secondary:hover {
+  background: #475569;
+  border-color: #64748b;
+  color: #38bdf8;
+}
+.btn-cyber-secondary:active {
+  background: #1e293b;
+}
+
+/* ══════════════════════════════════════════
+   LEADERBOARD ROWS
+══════════════════════════════════════════ */
+.lb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #334155;
+  transition: background 0.15s ease;
+}
+.lb-row:last-child {
+  border-bottom: none;
+}
+.lb-row:hover {
+  background: #273549;
+}
+
+/* ══════════════════════════════════════════
+   COIN BADGE & XP BAR
+══════════════════════════════════════════ */
+.coin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 6px;
+  border-radius: 999px;
+  background: #334155;
+  border: 1px solid #475569;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.coin-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #0f172a;
+  flex-shrink: 0;
+}
+
+.xp-bar-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #334155;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #38bdf8;
+}
+
+/* ══════════════════════════════════════════
+   STATUS CHIPS
+══════════════════════════════════════════ */
+.status-idle     { background: #1e293b; color: #38bdf8; border: 1px solid #334155; }
+.status-showing  { background: #3b0764; color: #d8b4fe; border: 1px solid #581c87; }
+.status-player   { background: #064e3b; color: #6ee7b7; border: 1px solid #065f46; }
+.status-round    { background: #78350f; color: #fde047; border: 1px solid #92400e; }
+.status-gameover { background: #881337; color: #fecdd3; border: 1px solid #9f1239; }
+
+/* ══════════════════════════════════════════
+   AVATAR RINGS
+══════════════════════════════════════════ */
+.avatar-ring-neon   { border: 2px solid #38bdf8; }
+.avatar-ring-red    { border: 2px solid #f43f5e; }
+.avatar-ring-purple { border: 2px solid #a855f7; }
+.avatar-ring-yellow { border: 2px solid #f59e0b; }
+.avatar-ring-gold   { border: 2px solid #fbbf24; }
+.avatar-ring-silver { border: 2px solid #94a3b8; }
 
 /* ══════════════════════════════════════════
    SKIP LINK
@@ -91,532 +358,12 @@
   position: absolute;
   top: -40px;
   left: 0;
-  background: #7a9e7e;
-  color: #f0ece4;
-  padding: 8px;
+  background: #38bdf8;
+  color: #0f172a;
+  padding: 8px 12px;
   z-index: 9999;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 800;
   border-radius: 0 0 8px 0;
 }
 .skip-link:focus { top: 0; }
-
-/* ══════════════════════════════════════════
-   FONT HELPERS
-══════════════════════════════════════════ */
-.font-game {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-/* ══════════════════════════════════════════
-   GAME BACKGROUND SYSTEM
-══════════════════════════════════════════ */
-.bg-grid-pattern {
-  background-image:
-    linear-gradient(rgba(122,158,126,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(122,158,126,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-/* ══════════════════════════════════════════
-   GRADIENT TEXT HELPERS
-══════════════════════════════════════════ */
-.brand-gradient {
-  background: linear-gradient(135deg, #9ab89e 0%, #7a9e7e 50%, #5a7e5e 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.gold-gradient {
-  background: linear-gradient(135deg, #e8dcc8 0%, #c4b498 50%, #a08868 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.neon-sage {
-  color: #7a9e7e;
-  text-shadow: 0 0 8px rgba(122,158,126,0.25);
-}
-
-.neon-gold {
-  color: #c4b498;
-  text-shadow: 0 0 8px rgba(196,180,152,0.20);
-}
-
-/* ══════════════════════════════════════════
-   ZEN BOARD — Warm sand paper panel
-══════════════════════════════════════════ */
-.zen-board {
-  position: relative;
-  border-radius: 28px;
-  padding: 14px;
-  background: linear-gradient(160deg, #faf8f3 0%, #f2ede3 100%);
-  border: 1.5px solid rgba(122, 158, 126, 0.18);
-  box-shadow:
-    0 2px 0 rgba(122, 158, 126, 0.06),
-    0 8px 24px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.60);
-  overflow: hidden;
-}
-
-.zen-board::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 28px;
-  background: radial-gradient(ellipse at 50% 30%, rgba(122,158,126,0.04) 0%, transparent 65%);
-  pointer-events: none;
-}
-
-.zen-board-glow {
-  box-shadow:
-    0 0 0 1px rgba(122, 158, 126, 0.10),
-    0 4px 12px rgba(0, 0, 0, 0.08),
-    0 12px 32px rgba(122, 158, 126, 0.06);
-}
-
-/* ══════════════════════════════════════════
-   ZEN BUTTONS — Soft earth tones
-══════════════════════════════════════════ */
-.zen-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
-  border: 1.5px solid rgba(0, 0, 0, 0.06);
-  cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow:
-    0 2px 0 rgba(0, 0, 0, 0.06),
-    0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
-
-.zen-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 55%);
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-}
-
-.zen-btn:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 4px 0 rgba(0, 0, 0, 0.06),
-    0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
-.zen-btn:active {
-  transform: translateY(2px);
-  box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.06),
-    0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-.zen-btn:active::after {
-  opacity: 0.5;
-}
-
-.zen-btn-terracotta {
-  background: linear-gradient(160deg, #d4957a 0%, #c67b5c 100%);
-}
-.zen-btn-terracotta:hover { background: linear-gradient(160deg, #dca088 0%, #d08a6e 100%); }
-
-.zen-btn-sage {
-  background: linear-gradient(160deg, #8ab08e 0%, #7a9e7e 100%);
-}
-.zen-btn-sage:hover { background: linear-gradient(160deg, #96bc9a 0%, #86aa8a 100%); }
-
-.zen-btn-mist {
-  background: linear-gradient(160deg, #8aafc2 0%, #7a9eb0 100%);
-}
-.zen-btn-mist:hover { background: linear-gradient(160deg, #96b9ca 0%, #86aabc 100%); }
-
-.zen-btn-sand {
-  background: linear-gradient(160deg, #e0b87a 0%, #d4a76a 100%);
-}
-.zen-btn-sand:hover { background: linear-gradient(160deg, #e6c48a 0%, #dab37a 100%); }
-
-.zen-btn-active {
-  transform: translateY(2px) scale(0.98);
-  box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.06),
-    0 2px 6px rgba(0, 0, 0, 0.08);
-  filter: brightness(0.92);
-}
-
-.zen-btn-active::after {
-  opacity: 0.4;
-}
-
-/* ══════════════════════════════════════════
-   ZEN HUB — Soft stone center
-══════════════════════════════════════════ */
-.zen-hub {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: linear-gradient(160deg, #f0e8d8 0%, #e0d4c0 100%);
-  border: 2px solid rgba(160, 136, 104, 0.25);
-  box-shadow:
-    0 2px 0 rgba(160, 136, 104, 0.10),
-    0 6px 16px rgba(0, 0, 0, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.50);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.zen-hub::before {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.45) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════
-   ZEN PRIMARY BUTTON — Soft sage
-══════════════════════════════════════════ */
-.zen-primary {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 14px 24px;
-  border-radius: 16px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #f0ece4;
-  cursor: pointer;
-  background: linear-gradient(160deg, #8ab08e 0%, #6a8e6e 100%);
-  border: 1.5px solid rgba(90, 126, 94, 0.30);
-  box-shadow:
-    0 2px 0 rgba(90, 126, 94, 0.15),
-    0 4px 12px rgba(0, 0, 0, 0.10);
-  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.zen-primary:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 4px 0 rgba(90, 126, 94, 0.15),
-    0 8px 20px rgba(0, 0, 0, 0.14);
-}
-.zen-primary:active {
-  transform: translateY(2px);
-  box-shadow:
-    0 1px 0 rgba(90, 126, 94, 0.15),
-    0 2px 6px rgba(0, 0, 0, 0.10);
-}
-
-.zen-primary-danger {
-  background: linear-gradient(160deg, #d4957a 0%, #b86a50 100%);
-  border-color: rgba(160, 92, 63, 0.30);
-  box-shadow:
-    0 2px 0 rgba(160, 92, 63, 0.15),
-    0 4px 12px rgba(0, 0, 0, 0.10);
-}
-.zen-primary-danger:hover {
-  box-shadow:
-    0 4px 0 rgba(160, 92, 63, 0.15),
-    0 8px 20px rgba(0, 0, 0, 0.14);
-}
-
-/* ══════════════════════════════════════════
-   ZEN SECONDARY BUTTON — Soft ghost
-══════════════════════════════════════════ */
-.zen-secondary {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  padding: 10px 18px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  background: rgba(122, 158, 126, 0.06);
-  border: 1.5px solid rgba(122, 158, 126, 0.12);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.zen-secondary:hover {
-  background: rgba(122, 158, 126, 0.10);
-  color: var(--color-text-primary);
-  border-color: rgba(122, 158, 126, 0.22);
-}
-.zen-secondary:active {
-  transform: translateY(1px);
-}
-
-/* ══════════════════════════════════════════
-   ZEN STATUS CHIPS — Soft muted
-══════════════════════════════════════════ */
-.zen-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border: 1px solid;
-  transition: all 0.4s ease;
-}
-
-.zen-chip-idle {
-  background: rgba(160, 152, 140, 0.10);
-  color: #a0988c;
-  border-color: rgba(160, 152, 140, 0.18);
-}
-.zen-chip-showing {
-  background: rgba(122, 158, 176, 0.10);
-  color: #8aafc2;
-  border-color: rgba(122, 158, 176, 0.20);
-  animation: pulse-soft 2.5s ease-in-out infinite;
-}
-.zen-chip-player {
-  background: rgba(122, 158, 126, 0.10);
-  color: #8ab08e;
-  border-color: rgba(122, 158, 126, 0.22);
-  animation: pulse-soft 2.5s ease-in-out infinite;
-}
-.zen-chip-round {
-  background: rgba(212, 167, 106, 0.10);
-  color: #d4a76a;
-  border-color: rgba(212, 167, 106, 0.22);
-}
-.zen-chip-gameover {
-  background: rgba(198, 123, 92, 0.10);
-  color: #c67b5c;
-  border-color: rgba(198, 123, 92, 0.22);
-}
-
-/* ══════════════════════════════════════════
-   ZEN PROGRESS BAR
-══════════════════════════════════════════ */
-.zen-progress-track {
-  width: 100%;
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(122, 158, 126, 0.10);
-  border: 1px solid rgba(122, 158, 126, 0.08);
-  overflow: hidden;
-}
-
-.zen-progress-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #7a9e7e, #9ab89e);
-  transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* ══════════════════════════════════════════
-   ZEN HUD STAT
-══════════════════════════════════════════ */
-.zen-hud-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8px 14px;
-  border-radius: 14px;
-  background: rgba(28, 32, 30, 0.70);
-  border: 1px solid rgba(122, 158, 126, 0.10);
-  backdrop-filter: blur(8px);
-}
-
-/* ══════════════════════════════════════════
-   ZEN MODAL
-══════════════════════════════════════════ */
-.zen-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(28, 32, 30, 0.75);
-  backdrop-filter: blur(8px);
-  animation: fade-in 0.35s ease-out;
-}
-
-.zen-modal {
-  width: 90%;
-  max-width: 340px;
-  padding: 28px 24px;
-  border-radius: 24px;
-  background: linear-gradient(160deg, #2a2e2c 0%, #222523 100%);
-  border: 1.5px solid rgba(122, 158, 126, 0.15);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.30);
-  text-align: center;
-  animation: breathe 4s ease-in-out infinite;
-}
-
-/* ══════════════════════════════════════════
-   SCREEN FLASH — Soft
-══════════════════════════════════════════ */
-.screen-flash {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  pointer-events: none;
-  animation: screen-flash 0.7s ease-out forwards;
-}
-
-/* ══════════════════════════════════════════
-   AMBIENT ORB — Soft warm
-══════════════════════════════════════════ */
-.zen-orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(60px);
-  animation: drift 10s ease-in-out infinite;
-  opacity: 0.35;
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* ══════════════════════════════════════════
-   COIN BADGE — Warm stone
-══════════════════════════════════════════ */
-.zen-coin {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px 5px 5px;
-  border-radius: 999px;
-  background: linear-gradient(160deg, #f0e8d8 0%, #d4c4a8 100%);
-  border: 1.5px solid rgba(160, 136, 104, 0.25);
-  box-shadow: 0 2px 0 rgba(160, 136, 104, 0.08), 0 4px 10px rgba(0,0,0,0.08);
-  font-size: 11px;
-  font-weight: 600;
-  color: #5a4a38;
-}
-
-.zen-coin-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: linear-gradient(160deg, #e8dcc8, #c4b498);
-  border: 1.5px solid rgba(160, 136, 104, 0.30);
-  box-shadow: 0 1px 0 rgba(160, 136, 104, 0.10), inset 0 1px 0 rgba(255,255,255,0.40);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
-  color: #5a4a38;
-  flex-shrink: 0;
-}
-
-/* ══════════════════════════════════════════
-   GAME CARD — Warm glass
-══════════════════════════════════════════ */
-.zen-card {
-  background: rgba(28, 32, 30, 0.80);
-  border: 1px solid rgba(122, 158, 126, 0.10);
-  border-radius: 20px;
-  backdrop-filter: blur(12px);
-  position: relative;
-  overflow: hidden;
-}
-
-.zen-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(122,158,126,0.15), transparent);
-}
-
-.zen-card-glow {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(122,158,126,0.06);
-}
-
-/* ══════════════════════════════════════════
-   AVATAR RINGS — Soft sage
-══════════════════════════════════════════ */
-.avatar-ring-zen {
-  box-shadow: 0 0 0 2px #7a9e7e, 0 0 10px rgba(122,158,126,0.20);
-}
-
-/* ══════════════════════════════════════════
-   RANK BADGES — Muted earth
-══════════════════════════════════════════ */
-.rank-novice  { background: rgba(160,152,140,0.12); color: #a0988c; border: 1px solid rgba(160,152,140,0.20); }
-.rank-expert  { background: rgba(122,158,126,0.12); color: #8ab08e; border: 1px solid rgba(122,158,126,0.22); }
-.rank-master  { background: rgba(122,158,176,0.12); color: #8aafc2; border: 1px solid rgba(122,158,176,0.22); }
-.rank-legend  { background: rgba(212,167,106,0.12); color: #d4a76a; border: 1px solid rgba(212,167,106,0.25); }
-
-/* ══════════════════════════════════════════
-   XP PROGRESS BAR — Soft sage
-══════════════════════════════════════════ */
-.xp-bar-track {
-  width: 100%;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(122, 158, 126, 0.08);
-  border: 1px solid rgba(122, 158, 126, 0.06);
-  overflow: hidden;
-  position: relative;
-}
-
-.xp-bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #7a9e7e, #9ab89e);
-  animation: xp-fill 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  position: relative;
-  overflow: hidden;
-}
-
-.xp-bar-fill::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-  animation: shine 2.5s 1.2s ease infinite;
-}
-
-/* ══════════════════════════════════════════
-   LEADERBOARD ROW
-══════════════════════════════════════════ */
-.lb-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  transition: background 0.2s ease;
-  border-bottom: 1px solid rgba(122, 158, 126, 0.05);
-}
-.lb-row:last-child { border-bottom: none; }
-.lb-row:hover { background: rgba(122, 158, 126, 0.04); }
-
-/* ══════════════════════════════════════════
-   SCROLLBAR
-══════════════════════════════════════════ */
-.scrollbar-none { scrollbar-width: none; }
-.scrollbar-none::-webkit-scrollbar { display: none; }
