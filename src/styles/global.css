@@ -591,8 +591,21 @@
 .is-home-route .simon-home-screen { min-height: calc(100dvh - 24px); }
 .is-home-route .simon-home-screen .simon-landing-card { height: calc(100dvh - 24px); max-height: calc(100dvh - 24px); }
 
-/* Mobile Edge-to-Edge Fullscreen: No outer borders or padding showing on phone screens */
+/* Mobile Lock: Zero Scroll, 100% Viewport Fit, Edge-to-Edge */
 @media (max-width: 640px) {
+  html, body, #root, .nature-shell {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    width: 100vw;
+  }
+  #main-content {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+  }
   .simon-home-screen,
   .simon-home-screen .simon-landing-card,
   .is-home-route .simon-home-screen,
@@ -600,13 +613,17 @@
     min-height: 100dvh !important;
     height: 100dvh !important;
     max-height: 100dvh !important;
+    overflow: hidden !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
   }
   .game-page-shell {
     min-height: 100dvh !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
     max-width: 100% !important;
+    overflow: hidden !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
