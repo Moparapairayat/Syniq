@@ -65,12 +65,23 @@ export default function HomePage() {
           <span aria-hidden="true">♛</span>
           <span><small>Hall of fame</small><strong>Rankings</strong></span>
         </button>
-        <div className="simon-landing-orbital" aria-hidden="true"><span className="is-green" /><span className="is-red" /><span className="is-blue" /><span className="is-yellow" /></div>
+        <div className="simon-landing-orbital" aria-hidden="true">
+          <span className="is-green" />
+          <span className="is-red" />
+          <span className="is-blue" />
+          <span className="is-yellow" />
+          <div className="simon-orbital-core" />
+        </div>
         <div className="simon-launch-plaque">
-          <span>Memory training</span>
-          <h1>Ready to play?</h1>
-          <p>Watch the sequence, remember it, then repeat it.</p>
-          <div className="simon-plaque-stars" aria-label="Start a Simon memory run"><b>★</b><b>★</b><b className="is-muted">★</b></div>
+          <div className="simon-plaque-leaf-left" aria-hidden="true" />
+          <div className="simon-plaque-leaf-right" aria-hidden="true" />
+          <div className="simon-plaque-ribbon-top">
+            <span>MEMORY TRAINING</span>
+          </div>
+          <h1 className="simon-plaque-title">Ready to play?</h1>
+          <div className="simon-plaque-stars" aria-label="Start a Simon memory run">
+            <b>★</b><b>★</b><b className="is-muted">★</b>
+          </div>
         </div>
         <div className="simon-home-shortcuts" aria-label="Quick navigation">
           <button onClick={() => navigate(RoutePath.settings)} type="button" className="simon-shortcut-card is-settings" aria-label="Open settings" title="Settings">
