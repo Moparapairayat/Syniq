@@ -568,7 +568,7 @@
 .simon-plaque-stars { display: flex; justify-content: center; gap: 4px; margin-top: 6px; color: #e3a73c; font-size: 17px; line-height: 1; text-shadow: 0 1px 0 #a56c1c; }
 .simon-plaque-stars .is-muted { color: #cbd3bd; text-shadow: none; }
 
-.simon-launch-actions { position: absolute; right: clamp(14px, 5vw, 28px); bottom: clamp(12px, 2.5vh, 22px); left: clamp(14px, 5vw, 28px); z-index: 4; display: flex; flex-direction: column; gap: 8px; filter: drop-shadow(0 4px 7px rgba(15,28,10,0.26)); }
+.simon-launch-actions { position: absolute; right: clamp(14px, 5vw, 28px); bottom: clamp(65px, 10.5vh, 100px); left: clamp(14px, 5vw, 28px); z-index: 4; display: flex; flex-direction: column; gap: 8px; filter: drop-shadow(0 4px 7px rgba(15,28,10,0.26)); }
 .simon-action-button { position: relative; overflow: hidden; min-height: clamp(44px, 7vh, 55px); border-width: 2px; border-radius: 18px 16px 20px 17px; font-family: inherit; font-size: clamp(14px, 4vw, 18px); font-weight: 1000; letter-spacing: -0.02em; cursor: pointer; text-shadow: 0 1px 0 rgba(92,47,13,0.3); transition: transform 0.16s ease, filter 0.16s ease; touch-action: manipulation; }
 .simon-action-button::before { position: absolute; top: 3px; right: 11%; left: 11%; height: 30%; content: ''; border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,0.38), transparent); pointer-events: none; }
 .simon-action-button::after { position: absolute; right: 8px; bottom: 5px; left: 8px; height: 1px; content: ''; border-radius: 999px; background: rgba(113,57,10,0.18); pointer-events: none; }
@@ -655,7 +655,7 @@
   .simon-launch-plaque h1 { font-size: 22px; }
   .simon-launch-plaque p { font-size: 9px; max-width: 200px; }
   .simon-plaque-stars { margin-top: 4px; font-size: 14px; }
-  .simon-launch-actions { bottom: 10px; gap: 6px; }
+  .simon-launch-actions { bottom: 50px; gap: 6px; }
   .simon-action-button { min-height: 42px; font-size: 14px; }
 }
 
