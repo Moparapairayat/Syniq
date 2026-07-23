@@ -14,42 +14,46 @@ export interface GameBoardProps {
 }
 
 /* ══════════════════════════════════════════
-   PREMIUM ULTRA CLEAN COLOR PAD CONFIG
+   ORIGINAL VIBRANT 3D SIMON COLOR PAD CONFIG
 ══════════════════════════════════════════ */
 const padConfig = {
   [SimonColor.Green]: {
     label: 'GREEN',
     keyHint: '2',
-    normalGrad: 'linear-gradient(135deg, #91b957 0%, #35683c 100%)',
-    activeGrad: 'linear-gradient(135deg, #d4eb87 0%, #79a844 100%)',
-    borderColor: '#345d35',
+    normalGrad: 'linear-gradient(145deg, #64cf4a 0%, #3ca822 55%, #2a8216 100%)',
+    activeGrad: 'linear-gradient(145deg, #ffffff 0%, #a3f380 40%, #4ade80 100%)',
+    borderColor: '#1c590d',
+    glowColor: 'rgba(74, 222, 128, 0.95)',
     ariaLabel: 'Green Pad (Key 2)',
     corners: 'rounded-tl-[38px] rounded-tr-2xl rounded-bl-2xl rounded-br-md',
   },
   [SimonColor.Red]: {
     label: 'RED',
     keyHint: '1',
-    normalGrad: 'linear-gradient(135deg, #cf6958 0%, #7d3731 100%)',
-    activeGrad: 'linear-gradient(135deg, #f2af87 0%, #c85846 100%)',
-    borderColor: '#74352e',
+    normalGrad: 'linear-gradient(145deg, #f85b5b 0%, #dc2626 55%, #b91c1c 100%)',
+    activeGrad: 'linear-gradient(145deg, #ffffff 0%, #fca5a5 40%, #f87171 100%)',
+    borderColor: '#7f1d1d',
+    glowColor: 'rgba(248, 113, 113, 0.95)',
     ariaLabel: 'Red Pad (Key 1)',
     corners: 'rounded-tr-[38px] rounded-tl-2xl rounded-br-2xl rounded-bl-md',
   },
   [SimonColor.Blue]: {
     label: 'BLUE',
     keyHint: '3',
-    normalGrad: 'linear-gradient(135deg, #5cb9cf 0%, #236b8b 100%)',
-    activeGrad: 'linear-gradient(135deg, #b9e8e8 0%, #4daec9 100%)',
-    borderColor: '#205f79',
+    normalGrad: 'linear-gradient(145deg, #38bdf8 0%, #0284c7 55%, #0369a1 100%)',
+    activeGrad: 'linear-gradient(145deg, #ffffff 0%, #7dd3fc 40%, #38bdf8 100%)',
+    borderColor: '#0c4a6e',
+    glowColor: 'rgba(56, 189, 248, 0.95)',
     ariaLabel: 'Blue Pad (Key 3)',
     corners: 'rounded-bl-[38px] rounded-tl-2xl rounded-br-2xl rounded-tr-md',
   },
   [SimonColor.Yellow]: {
     label: 'YELLOW',
     keyHint: '4',
-    normalGrad: 'linear-gradient(135deg, #efc35b 0%, #a96520 100%)',
-    activeGrad: 'linear-gradient(135deg, #ffe59a 0%, #e7aa3f 100%)',
-    borderColor: '#9a5a1b',
+    normalGrad: 'linear-gradient(145deg, #fbbf24 0%, #d97706 55%, #b45309 100%)',
+    activeGrad: 'linear-gradient(145deg, #ffffff 0%, #fef08a 40%, #facc15 100%)',
+    borderColor: '#78350f',
+    glowColor: 'rgba(250, 204, 21, 0.95)',
     ariaLabel: 'Yellow Pad (Key 4)',
     corners: 'rounded-br-[38px] rounded-tr-2xl rounded-bl-2xl rounded-tl-md',
   },
@@ -93,21 +97,21 @@ function SectorButton({
         className={`relative z-10 h-full w-full overflow-hidden ${c.corners}`}
         style={{
           background: isActive ? c.activeGrad : c.normalGrad,
-          border: `2px solid ${c.borderColor}`,
+          border: `2.5px solid ${c.borderColor}`,
           boxShadow: isActive
-            ? 'inset 0 0 0 3px rgba(255,255,255,0.7), inset 0 4px 12px rgba(0,0,0,0.4)'
-            : 'inset 0 1.5px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.3)',
+            ? `inset 0 0 0 3px #ffffff, inset 0 2px 10px rgba(255,255,255,0.9), 0 0 35px ${c.glowColor}`
+            : 'inset 0 2px 0 rgba(255,255,255,0.6), inset 0 -3px 0 rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.35)',
           transition: 'background 0.08s ease, box-shadow 0.08s ease',
         }}
       >
-        {/* Top subtle glare line */}
+        {/* Top glossy glare line */}
         <div
           className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
           style={{
             top: '6%',
             width: '64%',
             height: '22%',
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%)',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%)',
           }}
         />
 
