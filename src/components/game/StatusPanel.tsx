@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { GameStatus } from '@/core/game/GameStatus'
 
 export interface StatusPanelProps {
@@ -10,39 +10,34 @@ export interface StatusPanelProps {
 const STATUS_CONFIG = {
   [GameStatus.ShowingSequence]: {
     label: 'Watch the pattern',
-    desc: 'Keep your eyes on the sequence. Do not tap yet.',
     cls: 'border border-[#38bdf8] bg-[#0c4a6e] text-[#7dd3fc] shadow-[0_0_12px_rgba(56,189,248,0.4)]',
     dot: 'bg-[#38bdf8] animate-ping',
   },
   [GameStatus.PlayerTurn]: {
     label: 'Your turn',
-    desc: 'Repeat the pattern exactly as you saw it.',
     cls: 'border-2 border-[#fcd34d] bg-[#2a1307] text-[#fcd34d] shadow-[0_0_14px_rgba(252,211,77,0.5)]',
     dot: 'bg-[#fcd34d] animate-pulse',
   },
   [GameStatus.RoundCompleted]: {
     label: 'Pattern secured',
-    desc: 'Nice recall. Continue when you are set.',
     cls: 'border border-emerald-400 bg-emerald-950 text-emerald-300 shadow-[0_0_10px_rgba(52,211,153,0.4)]',
     dot: 'bg-emerald-400',
   },
   [GameStatus.GameOver]: {
     label: 'Signal lost',
-    desc: 'One wrong input ended this run.',
     cls: 'border border-rose-500 bg-rose-950 text-rose-300 shadow-[0_0_10px_rgba(244,63,94,0.4)]',
     dot: 'bg-rose-500',
   },
 } as const
 
 export function StatusPanel({ status, playerInputLength, targetSequenceLength }: StatusPanelProps) {
-  const shouldReduceMotion = useReducedMotion()
   const isIdle = status === GameStatus.Idle
   const cfg = isIdle ? null : STATUS_CONFIG[status as keyof typeof STATUS_CONFIG]
   const progress = targetSequenceLength > 0 ? playerInputLength / targetSequenceLength : 0
   const segmentCount = Math.min(10, Math.max(1, targetSequenceLength))
 
   return (
-    <div className="flex w-full flex-col items-center gap-1.5 min-h-[58px]">
+    <div className="flex w-full flex-col items-center gap-1.5 min-h-[32px]">
       {/* Status chip */}
       {cfg ? (
         <motion.div
@@ -56,25 +51,7 @@ export function StatusPanel({ status, playerInputLength, targetSequenceLength }:
         </motion.div>
       ) : null}
 
-      {/* Description - Fixed height to avoid shift */}
-      <div className="h-5 flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          {cfg ? (
-            <motion.p
-              key={status}
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 2 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -2 }}
-              transition={{ duration: 0.15 }}
-              className="text-center text-xs font-black text-[#fff3cd] bg-[#2a1307]/95 border border-[#78431e] px-4 py-0.5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.6)]"
-            >
-              {cfg.desc}
-            </motion.p>
-          ) : null}
-        </AnimatePresence>
-      </div>
-
-      {/* Progress bar - Fixed height container so layout never shifts */}
+      {/* Progress bar */}
       <div className="h-10 w-full max-w-[320px] flex flex-col justify-center">
         {status === GameStatus.PlayerTurn && targetSequenceLength > 0 ? (
           <motion.div

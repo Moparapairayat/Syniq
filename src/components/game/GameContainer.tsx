@@ -137,15 +137,8 @@ export function GameContainer() {
         />
       </div>
 
-      {/* Bottom Input Guide & Control Panel */}
+      {/* Control Panel */}
       <div className="relative z-10 w-full">
-        <p className="memory-input-guide" aria-live="polite">
-          {state.status === GameStatus.Idle || state.status === GameStatus.GameOver
-            ? 'Tap the centre core to begin'
-            : state.status === GameStatus.PlayerTurn
-              ? 'Keyboard: 1 Red · 2 Green · 3 Blue · 4 Yellow'
-              : 'Stay focused. The pattern is loading.'}
-        </p>
         <ControlPanel onNextRound={nextRound} onQuitRequest={() => setShowQuitDialog(true)} onReturnToDashboard={handleReturnToDashboard} status={state.status} />
       </div>
 
