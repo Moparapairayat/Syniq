@@ -50,10 +50,10 @@ const padConfig = {
   [SimonColor.Yellow]: {
     label: 'YELLOW',
     keyHint: '4',
-    normalGrad: 'linear-gradient(145deg, #fbbf24 0%, #d97706 55%, #b45309 100%)',
-    activeGrad: 'linear-gradient(145deg, #ffffff 0%, #fef08a 40%, #facc15 100%)',
-    borderColor: '#78350f',
-    glowColor: 'rgba(250, 204, 21, 0.95)',
+    normalGrad: 'linear-gradient(145deg, #fff176 0%, #fdd835 45%, #fbc02d 100%)',
+    activeGrad: 'linear-gradient(145deg, #ffffff 0%, #ffff8d 40%, #ffeb3b 100%)',
+    borderColor: '#856404',
+    glowColor: 'rgba(255, 235, 59, 0.95)',
     ariaLabel: 'Yellow Pad (Key 4)',
     corners: 'rounded-br-[38px] rounded-tr-2xl rounded-bl-2xl rounded-tl-md',
   },
@@ -120,12 +120,15 @@ function SectorButton({
           {c.keyHint}
         </span>
 
-        {/* Center Pad Label */}
+        {/* Center Pad Label inside 3D Dark Wood Capsule Badge */}
         <div className="relative z-10 flex h-full w-full items-center justify-center">
           <span
-            className="font-mono text-xs font-black tracking-widest text-white uppercase drop-shadow-md"
+            className="font-mono text-[11px] font-black tracking-widest uppercase rounded-full px-3 py-0.5 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
             style={{
-              color: isActive ? '#0f172a' : '#ffffff',
+              color: isActive ? '#3a1d0d' : '#ffe49e',
+              backgroundColor: isActive ? 'rgba(255,255,255,0.95)' : 'rgba(28, 11, 4, 0.88)',
+              border: isActive ? '1.5px solid #ffffff' : '1.5px solid #78431e',
+              boxShadow: isActive ? '0 0 12px rgba(255,255,255,0.8)' : '0 2px 8px rgba(0,0,0,0.6)',
             }}
           >
             {c.label}
@@ -151,10 +154,10 @@ function CenterHub({
   onClick?: () => void
 }) {
   const content = () => {
-    if (status === GameStatus.Idle)     return { main: 'START', sub: 'TAP HERE' }
+    if (status === GameStatus.Idle) return { main: 'START', sub: 'TAP HERE' }
     if (status === GameStatus.GameOver) return { main: 'AGAIN', sub: 'TAP HERE' }
-    if (timeLeft !== null)              return { main: `${timeLeft}`, sub: 'SEC' }
-    return                               { main: `${round}`, sub: 'ROUND' }
+    if (timeLeft !== null) return { main: `${timeLeft}`, sub: 'SEC' }
+    return { main: `${round}`, sub: 'ROUND' }
   }
   const c = content()
   const isClickable = status === GameStatus.Idle || status === GameStatus.GameOver
@@ -237,10 +240,10 @@ export function GameBoard({
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
       let targetColor: SimonColor | null = null
       switch (e.key) {
-        case '1': case 'ArrowUp':    targetColor = SimonColor.Red;    break
-        case '2': case 'ArrowLeft':  targetColor = SimonColor.Green;  break
-        case '3': case 'ArrowRight': targetColor = SimonColor.Blue;   break
-        case '4': case 'ArrowDown':  targetColor = SimonColor.Yellow; break
+        case '1': case 'ArrowUp': targetColor = SimonColor.Red; break
+        case '2': case 'ArrowLeft': targetColor = SimonColor.Green; break
+        case '3': case 'ArrowRight': targetColor = SimonColor.Blue; break
+        case '4': case 'ArrowDown': targetColor = SimonColor.Yellow; break
         default: break
       }
       if (targetColor) {
@@ -256,9 +259,8 @@ export function GameBoard({
     <div
       aria-label="Simon Game Board"
       role="region"
-      className={`relative mx-auto w-full max-w-[min(350px,85vw,48vh)] select-none ${
-        status === GameStatus.PlayerTurn ? 'memory-board-ready' : ''
-      }`}
+      className={`relative mx-auto w-full max-w-[min(350px,85vw,48vh)] select-none ${status === GameStatus.PlayerTurn ? 'memory-board-ready' : ''
+        }`}
     >
       {/* Outer Bezel */}
       <div

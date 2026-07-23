@@ -82,7 +82,7 @@ export function GameContainer() {
     <div className="memory-arena relative mx-auto flex w-full max-w-[480px] flex-col items-center gap-5 overflow-hidden py-3 select-none">
       <div className="memory-arena-orb memory-arena-orb-one" aria-hidden="true" />
       <div className="memory-arena-orb memory-arena-orb-two" aria-hidden="true" />
-      
+
       {/* Screen flash overlay */}
       {screenFlash && (
         <div
@@ -93,12 +93,13 @@ export function GameContainer() {
 
       {/* Game Metrics HUD & Status Panel */}
       <div className="relative z-10 flex w-full flex-col gap-2">
-        <div className="flex w-full items-center gap-2.5">
+        <div className="flex w-full items-center gap-2">
+          {/* 3D Wood Home Button */}
           <button
             onClick={handleReturnToDashboard}
             type="button"
             aria-label="Return home"
-            className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] text-xl font-black text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),inset_0_-2px_0_rgba(30,12,4,0.6),0_4px_0_#381c0d,0_8px_16px_rgba(5,15,5,0.6)] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:scale-105"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] text-xl font-black text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),inset_0_-2px_0_rgba(30,12,4,0.6),0_4px_0_#381c0d,0_8px_16px_rgba(5,15,5,0.6)] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:scale-105"
           >
             ⌂
           </button>
@@ -155,7 +156,7 @@ export function GameContainer() {
         title="GAME OVER"
       >
         <div className="flex flex-col items-center gap-4 py-1 text-center select-none">
-          
+
           {/* Animated Skull / Emblem Mark */}
           <motion.div
             initial={{ scale: 0.5, rotate: -15, opacity: 0 }}

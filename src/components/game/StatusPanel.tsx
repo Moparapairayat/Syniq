@@ -8,12 +8,6 @@ export interface StatusPanelProps {
 }
 
 const STATUS_CONFIG = {
-  [GameStatus.Idle]: {
-    label: 'Memory core ready',
-    desc: 'When you are ready, start from the centre core.',
-    cls: 'border border-[#78431e] bg-[#2a1307] text-[#ffe49e]',
-    dot: 'bg-emerald-400',
-  },
   [GameStatus.ShowingSequence]: {
     label: 'Watch the pattern',
     desc: 'Keep your eyes on the sequence. Do not tap yet.',
@@ -42,36 +36,41 @@ const STATUS_CONFIG = {
 
 export function StatusPanel({ status, playerInputLength, targetSequenceLength }: StatusPanelProps) {
   const shouldReduceMotion = useReducedMotion()
-  const cfg = STATUS_CONFIG[status]
+  const isIdle = status === GameStatus.Idle
+  const cfg = isIdle ? null : STATUS_CONFIG[status as keyof typeof STATUS_CONFIG]
   const progress = targetSequenceLength > 0 ? playerInputLength / targetSequenceLength : 0
   const segmentCount = Math.min(10, Math.max(1, targetSequenceLength))
 
   return (
-    <div className="flex w-full flex-col items-center gap-1.5">
+    <div className="flex w-full flex-col items-center gap-1.5 min-h-[58px]">
       {/* Status chip */}
-      <motion.div
-        className={`flex items-center gap-2 rounded-full px-4 py-1 text-[10.5px] font-black tracking-widest uppercase shadow-md ${cfg.cls}`}
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.15 }}
-      >
-        <span className={`h-2.5 w-2.5 rounded-full ${cfg.dot}`} />
-        {cfg.label}
-      </motion.div>
+      {cfg ? (
+        <motion.div
+          className={`flex items-center gap-2 rounded-full px-4 py-1 text-[10.5px] font-black tracking-widest uppercase shadow-md ${cfg.cls}`}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.15 }}
+        >
+          <span className={`h-2.5 w-2.5 rounded-full ${cfg.dot}`} />
+          {cfg.label}
+        </motion.div>
+      ) : null}
 
       {/* Description - Fixed height to avoid shift */}
       <div className="h-5 flex items-center justify-center">
         <AnimatePresence mode="wait">
-          <motion.p
-            key={status}
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 2 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -2 }}
-            transition={{ duration: 0.15 }}
-            className="text-center text-xs font-black text-[#fff3cd] bg-[#2a1307]/95 border border-[#78431e] px-4 py-0.5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.6)]"
-          >
-            {cfg.desc}
-          </motion.p>
+          {cfg ? (
+            <motion.p
+              key={status}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 2 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -2 }}
+              transition={{ duration: 0.15 }}
+              className="text-center text-xs font-black text-[#fff3cd] bg-[#2a1307]/95 border border-[#78431e] px-4 py-0.5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.6)]"
+            >
+              {cfg.desc}
+            </motion.p>
+          ) : null}
         </AnimatePresence>
       </div>
 
