@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Container,
   Section,
@@ -17,26 +18,24 @@ export default function SettingsPage() {
   useDocumentTitle('Settings')
   const { settings, updateSetting, resetSettings } = useSettings()
   const [isResetOpen, setIsResetOpen] = useState(false)
+  const navigate = useNavigate()
 
   const handleReset = async () => {
     await resetSettings()
   }
 
   return (
-    <Container className="py-4">
+    <Container className="game-page-shell nature-settings-page forest-settings-page py-4">
       {/* Compact Minimal Header */}
-      <div className="mb-6 flex flex-col gap-1 select-none">
-        <span className="text-[10px] font-black tracking-widest text-[var(--color-accent)] uppercase">
-          Preferences
-        </span>
-        <h1 className="text-xl font-bold tracking-tight text-[var(--color-text-primary)]">
-          App Settings
-        </h1>
+      <div className="game-page-heading mb-6 flex flex-col gap-1 select-none">
+        <button onClick={() => navigate('/')} type="button" className="game-page-home-button" aria-label="Return home">⌂</button>
+        <span>Game settings</span>
+        <h1>Make it yours</h1>
       </div>
 
-      <Section spacing="compact" className="mx-auto max-w-md">
+      <Section spacing="compact" className="game-page-content forest-settings-content mx-auto max-w-md">
         <GlassCard
-          className="flex max-h-[460px] scrollbar-none flex-col gap-5 overflow-y-auto shadow-xl"
+          className="nature-settings-card forest-settings-panel flex max-h-[460px] scrollbar-none flex-col gap-5 overflow-y-auto shadow-xl"
           style={{ scrollbarWidth: 'none' }}
         >
           {/* Theme Settings Selector */}
@@ -48,7 +47,7 @@ export default function SettingsPage() {
           <hr className="border-white/[0.04]" />
 
           {/* Volume Sliders */}
-          <div className="flex flex-col gap-2">
+          <div className="forest-settings-group flex flex-col gap-2">
             <VolumeSlider
               label="Sound Effects Volume"
               onChange={(val) => updateSetting({ soundVolume: val })}
@@ -64,7 +63,7 @@ export default function SettingsPage() {
           <hr className="border-white/[0.04]" />
 
           {/* Playback speed selector */}
-          <div className="flex flex-col gap-2">
+          <div className="forest-settings-group flex flex-col gap-2">
             <span className="text-xs font-semibold tracking-wider text-[var(--color-text-secondary)] uppercase">
               Animation & Playback Speed
             </span>
@@ -92,7 +91,7 @@ export default function SettingsPage() {
           <hr className="border-white/[0.04]" />
 
           {/* Accessibility Preferences Panel */}
-          <div className="flex flex-col gap-2">
+          <div className="forest-settings-group flex flex-col gap-2">
             <span className="text-xs font-semibold tracking-wider text-[var(--color-text-secondary)] uppercase">
               Accessibility Customization
             </span>

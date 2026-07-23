@@ -115,10 +115,10 @@ export function PlayerProfileCard() {
   const xpPct = rank.next === Infinity ? 100 : Math.round((profile.highestScore / rank.next) * 100)
 
   return (
-    <div className="flex flex-col gap-3.5 select-none">
+    <div className="forest-profile-stack flex flex-col gap-3.5 select-none">
 
       {/* ── Profile Hero Card ── */}
-      <div className="cyber-card p-5 flex flex-col items-center gap-3 text-center">
+      <div className="cyber-card forest-profile-hero p-5 flex flex-col items-center gap-3 text-center">
 
         {/* Avatar + edit badge */}
         <div className="relative mt-1">
@@ -164,7 +164,7 @@ export function PlayerProfileCard() {
             initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="cyber-card p-4">
+            <div className="cyber-card forest-profile-card p-4">
               <p className="mb-3 text-center text-xs font-bold tracking-wider text-slate-400 uppercase">
                 Choose Avatar
               </p>
@@ -179,7 +179,7 @@ export function PlayerProfileCard() {
       </AnimatePresence>
 
       {/* ── Rename Form Card ── */}
-      <div className="cyber-card p-4">
+      <div className="cyber-card forest-profile-card p-4">
         <p className="mb-2 text-xs font-bold tracking-wider text-slate-400 uppercase">Player Name</p>
         <form className="flex gap-2" onSubmit={handleRename}>
           <input
@@ -203,7 +203,7 @@ export function PlayerProfileCard() {
       </div>
 
       {/* ── Stat Rings ── */}
-      <div className="cyber-card p-4">
+      <div className="cyber-card forest-profile-card p-4">
         <p className="mb-3 text-center text-xs font-bold tracking-wider text-slate-400 uppercase">Game Stats</p>
         <div className="flex justify-around">
           <StatRing value={profile.highestScore} max={Math.max(profile.highestScore, 100)} color="#f59e0b" label="BEST SCORE" />
@@ -213,7 +213,7 @@ export function PlayerProfileCard() {
       </div>
 
       {/* ── Achievements Row ── */}
-      <div className="cyber-card p-4">
+      <div className="cyber-card forest-profile-card p-4">
         <p className="mb-3 text-xs font-bold tracking-wider text-slate-400 uppercase">Achievements</p>
         <div className="flex gap-2">
           {[

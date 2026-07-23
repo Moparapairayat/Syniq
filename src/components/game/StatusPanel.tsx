@@ -9,32 +9,32 @@ export interface StatusPanelProps {
 
 const STATUS_CONFIG = {
   [GameStatus.Idle]: {
-    label: '🎮 READY TO PLAY',
-    desc: 'Press START GAME to begin sequence',
+    label: 'Memory core ready',
+    desc: 'When you are ready, start from the centre core.',
     cls: 'status-idle',
     dot: 'bg-emerald-400',
   },
   [GameStatus.ShowingSequence]: {
-    label: '👁 OBSERVE PATTERN',
-    desc: 'Memorize the color sequence closely',
+    label: 'Watch the pattern',
+    desc: 'Keep your eyes on the sequence. Do not tap yet.',
     cls: 'status-showing',
     dot: 'bg-blue-400 animate-ping',
   },
   [GameStatus.PlayerTurn]: {
-    label: '⚡ YOUR TURN!',
-    desc: 'Tap the colors in exact order',
+    label: 'Your turn',
+    desc: 'Repeat the pattern exactly as you saw it.',
     cls: 'status-player',
     dot: 'bg-emerald-400 animate-pulse',
   },
   [GameStatus.RoundCompleted]: {
-    label: '🎉 ROUND CLEAR!',
-    desc: 'Awesome! Next round starting...',
+    label: 'Pattern secured',
+    desc: 'Nice recall. Continue when you are set.',
     cls: 'status-round',
     dot: 'bg-amber-400',
   },
   [GameStatus.GameOver]: {
-    label: '💥 GAME OVER',
-    desc: 'Incorrect sequence! Try again.',
+    label: 'Signal lost',
+    desc: 'One wrong input ended this run.',
     cls: 'status-gameover',
     dot: 'bg-rose-500',
   },
@@ -44,6 +44,7 @@ export function StatusPanel({ status, playerInputLength, targetSequenceLength }:
   const shouldReduceMotion = useReducedMotion()
   const cfg = STATUS_CONFIG[status]
   const progress = targetSequenceLength > 0 ? playerInputLength / targetSequenceLength : 0
+  const segmentCount = Math.min(10, Math.max(1, targetSequenceLength))
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
@@ -81,17 +82,15 @@ export function StatusPanel({ status, playerInputLength, targetSequenceLength }:
             exit={{ opacity: 0 }}
             className="w-full max-w-[320px]"
           >
-            <div className="xp-bar-track">
-              <motion.div
-                className="xp-bar-fill"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress * 100}%` }}
-                transition={{ duration: 0.2, ease: 'easeOut' }}
-              />
+            <div className="memory-progress-segments" aria-label={`${playerInputLength} of ${targetSequenceLength} inputs completed`}>
+              {Array.from({ length: segmentCount }, (_, index) => {
+                const isComplete = index < Math.floor(progress * segmentCount)
+                return <motion.span key={index} animate={{ opacity: isComplete ? 1 : 0.32, scaleY: isComplete ? 1 : 0.72 }} className={isComplete ? 'memory-progress-segment is-complete' : 'memory-progress-segment'} transition={{ duration: 0.18 }} />
+              })}
             </div>
             <div className="mt-1 flex justify-between text-[8px] font-black tracking-widest text-white/40 uppercase">
-              <span>{playerInputLength} TAPPED</span>
-              <span>{targetSequenceLength} TARGET</span>
+              <span>{playerInputLength} recalled</span>
+              <span>{targetSequenceLength} sequence</span>
             </div>
           </motion.div>
         )}

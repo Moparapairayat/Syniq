@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState, useEffect, useRef } from 'react'
 import { Outlet, useLocation, NavLink } from 'react-router-dom'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
@@ -6,7 +7,7 @@ import { cn } from '@/utils/classNames'
 import { playerService } from '@/services'
 import { useTheme } from '@/context/themeStore'
 import { NicknameAuthModal } from '@/components/auth/NicknameAuthModal'
-import bgHero from '@/assets/bg-hero.png'
+import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 export const AVATARS = [
   { id: 1, label: 'Cyberpunk', set: 1, pos: '0% 0%' },
@@ -122,6 +123,8 @@ export function AppLayout() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const { themeMode, toggleTheme } = useTheme()
   const location = useLocation()
+  const isHomeRoute = location.pathname === '/'
+  const showHeader = false
   const shouldReduceMotion = useReducedMotion()
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -154,7 +157,8 @@ export function AppLayout() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col select-none bg-[#0f172a]">
+    <div className={`nature-shell relative flex min-h-screen flex-col select-none ${isHomeRoute ? 'is-home-route' : ''}`}>
+      <div className="nature-backdrop" style={{ backgroundImage: `url(${simonForestBackground})` }} aria-hidden="true" />
       {/* ── Cinematic Splash ── */}
       <AnimatePresence>
         {showSplash && (
@@ -162,7 +166,7 @@ export function AppLayout() {
             key="splash"
             exit={{ opacity: 0, scale: 1.04 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0f172a]"
+            className="nature-splash fixed inset-0 z-[100] flex flex-col items-center justify-center"
           >
             <div className="relative z-10 flex flex-col items-center gap-6">
               <motion.div
@@ -170,13 +174,13 @@ export function AppLayout() {
                 transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
                 className="flex flex-col items-center gap-2"
               >
-                <span className="font-mono text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-purple-400 tracking-wider"
-                  style={{ filter: 'drop-shadow(0 0 40px rgba(0,243,255,0.6))' }}
+                <span className="font-mono text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#f1ba50] via-[#fff8d8] to-[#779d4c] tracking-wider"
+                  style={{ filter: 'drop-shadow(0 0 30px rgba(236,178,70,0.45))' }}
                 >
                   SYNIQ
                 </span>
-                <span className="font-mono text-[10px] font-black tracking-[0.5em] text-cyan-400/60 uppercase">
-                  NEXT-GEN ARENA
+                <span className="font-mono text-[10px] font-black tracking-[0.5em] text-[#6c8b48] uppercase">
+                  MEMORY TRAILS
                 </span>
               </motion.div>
 
@@ -202,29 +206,29 @@ export function AppLayout() {
       <a className="skip-link" href="#main-content">Skip to content</a>
 
       {/* ── Top Bar Header (Ultra-Clean & Natural) ── */}
-      <header className="sticky top-0 z-30 w-full bg-[#0f172a] border-b border-[#1e293b] transition-all">
+      {showHeader && <header className="nature-header sticky top-0 z-30 w-full transition-all">
         <div className="mx-auto flex w-full max-w-[480px] items-center justify-between px-3.5 py-2">
           {/* Left: User Profile Pill */}
           <button
             type="button"
             onClick={() => setShowAuthModal(true)}
-            className="flex items-center gap-2 rounded-full border border-[#334155] bg-[#1e293b] px-2.5 py-1 outline-none cursor-pointer hover:border-[#475569] transition-colors group text-left"
+            className="nature-profile flex items-center gap-2 rounded-full px-2.5 py-1 outline-none cursor-pointer transition-colors group text-left"
           >
             <div className="relative">
               <AvatarDisplay avatarId={avatarId} size={28} ringClass="avatar-ring-neon group-hover:scale-105 transition-transform" />
-              <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full border border-[#0f172a] bg-emerald-400" />
+              <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full border border-white bg-emerald-400" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-bold text-white truncate max-w-[70px] sm:max-w-[100px]">
+              <span className="text-xs font-extrabold text-[#3d4f2d] truncate max-w-[70px] sm:max-w-[100px]">
                 {playerName}
               </span>
             </div>
           </button>
 
           {/* Center: SYNIQ Brand Logo */}
-          <NavLink to="/" className="flex items-center gap-1.5 outline-none px-2 py-1 rounded-xl hover:bg-slate-800/50 transition-colors">
-            <span className="text-[#38bdf8] text-sm">⚡</span>
-            <span className="text-base font-extrabold text-[#38bdf8] tracking-widest uppercase">
+          <NavLink to="/" className="flex items-center gap-1.5 outline-none px-2 py-1 rounded-xl transition-colors">
+            <span className="text-[#d68a19] text-sm">✦</span>
+            <span className="text-base font-extrabold text-[#587338] tracking-widest uppercase">
               SYNIQ
             </span>
           </NavLink>
@@ -235,7 +239,7 @@ export function AppLayout() {
               onClick={toggleTheme}
               type="button"
               title={`Switch to ${themeMode === 'dark' ? 'Light' : 'Dark'} Mode`}
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#334155] bg-[#1e293b] text-sm cursor-pointer hover:bg-[#2d3d52] transition-colors outline-none"
+              className="nature-icon-button flex h-8 w-8 items-center justify-center rounded-xl text-sm cursor-pointer transition-colors outline-none"
             >
               {themeMode === 'dark' ? '☀️' : '🌙'}
             </button>
@@ -243,16 +247,16 @@ export function AppLayout() {
             <CoinBadge amount={highScore} />
           </div>
         </div>
-      </header>
+      </header>}
 
       {/* ── Main View Container ── */}
-      <main id="main-content" className="mx-auto w-full max-w-[480px] flex-1 px-4 py-4 pb-28 outline-none">
+      <main id="main-content" className="relative z-10 mx-auto w-full max-w-[480px] flex-1 px-4 py-4 pb-4 outline-none">
         <Outlet />
       </main>
 
       {/* ── Floating Modern Navigation ── */}
-      <nav className="fixed bottom-3 left-1/2 z-30 -translate-x-1/2" style={{ width: 'calc(100% - 32px)', maxWidth: '420px' }}>
-        <div className="flex items-center justify-around rounded-2xl px-2 py-2 border border-[#334155] bg-[#1e293b] shadow-2xl">
+      <nav className="hidden" style={{ width: 'calc(100% - 32px)', maxWidth: '420px' }}>
+        <div className="nature-nav-shell flex items-center justify-around rounded-2xl px-2 py-2 shadow-2xl">
           {mainNavigationItems.map((item) => {
             const IconFn = NavIcons[item.path]
             return (

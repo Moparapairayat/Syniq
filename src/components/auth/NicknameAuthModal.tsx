@@ -155,7 +155,6 @@ export function NicknameAuthModal({
               </div>
               <input
                 type="text"
-                autoFocus
                 maxLength={15}
                 value={name}
                 onChange={(e) => {

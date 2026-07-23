@@ -79,10 +79,10 @@ export function TopTenTable() {
   const userRank = uniqueScores.findIndex((s) => s.playerName === playerProfile?.name) + 1
 
   return (
-    <div className="flex flex-col gap-3.5 select-none">
+    <div className="forest-leaderboard-stack flex flex-col gap-3.5 select-none">
 
       {/* ── Filter Timeframe Tabs ── */}
-      <div className="flex items-center justify-between rounded-xl bg-slate-100 dark:bg-[#1e293b] p-1 border border-slate-300 dark:border-[#334155]">
+      <div className="forest-score-tabs flex items-center justify-between rounded-xl bg-slate-100 dark:bg-[#1e293b] p-1 border border-slate-300 dark:border-[#334155]">
         <button
           onClick={() => setTimeframe('all')}
           className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-colors cursor-pointer ${
@@ -116,7 +116,7 @@ export function TopTenTable() {
       </div>
 
       {/* ── Top 3 Podium Platform ── */}
-      <div className="cyber-card p-4">
+      <div className="cyber-card forest-podium-card p-4">
         <div className="flex items-end justify-center gap-2 px-1 pt-2">
           {PODIUM_CONFIG.map((cfg) => {
             const entry = top3[cfg.dataIdx]
@@ -170,7 +170,7 @@ export function TopTenTable() {
 
       {/* ── Rank 4+ Rows (Unique Players) ── */}
       {rest.length > 0 && (
-        <div className="cyber-card overflow-hidden">
+        <div className="cyber-card forest-rank-list overflow-hidden">
           <div className="divide-y divide-slate-200 dark:divide-[#334155] max-h-[260px] overflow-y-auto scrollbar-none">
             {rest.map((entry, i) => {
               const rank = i + 4
@@ -201,7 +201,7 @@ export function TopTenTable() {
 
       {/* ── Current Player Rank Row ── */}
       {playerProfile && (
-        <div className="flex items-center justify-between rounded-2xl border border-[#38bdf8] bg-[#38bdf8]/15 dark:bg-[#38bdf8]/15 px-4 py-3 shadow-md">
+        <div className="forest-player-rank flex items-center justify-between rounded-2xl border border-[#38bdf8] bg-[#38bdf8]/15 dark:bg-[#38bdf8]/15 px-4 py-3 shadow-md">
           <div className="flex items-center gap-3">
             <span className="w-6 text-center text-sm font-black text-[#38bdf8]">
               {userRank > 0 ? `#${userRank}` : '—'}

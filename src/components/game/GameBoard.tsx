@@ -2,8 +2,6 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SimonColor } from '@/core/game/SimonColor'
 import { GameStatus } from '@/core/game/GameStatus'
-import { useSettings } from '@/hooks/useSettings'
-import { audioService } from '@/services'
 
 export interface GameBoardProps {
   readonly activeLitColor: SimonColor | null
@@ -21,37 +19,37 @@ export interface GameBoardProps {
 const padConfig = {
   [SimonColor.Green]: {
     label: 'GREEN',
-    keyHint: '1',
-    normalGrad: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-    activeGrad: 'linear-gradient(135deg, #6ee7b7 0%, #10b981 100%)',
-    borderColor: '#059669',
-    ariaLabel: 'Green Pad (Key 1)',
+    keyHint: '2',
+    normalGrad: 'linear-gradient(135deg, #91b957 0%, #35683c 100%)',
+    activeGrad: 'linear-gradient(135deg, #d4eb87 0%, #79a844 100%)',
+    borderColor: '#345d35',
+    ariaLabel: 'Green Pad (Key 2)',
     corners: 'rounded-tl-[38px] rounded-tr-2xl rounded-bl-2xl rounded-br-md',
   },
   [SimonColor.Red]: {
     label: 'RED',
-    keyHint: '2',
-    normalGrad: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
-    activeGrad: 'linear-gradient(135deg, #fda4af 0%, #f43f5e 100%)',
-    borderColor: '#e11d48',
-    ariaLabel: 'Red Pad (Key 2)',
+    keyHint: '1',
+    normalGrad: 'linear-gradient(135deg, #cf6958 0%, #7d3731 100%)',
+    activeGrad: 'linear-gradient(135deg, #f2af87 0%, #c85846 100%)',
+    borderColor: '#74352e',
+    ariaLabel: 'Red Pad (Key 1)',
     corners: 'rounded-tr-[38px] rounded-tl-2xl rounded-br-2xl rounded-bl-md',
   },
   [SimonColor.Blue]: {
     label: 'BLUE',
     keyHint: '3',
-    normalGrad: 'linear-gradient(135deg, #38bdf8 0%, #0284c7 100%)',
-    activeGrad: 'linear-gradient(135deg, #bae6fd 0%, #38bdf8 100%)',
-    borderColor: '#0284c7',
+    normalGrad: 'linear-gradient(135deg, #5cb9cf 0%, #236b8b 100%)',
+    activeGrad: 'linear-gradient(135deg, #b9e8e8 0%, #4daec9 100%)',
+    borderColor: '#205f79',
     ariaLabel: 'Blue Pad (Key 3)',
     corners: 'rounded-bl-[38px] rounded-tl-2xl rounded-br-2xl rounded-tr-md',
   },
   [SimonColor.Yellow]: {
     label: 'YELLOW',
     keyHint: '4',
-    normalGrad: 'linear-gradient(135deg, #fbbf24 0%, #b45309 100%)',
-    activeGrad: 'linear-gradient(135deg, #fef08a 0%, #fbbf24 100%)',
-    borderColor: '#d97706',
+    normalGrad: 'linear-gradient(135deg, #efc35b 0%, #a96520 100%)',
+    activeGrad: 'linear-gradient(135deg, #ffe59a 0%, #e7aa3f 100%)',
+    borderColor: '#9a5a1b',
     ariaLabel: 'Yellow Pad (Key 4)',
     corners: 'rounded-br-[38px] rounded-tr-2xl rounded-bl-2xl rounded-tl-md',
   },
@@ -75,7 +73,6 @@ function SectorButton({
 
   const handleClick = () => {
     if (isDisabled) return
-    audioService.playColor(color)
     onClick()
   }
 
@@ -83,10 +80,8 @@ function SectorButton({
     <button
       type="button"
       aria-label={c.ariaLabel}
+      disabled={isDisabled}
       onClick={handleClick}
-      onKeyDown={(e) => {
-        if (!isDisabled && (e.key === 'Enter' || e.key === ' ')) handleClick()
-      }}
       className="relative select-none focus:outline-none w-full h-full cursor-pointer"
       style={{
         aspectRatio: '1',
@@ -164,11 +159,13 @@ function CenterHub({
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-20">
       {/* Outer Metallic Ring */}
       <div
-        className="flex items-center justify-center rounded-full p-1 bg-slate-900 border-2 border-slate-700 shadow-xl"
+        className="flex items-center justify-center rounded-full p-1 shadow-xl"
+        style={{ background: 'linear-gradient(145deg, #754820, #3d2b1e)', border: '2px solid #c9903b' }}
       >
         <button
           type="button"
           onClick={onClick}
+          disabled={!isClickable}
           className="pointer-events-auto relative flex flex-col items-center justify-center rounded-full outline-none"
           style={{
             width: 82, height: 82,
@@ -230,10 +227,8 @@ export function GameBoard({
   round,
   onCenterHubClick,
 }: GameBoardProps) {
-  useSettings()
-
   useEffect(() => {
-    if (isDisabled) return
+    if (isDisabled || status !== GameStatus.PlayerTurn) return
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
       let targetColor: SimonColor | null = null
@@ -246,27 +241,28 @@ export function GameBoard({
       }
       if (targetColor) {
         e.preventDefault()
-        audioService.playColor(targetColor)
         onColorClick(targetColor)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isDisabled, onColorClick])
+  }, [isDisabled, onColorClick, status])
 
   return (
     <div
       aria-label="Simon Game Board"
       role="region"
-      className="relative mx-auto w-full max-w-[350px] select-none"
+      className={`relative mx-auto w-full max-w-[350px] select-none ${
+        status === GameStatus.PlayerTurn ? 'memory-board-ready' : ''
+      }`}
     >
       {/* Outer Bezel */}
       <div
         className="game-bezel relative overflow-hidden rounded-[42px] p-4"
         style={{
-          background: '#1e293b',
-          border: '1.5px solid #334155',
-          boxShadow: '0 12px 32px -4px rgba(0,0,0,0.5)',
+          background: 'linear-gradient(145deg, #6a4528, #372b20)',
+          border: '2px solid #c39a55',
+          boxShadow: 'inset 0 2px 0 rgba(255,228,164,0.25), 0 12px 32px -4px rgba(16,31,13,0.65)',
         }}
       >
         {/* 2x2 Sector Grid */}

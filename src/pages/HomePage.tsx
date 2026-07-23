@@ -3,40 +3,33 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { RoutePath } from '@/routes/routePaths'
-import { playerService, leaderboardService } from '@/services'
-import type { ScoreEntry } from '@/models/ScoreEntry'
-import { AvatarDisplay } from '@/layouts/AppLayout'
+import { playerService } from '@/services'
+import { GameMode } from '@/core/game/GameMode'
+import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
+
+const MODE_LABELS: Record<GameMode, string> = {
+  [GameMode.Classic]: 'Classic memory',
+  [GameMode.SpeedRush]: 'Speed rush',
+  [GameMode.Reverse]: 'Reverse recall',
+  [GameMode.TimeAttack]: 'Time attack',
+}
 
 export default function HomePage() {
   useDocumentTitle('Syniq - Memory Training')
   const navigate = useNavigate()
 
-  const [playerName, setPlayerName] = useState('Player')
-  const [avatarId, setAvatarId] = useState(1)
   const [highScore, setHighScore] = useState(0)
-  const [gamesPlayed, setGamesPlayed] = useState(0)
-  const [highestLevel, setHighestLevel] = useState(1)
-  const [topScore, setTopScore] = useState<ScoreEntry | null>(null)
+  const [lastMode, setLastMode] = useState<GameMode>(GameMode.Classic)
 
   useEffect(() => {
     let active = true
     async function loadStats() {
       try {
-        const [profile, topScores] = await Promise.all([
-          playerService.getOrCreateProfile(),
-          leaderboardService.getTopScores(),
-        ])
+        const profile = await playerService.getOrCreateProfile()
         if (!active) return
-        setPlayerName(profile.name)
         setHighScore(profile.highestScore)
-        setGamesPlayed(profile.totalGamesPlayed)
-        setHighestLevel(profile.highestLevel || 1)
-        const storedAvatar = localStorage.getItem('syniq-avatar-id')
-        if (storedAvatar) setAvatarId(parseInt(storedAvatar, 10))
-
-        if (topScores.length > 0) {
-          setTopScore(topScores[0])
-        }
+        const storedMode = localStorage.getItem('syniq-last-mode') as GameMode | null
+        if (storedMode && Object.values(GameMode).includes(storedMode)) setLastMode(storedMode)
       } catch (e) {
         console.error(e)
       }
@@ -45,119 +38,50 @@ export default function HomePage() {
     return () => { active = false }
   }, [])
 
+  const startMode = (mode: GameMode) => {
+    localStorage.setItem('syniq-last-mode', mode)
+    setLastMode(mode)
+    navigate(RoutePath.game, { state: { mode } })
+  }
+
   return (
-    <div className="flex flex-col gap-4 pb-4 select-none">
-
-      {/* ── 1. WARM PERSONAL GREETING BANNER ── */}
-      <motion.div
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-slate-800 to-slate-900 dark:from-slate-800 dark:to-slate-900 border border-slate-700/60 p-4 text-white shadow-md"
-      >
-        <div className="flex items-center gap-3">
-          <AvatarDisplay avatarId={avatarId} size={42} ringClass="avatar-ring-neon" />
-          <div className="flex flex-col">
-            <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider">Welcome back</span>
-            <h2 className="text-base font-bold text-white">{playerName} 👋</h2>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 px-3 py-1 text-xs font-bold text-amber-300">
-          <span>🔥</span>
-          <span>3 Day Streak</span>
-        </div>
-      </motion.div>
-
-      {/* ── 2. HERO GAME START CARD ── */}
+    <div className="simon-home-screen select-none">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.05 }}
-        className="cyber-card p-6 flex flex-col items-center text-center"
+        className="simon-landing-card"
+        style={{ backgroundImage: `url(${simonForestBackground})` }}
       >
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 px-3 py-1 text-[11px] font-bold text-[#38bdf8] mb-3">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8] animate-pulse" />
-          Classic Simon Game
+        <div className="simon-landing-sky" aria-hidden="true" />
+        <div className="simon-landing-hills" aria-hidden="true" />
+        <div className="simon-landing-topbar">
+          <button onClick={() => navigate(RoutePath.profile)} type="button" className="simon-home-profile-token" aria-label="Open profile" title="Profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.25" /><path d="M5.5 20c.6-3.4 3-5.25 6.5-5.25s5.9 1.85 6.5 5.25" /></svg>
+          </button>
+          <span className="simon-coin-counter">✦ {highScore.toLocaleString()}</span>
         </div>
-
-        <h1 className="text-2xl font-extrabold text-white tracking-tight">
-          Memory Challenge
-        </h1>
-        <p className="text-xs text-slate-300 dark:text-slate-400 mt-1 max-w-[290px] leading-relaxed">
-          Listen to the sound tones, remember the light pattern sequence, and test your memory limit!
-        </p>
-
-        {/* Large Play Button */}
-        <div className="my-5">
-          <button
-            onClick={() => navigate(RoutePath.game)}
-            type="button"
-            className="flex h-24 w-24 flex-col items-center justify-center rounded-full bg-[#38bdf8] text-[#0f172a] shadow-lg cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-[#7dd3fc] active:scale-95 outline-none"
-          >
-            <span className="text-2xl font-black ml-1">▶</span>
-            <span className="text-[10px] font-extrabold tracking-wider uppercase mt-0.5">
-              PLAY GAME
-            </span>
+        <button onClick={() => navigate(RoutePath.leaderboard)} type="button" className="simon-leaderboard-launch" aria-label="Open leaderboard">
+          <span aria-hidden="true">♛</span>
+          <span><small>Hall of fame</small><strong>Rankings</strong></span>
+        </button>
+        <div className="simon-landing-orbital" aria-hidden="true"><span className="is-green" /><span className="is-red" /><span className="is-blue" /><span className="is-yellow" /></div>
+        <div className="simon-launch-plaque">
+          <span>Memory training</span>
+          <h1>Ready to play?</h1>
+          <p>Watch the sequence, remember it, then repeat it.</p>
+          <div className="simon-plaque-stars" aria-label="Start a Simon memory run"><b>★</b><b>★</b><b className="is-muted">★</b></div>
+        </div>
+        <div className="simon-home-shortcuts" aria-label="Quick navigation">
+          <button onClick={() => navigate(RoutePath.settings)} type="button" className="simon-shortcut-card is-settings" aria-label="Open settings" title="Settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" /><path d="M19 12a7.1 7.1 0 0 0-.08-1l2-1.55-2-3.46-2.35.94a7.7 7.7 0 0 0-1.72-1L14.5 3h-4.02l-.35 2.93a7.7 7.7 0 0 0-1.72 1L6.06 5.99l-2 3.46L6.08 11a7.1 7.1 0 0 0 0 2l-2.02 1.55 2 3.46 2.35-.94a7.7 7.7 0 0 0 1.72 1l.35 2.93h4.02l.35-2.93a7.7 7.7 0 0 0 1.72-1l2.35.94 2-3.46L18.92 13c.05-.33.08-.66.08-1z" /></svg>
           </button>
         </div>
-
-        {/* High Score Footer */}
-        <div className="flex items-center gap-2 rounded-xl bg-slate-800/50 dark:bg-slate-800/50 border border-slate-700/40 px-3.5 py-1.5 text-xs">
-          <span className="text-slate-400">Best Score:</span>
-          <span className="font-bold text-amber-300">⭐ {highScore.toLocaleString()} PTS</span>
+        <div className="simon-launch-actions">
+          <button onClick={() => startMode(GameMode.Classic)} type="button" className="simon-action-button is-start"><span className="simon-start-wood-icon" aria-hidden="true">▶</span>Start new game</button>
+          <button onClick={() => startMode(lastMode)} type="button" className="simon-action-button is-continue">Continue <small>{MODE_LABELS[lastMode]}</small></button>
         </div>
       </motion.div>
-
-      {/* ── 3. CAREER STATS GRID ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="grid grid-cols-3 gap-2.5"
-      >
-        <div className="cyber-card p-3.5 flex flex-col items-center text-center">
-          <span className="text-xl mb-1">🎮</span>
-          <span className="text-lg font-bold text-white">{gamesPlayed}</span>
-          <span className="text-[10px] text-slate-400 font-semibold">Played</span>
-        </div>
-
-        <div className="cyber-card p-3.5 flex flex-col items-center text-center">
-          <span className="text-xl mb-1">⭐</span>
-          <span className="text-lg font-bold text-[#38bdf8]">{highScore.toLocaleString()}</span>
-          <span className="text-[10px] text-slate-400 font-semibold">Best Score</span>
-        </div>
-
-        <div className="cyber-card p-3.5 flex flex-col items-center text-center">
-          <span className="text-xl mb-1">⚡</span>
-          <span className="text-lg font-bold text-purple-300">Level {highestLevel}</span>
-          <span className="text-[10px] text-slate-400 font-semibold">Max Level</span>
-        </div>
-      </motion.div>
-
-      {/* ── 4. LEADERBOARD TOP PLAYER PREVIEW ── */}
-      {topScore && (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          onClick={() => navigate(RoutePath.leaderboard)}
-          className="cyber-card p-4 flex items-center justify-between cursor-pointer hover:border-slate-500 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/30 text-xl">
-              👑
-            </div>
-            <div>
-              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Current Leader</span>
-              <p className="text-sm font-bold text-white">{topScore.playerName}</p>
-            </div>
-          </div>
-          <div className="coin-badge">
-            <div className="coin-icon text-[8px]">⭐</div>
-            <span>{topScore.score.toLocaleString()}</span>
-          </div>
-        </motion.div>
-      )}
     </div>
   )
 }
