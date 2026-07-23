@@ -252,13 +252,9 @@ export function GameBoard({
     <div
       aria-label="Simon Game Board"
       role="region"
-      className={`relative mx-auto w-full max-w-[350px] select-none ${
+      className={`relative mx-auto w-full max-w-[min(350px,85vw,48vh)] select-none ${
         status === GameStatus.PlayerTurn ? 'memory-board-ready' : ''
       }`}
-    >
-      {/* Outer Bezel */}
-      <div
-        className="game-bezel relative overflow-hidden rounded-[42px] p-4"
         style={{
           background: 'linear-gradient(145deg, #6a4528, #372b20)',
           border: '2px solid #c39a55',

@@ -250,7 +250,7 @@ export function AppLayout() {
       </header>}
 
       {/* ── Main View Container ── */}
-      <main id="main-content" className="relative z-10 mx-auto w-full max-w-[480px] flex-1 px-4 py-4 pb-4 outline-none">
+      <main id="main-content" className="relative z-10 mx-auto w-full max-w-[480px] flex-1 px-2.5 sm:px-4 py-2 sm:py-4 outline-none">
         <Outlet />
       </main>
 

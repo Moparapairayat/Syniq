@@ -78,7 +78,7 @@ export function NicknameAuthModal({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 15 }}
           transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-          className="cyber-card relative z-10 w-full max-w-sm p-6 overflow-hidden select-none border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#1e293b] shadow-2xl"
+          className="cyber-card relative z-10 w-full max-w-[92vw] sm:max-w-sm max-h-[90vh] overflow-y-auto p-5 sm:p-6 select-none border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#1e293b] shadow-2xl"
         >
           {/* Header */}
           <div className="text-center mb-5">
