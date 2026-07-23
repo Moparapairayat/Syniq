@@ -76,9 +76,15 @@ export default function HomePage() {
           <div className="simon-plaque-leaf-left" aria-hidden="true" />
           <div className="simon-plaque-leaf-right" aria-hidden="true" />
           <div className="simon-plaque-ribbon-top">
-            <span>MEMORY TRAINING</span>
+            <span>MEMORY CHALLENGE</span>
           </div>
-          <h1 className="simon-plaque-title">Ready to play?</h1>
+          <h1 className="simon-plaque-title" aria-label="SYNIQ">
+            {"SYNIQ".split("").map((char, index) => (
+              <span key={index} style={{ animationDelay: `${index * 0.12}s` }}>
+                {char}
+              </span>
+            ))}
+          </h1>
           <div className="simon-plaque-stars" aria-label="Start a Simon memory run">
             <b>★</b><b>★</b><b className="is-muted">★</b>
           </div>
