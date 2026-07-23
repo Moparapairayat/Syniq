@@ -259,10 +259,14 @@ export function useGame() {
   }
 
   const submitInput = (color: SimonColor) => {
-    if (state.status !== GameStatus.PlayerTurn || activeLitColor !== null) {
+    if (state.status !== GameStatus.PlayerTurn) {
       return
     }
+    setActiveLitColor(color)
     audioService.playColor(color)
+    setTimeout(() => {
+      setActiveLitColor(null)
+    }, 220)
     engine.submitInput(color)
   }
 

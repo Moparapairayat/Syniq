@@ -81,11 +81,13 @@ function SectorButton({
   }
 
   return (
-    <button
+    <motion.button
       type="button"
       aria-label={c.ariaLabel}
       disabled={isDisabled}
       onClick={handleClick}
+      whileHover={{ scale: isDisabled ? 1 : 1.02 }}
+      whileTap={{ scale: isDisabled ? 1 : 0.92 }}
       className="relative select-none focus:outline-none w-full h-full cursor-pointer"
       style={{
         aspectRatio: '1',
@@ -135,7 +137,7 @@ function SectorButton({
           </span>
         </div>
       </div>
-    </button>
+    </motion.button>
   )
 }
 
