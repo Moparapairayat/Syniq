@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   VolumeSlider,
   ToggleSwitch,
@@ -9,6 +9,89 @@ import {
 import { useSettings } from '@/hooks/useSettings'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
+
+interface OptionItem<T extends string> {
+  value: T
+  label: string
+}
+
+function WoodDropdown<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string
+  value: T
+  options: ReadonlyArray<OptionItem<T>>
+  onChange: (val: T) => void
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const selectedOption = options.find((o) => o.value === value) ?? options[0]
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    window.addEventListener('mousedown', handleClickOutside)
+    return () => window.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  return (
+    <div className="relative flex flex-col gap-1.5 pt-1" ref={containerRef}>
+      <span className="text-xs font-bold text-[#ffe49e]">{label}</span>
+
+      {/* Selector Trigger Button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="flex w-full items-center justify-between rounded-xl border border-[#78431e] bg-[#2a1307] px-3.5 py-2 text-xs font-black text-[#fff3cd] shadow-inner outline-none transition-all hover:border-[#fcd34d] cursor-pointer"
+      >
+        <span>{selectedOption.label}</span>
+        <span className={`text-[10px] text-[#fcd34d] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+      </button>
+
+      {/* 3D Wood Options Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: 0.15 }}
+            className="absolute left-0 right-0 top-full z-40 mt-1 flex flex-col gap-1 rounded-2xl border-2 border-[#78431e] bg-[#3a1d0d] p-1.5 shadow-[0_12px_30px_rgba(0,0,0,0.85)] backdrop-blur-md"
+          >
+            {options.map((opt) => {
+              const isSelected = value === opt.value
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt.value)
+                    setIsOpen(false)
+                  }}
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-black transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-sm'
+                      : 'text-[#ffe49e] hover:bg-[#4a2713]/80 hover:text-white'
+                  }`}
+                >
+                  <span>{opt.label}</span>
+                  {isSelected && <span className="text-sm font-black">✓</span>}
+                </button>
+              )
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 export default function SettingsPage() {
   useDocumentTitle('Settings')
@@ -19,6 +102,13 @@ export default function SettingsPage() {
   const handleReset = async () => {
     await resetSettings()
   }
+
+  const colorBlindOptions = [
+    { value: 'none', label: 'None (Default)' },
+    { value: 'protanopia', label: 'Protanopia (Red-Blind)' },
+    { value: 'deuteranopia', label: 'Deuteranopia (Green-Blind)' },
+    { value: 'tritanopia', label: 'Tritanopia (Blue-Blind)' },
+  ] as const
 
   return (
     <div className="simon-home-screen simon-settings-screen select-none">
@@ -32,7 +122,7 @@ export default function SettingsPage() {
         <div className="simon-landing-sky" aria-hidden="true" />
         <div className="simon-landing-hills" aria-hidden="true" />
 
-        {/* ── 3D Wood Settings Plaque Box (Larger Width & Padding) ── */}
+        {/* ── 3D Wood Settings Plaque Box ── */}
         <div className="relative z-10 my-auto flex w-full max-w-[440px] flex-col gap-3.5 rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-5 sm:p-6 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md">
           
           {/* Header Bar inside Plaque */}
@@ -81,7 +171,7 @@ export default function SettingsPage() {
                     key={speed}
                     onClick={() => updateSetting({ animationSpeed: speed })}
                     type="button"
-                    className={`flex-1 rounded-lg py-1.5 text-center text-xs font-black uppercase tracking-wide transition-all outline-none ${
+                    className={`flex-1 rounded-lg py-1.5 text-center text-xs font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${
                       isActive
                         ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
                         : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
@@ -115,27 +205,13 @@ export default function SettingsPage() {
               onChange={(checked) => updateSetting({ reduceMotion: checked })}
             />
 
-            {/* Color Blind Dropdown */}
-            <div className="flex flex-col gap-1.5 pt-1">
-              <span className="text-xs font-bold text-[#ffe49e]">
-                Color Blind Mode
-              </span>
-              <select
-                className="w-full rounded-xl border border-[#78431e] bg-[#2a1307] px-3.5 py-2 text-xs font-semibold text-[#fff3cd] outline-none focus:border-[#fcd34d]"
-                onChange={(e) =>
-                  updateSetting({
-                    colorBlindMode: e.target.value as
-                      'none' | 'protanopia' | 'deuteranopia' | 'tritanopia',
-                  })
-                }
-                value={settings.colorBlindMode}
-              >
-                <option value="none">None (Default)</option>
-                <option value="protanopia">Protanopia (Red-Blind)</option>
-                <option value="deuteranopia">Deuteranopia (Green-Blind)</option>
-                <option value="tritanopia">Tritanopia (Blue-Blind)</option>
-              </select>
-            </div>
+            {/* Custom 3D Wood Color Blind Dropdown */}
+            <WoodDropdown
+              label="Color Blind Mode"
+              options={colorBlindOptions}
+              value={settings.colorBlindMode}
+              onChange={(val) => updateSetting({ colorBlindMode: val })}
+            />
           </div>
 
           {/* Reset Action Button */}

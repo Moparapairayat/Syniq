@@ -76,21 +76,21 @@ export function StatusPanel({ status, playerInputLength, targetSequenceLength }:
       </div>
 
       {/* Progress bar - Fixed height container so layout never shifts */}
-      <div className="h-7 w-full max-w-[300px] flex flex-col justify-center">
+      <div className="h-10 w-full max-w-[320px] flex flex-col justify-center">
         {status === GameStatus.PlayerTurn && targetSequenceLength > 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="w-full"
+            className="w-full flex flex-col gap-1"
           >
             <div className="memory-progress-segments" aria-label={`${playerInputLength} of ${targetSequenceLength} inputs completed`}>
               {Array.from({ length: segmentCount }, (_, index) => {
                 const isComplete = index < Math.floor(progress * segmentCount)
-                return <motion.span key={index} animate={{ opacity: isComplete ? 1 : 0.35, scaleY: isComplete ? 1 : 0.72 }} className={isComplete ? 'memory-progress-segment is-complete' : 'memory-progress-segment'} transition={{ duration: 0.18 }} />
+                return <motion.span key={index} animate={{ opacity: isComplete ? 1 : 0.45, scaleY: isComplete ? 1 : 0.8 }} className={isComplete ? 'memory-progress-segment is-complete' : 'memory-progress-segment'} transition={{ duration: 0.18 }} />
               })}
             </div>
-            <div className="mt-1 flex justify-between text-[9.5px] font-black tracking-widest text-[#ffe49e] uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] bg-[#2a1307]/85 px-2.5 py-0.5 rounded-md border border-[#78431e]/60">
+            <div className="flex justify-between text-[9.5px] font-black tracking-widest text-[#ffe49e] uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] bg-[#2a1307]/90 px-3 py-0.5 rounded-md border border-[#78431e]">
               <span>{playerInputLength} RECALLED</span>
               <span>{targetSequenceLength} SEQUENCE</span>
             </div>

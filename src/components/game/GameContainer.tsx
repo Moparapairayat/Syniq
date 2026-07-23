@@ -92,13 +92,23 @@ export function GameContainer() {
       )}
 
       {/* Game Metrics HUD & Status Panel */}
-      <div className="relative z-10 w-full">
-        <div className="memory-hud" aria-label="Game metrics">
-          <div className="memory-hud-metric"><span>Round</span><strong>{state.round || '—'}</strong></div>
-          <div className="memory-hud-divider" aria-hidden="true" />
-          <div className="memory-hud-metric memory-hud-score"><span>Score</span><strong>{state.score.toLocaleString()}</strong></div>
-          <div className="memory-hud-divider" aria-hidden="true" />
-          <div className="memory-hud-metric"><span>Best</span><strong>{bestScore.toLocaleString()}</strong></div>
+      <div className="relative z-10 flex w-full flex-col gap-2">
+        <div className="flex w-full items-center gap-2.5">
+          <button
+            onClick={handleReturnToDashboard}
+            type="button"
+            aria-label="Return home"
+            className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] text-xl font-black text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),inset_0_-2px_0_rgba(30,12,4,0.6),0_4px_0_#381c0d,0_8px_16px_rgba(5,15,5,0.6)] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:scale-105"
+          >
+            ⌂
+          </button>
+          <div className="memory-hud flex-1" aria-label="Game metrics">
+            <div className="memory-hud-metric"><span>Round</span><strong>{state.round || '—'}</strong></div>
+            <div className="memory-hud-divider" aria-hidden="true" />
+            <div className="memory-hud-metric memory-hud-score"><span>Score</span><strong>{state.score.toLocaleString()}</strong></div>
+            <div className="memory-hud-divider" aria-hidden="true" />
+            <div className="memory-hud-metric"><span>Best</span><strong>{bestScore.toLocaleString()}</strong></div>
+          </div>
         </div>
         <StatusPanel playerInputLength={state.playerInput.length} status={state.status} targetSequenceLength={state.sequence.length} />
       </div>
