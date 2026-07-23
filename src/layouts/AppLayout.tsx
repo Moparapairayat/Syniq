@@ -163,8 +163,8 @@ export function AppLayout() {
         {showSplash && (
           <motion.div
             key="splash"
-            exit={{ opacity: 0, scale: 1.04 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
             className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-[#0d160b] select-none"
             role="status"
             aria-label="Loading Syniq Game"
@@ -181,9 +181,9 @@ export function AppLayout() {
 
             {/* 3. Central 3D Wood Plaque Container */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 12 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
               className="relative z-10 flex w-[88vw] max-w-[320px] flex-col items-center justify-center rounded-[24px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] px-5 py-6 text-center shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)]"
             >
               {/* Leaf Badges */}
@@ -195,13 +195,11 @@ export function AppLayout() {
                 <span>SYNIQ MEMORY</span>
               </div>
 
-              {/* 3D Wood Title SYNIQ */}
+              {/* Steady 3D Wood Title SYNIQ */}
               <h1 className="my-3 flex items-center justify-center gap-1 font-black text-3xl tracking-widest uppercase" aria-label="SYNIQ">
                 {"SYNIQ".split("").map((char, index) => (
-                  <motion.span
+                  <span
                     key={index}
-                    animate={{ y: [0, -5, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.8, delay: index * 0.12, ease: "easeInOut" }}
                     className="inline-block"
                     style={{
                       background: 'linear-gradient(180deg, #fff3cd 0%, #ffd075 35%, #e59336 65%, #b8621b 100%)',
@@ -212,7 +210,7 @@ export function AppLayout() {
                     }}
                   >
                     {char}
-                  </motion.span>
+                  </span>
                 ))}
               </h1>
 
