@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useGame } from '@/hooks/useGame'
-import { Modal, AnimatedButton, ConfirmationDialog } from '@/components/ui'
+import { Modal, ConfirmationDialog } from '@/components/ui'
 import { GameBoard } from './GameBoard'
 import { StatusPanel } from './StatusPanel'
 import { ControlPanel } from './ControlPanel'
@@ -82,7 +82,8 @@ export function GameContainer() {
     <div className="memory-arena relative mx-auto flex w-full max-w-[480px] flex-col items-center gap-5 overflow-hidden py-3 select-none">
       <div className="memory-arena-orb memory-arena-orb-one" aria-hidden="true" />
       <div className="memory-arena-orb memory-arena-orb-two" aria-hidden="true" />
-      {/* Screen flash overlay — soft */}
+      
+      {/* Screen flash overlay */}
       {screenFlash && (
         <div
           className="screen-flash"
@@ -90,6 +91,7 @@ export function GameContainer() {
         />
       )}
 
+      {/* Game Metrics HUD & Status Panel */}
       <div className="relative z-10 w-full">
         <div className="memory-hud" aria-label="Game metrics">
           <div className="memory-hud-metric"><span>Round</span><strong>{state.round || '—'}</strong></div>
@@ -101,7 +103,7 @@ export function GameContainer() {
         <StatusPanel playerInputLength={state.playerInput.length} status={state.status} targetSequenceLength={state.sequence.length} />
       </div>
 
-      {/* ── Simon Wheel ── */}
+      {/* ── Simon Wheel GameBoard ── */}
       <div className="relative z-10 w-full">
         <GameBoard
           activeLitColor={activeLitColor}
@@ -124,6 +126,7 @@ export function GameContainer() {
         />
       </div>
 
+      {/* Bottom Input Guide & Control Panel */}
       <div className="relative z-10 w-full">
         <p className="memory-input-guide" aria-live="polite">
           {state.status === GameStatus.Idle || state.status === GameStatus.GameOver
@@ -139,55 +142,67 @@ export function GameContainer() {
       <Modal
         isOpen={showGameOverModal}
         onClose={() => setShowGameOverModal(false)}
-        title="Run complete"
+        title="GAME OVER"
       >
-        <div className="flex flex-col items-center gap-5 py-2 text-center select-none">
+        <div className="flex flex-col items-center gap-4 py-1 text-center select-none">
+          
+          {/* Animated Skull / Emblem Mark */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={showGameOverModal ? { scale: 1, opacity: 1 } : {}}
+            initial={{ scale: 0.5, rotate: -15, opacity: 0 }}
+            animate={showGameOverModal ? { scale: 1, rotate: 0, opacity: 1 } : {}}
+            transition={{ type: 'spring', bounce: 0.5 }}
             aria-hidden="true"
-            className="memory-result-mark"
+            className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#78350f] bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#450a0a] text-3xl shadow-[inset_0_2px_0_rgba(255,255,255,0.4),0_6px_12px_rgba(0,0,0,0.6)]"
           >
-            !
+            💀
           </motion.div>
 
           <div>
-            <h2 className="font-mono text-xl font-bold uppercase tracking-wider text-rose-400">
-              Pattern lost
+            <h2 className="text-xl font-black uppercase tracking-wider text-[#fca5a5]">
+              PATTERN LOST!
             </h2>
-            <p className="mt-1.5 text-[10px] tracking-wider uppercase text-slate-400">
-              You reached round {state.round}
+            <p className="mt-1 text-xs font-bold text-[#ffe49e]/70 uppercase tracking-widest">
+              REACHED ROUND {state.round}
             </p>
-            {isNewBest && <p className="memory-new-best">New personal best</p>}
+            {isNewBest && (
+              <div className="mx-auto mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#fcd34d] bg-gradient-to-r from-[#d97706]/30 via-[#fcd34d]/30 to-[#d97706]/30 px-3.5 py-1 text-xs font-black text-[#fcd34d] shadow-[0_0_12px_rgba(252,211,77,0.4)] animate-pulse">
+                <span>✨</span> NEW PERSONAL BEST! <span>✨</span>
+              </div>
+            )}
           </div>
 
-          {/* Stats */}
-          <div className="grid w-full grid-cols-3 gap-2">
-            <div className="zen-hud-stat">
-              <p className="text-[8px] font-bold tracking-widest uppercase leading-none text-slate-400">Score</p>
-              <p className="mt-1 font-mono text-xl font-bold text-amber-300">{state.score}</p>
+          {/* Stats Grid */}
+          <div className="grid w-full grid-cols-3 gap-2 mt-1">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-2.5 shadow-inner">
+              <p className="text-[9px] font-black tracking-widest uppercase text-[#ffe49e]">SCORE</p>
+              <p className="mt-0.5 font-mono text-lg font-black text-[#fcd34d]">{state.score}</p>
             </div>
-            <div className="zen-hud-stat">
-              <p className="text-[8px] font-bold tracking-widest uppercase leading-none text-slate-400">Round</p>
-              <p className="mt-1 font-mono text-xl font-bold text-white">{state.round}</p>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-2.5 shadow-inner">
+              <p className="text-[9px] font-black tracking-widest uppercase text-[#ffe49e]">ROUND</p>
+              <p className="mt-0.5 font-mono text-lg font-black text-white">{state.round}</p>
             </div>
-            <div className="zen-hud-stat">
-              <p className="text-[8px] font-bold tracking-widest uppercase leading-none text-slate-400">Best</p>
-              <p className="mt-1 font-mono text-xl font-bold text-cyan-300">{bestScore}</p>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-2.5 shadow-inner">
+              <p className="text-[9px] font-black tracking-widest uppercase text-[#ffe49e]">BEST</p>
+              <p className="mt-0.5 font-mono text-lg font-black text-[#38bdf8]">{bestScore}</p>
             </div>
           </div>
 
-          <div className="flex w-full flex-col gap-2.5">
-            <AnimatedButton onClick={handlePlayAgain} className="w-full font-bold tracking-wider">
-              Play again
-            </AnimatedButton>
-            <AnimatedButton
-              onClick={() => { setShowGameOverModal(false); navigate('/leaderboard') }}
-              variant="secondary"
-              className="w-full"
+          {/* Action Buttons */}
+          <div className="flex w-full flex-col gap-2.5 mt-2">
+            <button
+              type="button"
+              onClick={handlePlayAgain}
+              className="w-full rounded-xl border border-[#78350f] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] py-3 text-xs font-black uppercase tracking-widest text-[#3a1d0d] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_3px_0_#78350f,0_6px_12px_rgba(0,0,0,0.4)] transition-transform active:translate-y-0.5 cursor-pointer outline-none"
             >
-              View leaderboard
-            </AnimatedButton>
+              🔄 PLAY AGAIN
+            </button>
+            <button
+              type="button"
+              onClick={() => { setShowGameOverModal(false); navigate('/leaderboard') }}
+              className="w-full rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] py-2.5 text-xs font-black uppercase tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform active:translate-y-0.5 cursor-pointer outline-none"
+            >
+              🏆 VIEW LEADERBOARD
+            </button>
           </div>
         </div>
       </Modal>

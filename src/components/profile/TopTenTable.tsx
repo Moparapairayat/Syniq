@@ -21,9 +21,9 @@ const getRingClass = (rank: number) => RING_MAP[rank] ?? 'avatar-ring-silver'
 type Timeframe = 'all' | 'week' | 'today'
 
 const PODIUM_CONFIG = [
-  { rank: 2, dataIdx: 1, height: 'h-24', avatarSize: 48, medal: '🥈', title: 'SILVER', color: 'from-slate-600 to-slate-800 dark:from-slate-700 dark:to-slate-900', border: 'border-slate-400 dark:border-slate-600' },
-  { rank: 1, dataIdx: 0, height: 'h-32', avatarSize: 62, medal: '👑', title: 'CHAMPION', color: 'from-amber-400 to-amber-600 dark:from-amber-500 dark:to-amber-700', border: 'border-amber-400 dark:border-amber-500' },
-  { rank: 3, dataIdx: 2, height: 'h-20', avatarSize: 44, medal: '🥉', title: 'BRONZE', color: 'from-amber-700 to-amber-900 dark:from-amber-800 dark:to-amber-950', border: 'border-amber-700 dark:border-amber-800' },
+  { rank: 2, dataIdx: 1, height: 'h-24', avatarSize: 48, medal: '🥈', title: 'SILVER', color: 'from-[#475569] to-[#1e293b]', border: 'border-[#94a3b8]' },
+  { rank: 1, dataIdx: 0, height: 'h-32', avatarSize: 62, medal: '👑', title: 'CHAMPION', color: 'from-[#d97706] to-[#78350f]', border: 'border-[#fcd34d]' },
+  { rank: 3, dataIdx: 2, height: 'h-20', avatarSize: 44, medal: '🥉', title: 'BRONZE', color: 'from-[#78350f] to-[#3a1d0d]', border: 'border-[#b45309]' },
 ] as const
 
 export function TopTenTable() {
@@ -79,36 +79,36 @@ export function TopTenTable() {
   const userRank = uniqueScores.findIndex((s) => s.playerName === playerProfile?.name) + 1
 
   return (
-    <div className="forest-leaderboard-stack flex flex-col gap-3.5 select-none">
+    <div className="flex flex-col gap-3 select-none">
 
       {/* ── Filter Timeframe Tabs ── */}
-      <div className="forest-score-tabs flex items-center justify-between rounded-xl bg-slate-100 dark:bg-[#1e293b] p-1 border border-slate-300 dark:border-[#334155]">
+      <div className="flex rounded-xl border border-[#5a341a] bg-[#2a1307] p-1">
         <button
           onClick={() => setTimeframe('all')}
-          className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+          className={`flex-1 py-1 text-center text-[11px] font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${
             timeframe === 'all'
-              ? 'bg-[#38bdf8] text-[#0f172a] shadow-sm'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] rounded-lg shadow-sm'
+              : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
           }`}
         >
           ALL TIME
         </button>
         <button
           onClick={() => setTimeframe('week')}
-          className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+          className={`flex-1 py-1 text-center text-[11px] font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${
             timeframe === 'week'
-              ? 'bg-[#38bdf8] text-[#0f172a] shadow-sm'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] rounded-lg shadow-sm'
+              : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
           }`}
         >
           THIS WEEK
         </button>
         <button
           onClick={() => setTimeframe('today')}
-          className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+          className={`flex-1 py-1 text-center text-[11px] font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${
             timeframe === 'today'
-              ? 'bg-[#38bdf8] text-[#0f172a] shadow-sm'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] rounded-lg shadow-sm'
+              : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
           }`}
         >
           TODAY
@@ -116,8 +116,8 @@ export function TopTenTable() {
       </div>
 
       {/* ── Top 3 Podium Platform ── */}
-      <div className="cyber-card forest-podium-card p-4">
-        <div className="flex items-end justify-center gap-2 px-1 pt-2">
+      <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
+        <div className="flex items-end justify-center gap-2 px-1 pt-1">
           {PODIUM_CONFIG.map((cfg) => {
             const entry = top3[cfg.dataIdx]
             const avatarId = getAvatarId(entry.playerName)
@@ -127,18 +127,18 @@ export function TopTenTable() {
                 className="flex flex-1 flex-col items-center"
               >
                 {/* Crown / Medal Badge */}
-                <div className="flex items-center justify-center h-7 mb-1">
-                  <span className="text-xl select-none">{cfg.medal}</span>
+                <div className="flex items-center justify-center h-6 mb-1">
+                  <span className="text-lg select-none">{cfg.medal}</span>
                 </div>
 
                 {/* Avatar Display */}
                 <div className="relative">
                   <AvatarDisplay avatarId={avatarId} size={cfg.avatarSize} ringClass={getRingClass(cfg.rank)} />
                   <div
-                    className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold"
+                    className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black border border-[#3a1d0d]"
                     style={{
-                      background: cfg.rank === 1 ? '#fbbf24' : cfg.rank === 2 ? '#94a3b8' : '#d97706',
-                      color: '#0f172a',
+                      background: cfg.rank === 1 ? '#fcd34d' : cfg.rank === 2 ? '#cbd5e1' : '#d97706',
+                      color: '#2a1307',
                     }}
                   >
                     #{cfg.rank}
@@ -146,21 +146,21 @@ export function TopTenTable() {
                 </div>
 
                 {/* Name */}
-                <p className="mt-2 max-w-[80px] truncate text-center text-xs font-bold">
+                <p className="mt-1.5 max-w-[80px] truncate text-center text-xs font-black text-[#fff3cd]">
                   {entry.playerName}
                 </p>
 
                 {/* Score */}
-                <div className="coin-badge mt-1 text-[9px]">
-                  <div className="coin-icon text-[8px]">⭐</div>
+                <div className="mt-1 inline-flex items-center gap-1 rounded-full border border-[#78431e] bg-[#2a1307] px-2 py-0.5 text-[9px] font-black text-[#ffe49e]">
+                  <span>⭐</span>
                   {entry.score.toLocaleString()}
                 </div>
 
                 {/* Podium Platform Pillar */}
-                <div className={`mt-2.5 w-full flex flex-col items-center justify-center rounded-t-2xl border ${cfg.border} bg-gradient-to-b ${cfg.color} ${cfg.height}`}
+                <div className={`mt-2 w-full flex flex-col items-center justify-center rounded-t-2xl border ${cfg.border} bg-gradient-to-b ${cfg.color} ${cfg.height}`}
                 >
-                  <span className="text-2xl font-black text-white/50">{cfg.rank}</span>
-                  <span className="text-[8px] font-bold text-white/70 tracking-widest">{cfg.title}</span>
+                  <span className="text-xl font-black text-white/80">{cfg.rank}</span>
+                  <span className="text-[8px] font-black text-white/90 tracking-widest">{cfg.title}</span>
                 </div>
               </div>
             )
@@ -170,26 +170,26 @@ export function TopTenTable() {
 
       {/* ── Rank 4+ Rows (Unique Players) ── */}
       {rest.length > 0 && (
-        <div className="cyber-card forest-rank-list overflow-hidden">
-          <div className="divide-y divide-slate-200 dark:divide-[#334155] max-h-[260px] overflow-y-auto scrollbar-none">
+        <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 overflow-hidden shadow-inner">
+          <div className="divide-y divide-[#78431e]/40 max-h-[220px] overflow-y-auto scrollbar-none">
             {rest.map((entry, i) => {
               const rank = i + 4
               const avatarId = getAvatarId(entry.playerName)
               return (
                 <div
                   key={entry.id}
-                  className="lb-row"
+                  className="flex items-center justify-between p-2.5 transition-colors hover:bg-[#4a2713]/40"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-6 text-center text-xs font-bold text-slate-400">#{rank}</span>
-                    <AvatarDisplay avatarId={avatarId} size={34} ringClass="avatar-ring-silver" />
+                    <span className="w-5 text-center text-xs font-black text-[#ffe49e]/60">#{rank}</span>
+                    <AvatarDisplay avatarId={avatarId} size={32} ringClass="avatar-ring-silver" />
                     <div className="flex flex-col">
-                      <p className="text-xs font-bold">{entry.playerName}</p>
-                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">PLAYER</span>
+                      <p className="text-xs font-black text-[#fff3cd]">{entry.playerName}</p>
+                      <span className="text-[8.5px] font-bold text-[#ffe49e]/60 uppercase tracking-wider">PLAYER</span>
                     </div>
                   </div>
-                  <div className="coin-badge">
-                    <div className="coin-icon text-[8px]">⭐</div>
+                  <div className="inline-flex items-center gap-1 rounded-full border border-[#78431e] bg-[#2a1307] px-2 py-0.5 text-[10px] font-black text-[#ffe49e]">
+                    <span>⭐</span>
                     {entry.score.toLocaleString()}
                   </div>
                 </div>
@@ -201,26 +201,26 @@ export function TopTenTable() {
 
       {/* ── Current Player Rank Row ── */}
       {playerProfile && (
-        <div className="forest-player-rank flex items-center justify-between rounded-2xl border border-[#38bdf8] bg-[#38bdf8]/15 dark:bg-[#38bdf8]/15 px-4 py-3 shadow-md">
+        <div className="flex items-center justify-between rounded-2xl border-2 border-[#fcd34d] bg-[#2a1307] px-3.5 py-2.5 shadow-md">
           <div className="flex items-center gap-3">
-            <span className="w-6 text-center text-sm font-black text-[#38bdf8]">
+            <span className="w-5 text-center text-xs font-black text-[#fcd34d]">
               {userRank > 0 ? `#${userRank}` : '—'}
             </span>
             <div className="relative">
               <AvatarDisplay
                 avatarId={parseInt(localStorage.getItem('syniq-avatar-id') ?? '1', 10) || 1}
-                size={36}
+                size={34}
                 ringClass="avatar-ring-neon"
               />
-              <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-[#0f172a] bg-emerald-400" />
+              <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-[#2a1307] bg-emerald-400" />
             </div>
             <div className="flex flex-col">
-              <p className="text-xs font-bold">{playerProfile.name}</p>
-              <p className="text-[9px] font-bold text-[#38bdf8] uppercase tracking-wider">YOUR RANK • LIVE</p>
+              <p className="text-xs font-black text-[#fff3cd]">{playerProfile.name}</p>
+              <p className="text-[8.5px] font-black text-[#fcd34d] uppercase tracking-wider">YOUR RANK • LIVE</p>
             </div>
           </div>
-          <div className="coin-badge">
-            <div className="coin-icon text-[8px]">⭐</div>
+          <div className="inline-flex items-center gap-1 rounded-full border border-[#78431e] bg-[#3a1d0d] px-2.5 py-1 text-xs font-black text-[#fcd34d]">
+            <span>⭐</span>
             {playerProfile.highestScore.toLocaleString()}
           </div>
         </div>

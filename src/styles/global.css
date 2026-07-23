@@ -534,15 +534,20 @@
 }
 
 .memory-input-guide {
-  min-height: 18px;
-  margin: 0 0 8px;
-  color: rgba(226, 232, 240, 0.58);
-  font-size: 9px;
-  font-weight: 700;
+  margin: 0 auto 8px auto;
+  color: #ffe49e;
+  background: rgba(42, 19, 7, 0.9);
+  border: 1px solid #78431e;
+  padding: 5px 16px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  font-size: 11px;
+  font-weight: 900;
   letter-spacing: 0.08em;
-  line-height: 1.5;
+  line-height: 1.4;
   text-align: center;
   text-transform: uppercase;
+  display: table;
 }
 
 .memory-progress-segments {
@@ -2202,14 +2207,20 @@
 }
 
 /* Fill the usable viewport between the persistent header and bottom navigation. */
-.simon-home-screen {
+.simon-home-screen,
+.simon-settings-screen,
+.simon-profile-screen,
+.simon-leaderboard-screen {
   display: flex;
   align-items: stretch;
   width: 100%;
   min-height: calc(100dvh - 32px);
 }
 
-.simon-home-screen .simon-landing-card {
+.simon-home-screen .simon-landing-card,
+.simon-settings-screen .simon-landing-card,
+.simon-profile-screen .simon-landing-card,
+.simon-leaderboard-screen .simon-landing-card {
   flex: 1;
   min-height: clamp(450px, 85dvh, 680px);
   height: calc(100dvh - 32px);
@@ -2246,7 +2257,13 @@
   }
 
   .simon-home-screen,
+  .simon-settings-screen,
+  .simon-profile-screen,
+  .simon-leaderboard-screen,
   .simon-home-screen .simon-landing-card,
+  .simon-settings-screen .simon-landing-card,
+  .simon-profile-screen .simon-landing-card,
+  .simon-leaderboard-screen .simon-landing-card,
   .is-home-route .simon-home-screen,
   .is-home-route .simon-home-screen .simon-landing-card {
     min-height: 100dvh !important;
@@ -2956,8 +2973,8 @@
 }
 
 .game-page-shell-game .memory-input-guide {
-  color: #f1f5c8;
-  text-shadow: 0 2px 3px rgba(11, 31, 15, 0.8);
+  color: #ffe49e;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .game-page-shell-game .status-idle {
@@ -3167,155 +3184,4 @@
 
 .forest-player-rank .text-\[\#38bdf8\] {
   color: #fff0a9 !important;
-}
-
-/* Settings lodge: grouped, tactile controls that feel carved into the forest world. */
-.forest-settings-page .game-page-heading {
-  background: linear-gradient(145deg, rgba(53, 91, 48, 0.96), rgba(46, 68, 34, 0.96));
-}
-
-.forest-settings-content {
-  padding-top: 4px !important;
-}
-
-.forest-settings-panel {
-  border-color: rgba(214, 231, 155, 0.55) !important;
-  background: linear-gradient(155deg, rgba(57, 92, 47, 0.97), rgba(27, 61, 37, 0.98)) !important;
-}
-
-.forest-settings-panel>hr {
-  border-color: rgba(215, 232, 160, 0.25) !important;
-}
-
-.forest-settings-group {
-  padding: 12px;
-  border: 1px solid rgba(211, 229, 154, 0.18);
-  border-radius: 17px;
-  background: rgba(15, 47, 29, 0.27);
-  box-shadow: inset 0 1px 0 rgba(248, 255, 204, 0.09);
-}
-
-.forest-settings-panel .text-\[var\(--color-text-secondary\)\],
-.forest-settings-panel .text-\[var\(--color-text-primary\)\] {
-  color: #edf5ca !important;
-}
-
-.forest-settings-panel .bg-white\/5 {
-  background: rgba(211, 232, 154, 0.17) !important;
-}
-
-.forest-settings-panel .bg-white\/\[0\.01\] {
-  background: rgba(14, 47, 28, 0.48) !important;
-}
-
-.forest-settings-panel button {
-  color: #edf5ca;
-}
-
-.forest-settings-panel button[aria-pressed="true"] {
-  border-color: #e3bf60;
-}
-
-.forest-settings-panel input[type="range"] {
-  accent-color: #ddb24b;
-}
-
-.forest-settings-panel select {
-  border-radius: 14px;
-}
-
-/* Contrast correction: these selectors intentionally outrank earlier generic light-card rules. */
-.game-page-shell .forest-profile-content .forest-profile-stack>.cyber-card {
-  border-color: #9cbd70 !important;
-  background: linear-gradient(150deg, #537b43 0%, #254c31 100%) !important;
-  box-shadow: inset 0 2px 0 rgba(243, 255, 194, 0.2), inset 0 -4px 0 rgba(15, 43, 23, 0.48), 0 5px 0 #1a3d26, 0 13px 20px rgba(11, 30, 14, 0.36) !important;
-  opacity: 1;
-}
-
-.game-page-shell .forest-profile-content .forest-profile-stack>.forest-profile-hero {
-  border-color: #ddbc5d !important;
-  background: radial-gradient(circle at 50% 0%, rgba(238, 193, 68, 0.24), transparent 38%), linear-gradient(150deg, #617e42 0%, #254c31 100%) !important;
-}
-
-.forest-profile-content .forest-profile-stack,
-.forest-profile-content .forest-profile-stack p,
-.forest-profile-content .forest-profile-stack span {
-  color: #fff4cb;
-}
-
-.forest-profile-content .forest-profile-stack .text-slate-400,
-.forest-profile-content .forest-profile-stack .text-slate-500 {
-  color: #dceab9 !important;
-}
-
-.forest-profile-content .forest-profile-stack .text-\[\#38bdf8\] {
-  color: #e9cc6c !important;
-}
-
-.forest-profile-content .forest-profile-stack .bg-slate-100,
-.forest-profile-content .forest-profile-stack .bg-slate-800 {
-  background: #21462d !important;
-}
-
-.game-page-shell .forest-leaderboard-content .forest-leaderboard-stack>.cyber-card {
-  border-color: #a6c375 !important;
-  background: linear-gradient(150deg, #466f3c 0%, #21462e 100%) !important;
-  box-shadow: inset 0 2px 0 rgba(243, 255, 194, 0.18), inset 0 -4px 0 rgba(15, 43, 23, 0.5), 0 5px 0 #183a24, 0 13px 20px rgba(10, 28, 13, 0.38) !important;
-  opacity: 1;
-}
-
-.game-page-shell .forest-leaderboard-content .forest-podium-card {
-  border-color: #ddbc5d !important;
-  background: radial-gradient(circle at 50% 0%, rgba(237, 192, 71, 0.22), transparent 46%), linear-gradient(150deg, #58753d 0%, #264a2f 100%) !important;
-}
-
-.game-page-shell .forest-leaderboard-content .forest-rank-list {
-  background: linear-gradient(150deg, #41683a 0%, #1e432b 100%) !important;
-}
-
-.forest-leaderboard-content .forest-leaderboard-stack,
-.forest-leaderboard-content .forest-leaderboard-stack p,
-.forest-leaderboard-content .forest-leaderboard-stack span {
-  color: #fff4ca;
-}
-
-.forest-leaderboard-content .forest-leaderboard-stack .text-slate-400,
-.forest-leaderboard-content .forest-leaderboard-stack .text-slate-500 {
-  color: #dbe8b8 !important;
-}
-
-.forest-leaderboard-content .forest-rank-list .divide-y>* {
-  border-color: rgba(222, 237, 165, 0.18) !important;
-}
-
-.game-page-shell .forest-settings-content>.forest-settings-panel {
-  border-color: #a8c978 !important;
-  background: linear-gradient(150deg, #4b743d 0%, #20482f 100%) !important;
-  box-shadow: inset 0 2px 0 rgba(245, 255, 200, 0.2), inset 0 -4px 0 rgba(13, 40, 21, 0.5), 0 5px 0 #173a25, 0 13px 21px rgba(10, 29, 13, 0.4) !important;
-  opacity: 1;
-}
-
-.forest-settings-content .forest-settings-panel,
-.forest-settings-content .forest-settings-panel span,
-.forest-settings-content .forest-settings-panel label {
-  color: #fff3cc !important;
-}
-
-.forest-settings-content .forest-settings-group {
-  border-color: rgba(221, 238, 164, 0.28);
-  background: #284f33;
-}
-
-.forest-settings-content .forest-settings-panel hr {
-  border-color: rgba(222, 238, 164, 0.22) !important;
-}
-
-.forest-settings-content .forest-settings-panel .bg-white\/\[0\.01\],
-.forest-settings-content .forest-settings-panel .bg-white\/5 {
-  background: #20452c !important;
-}
-
-.forest-settings-content .forest-settings-panel .text-\[var\(--color-text-secondary\)\],
-.forest-settings-content .forest-settings-panel .text-\[var\(--color-text-primary\)\] {
-  color: #fff3cc !important;
 }

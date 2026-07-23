@@ -2,34 +2,46 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { TopTenTable } from '@/components/profile'
+import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 export default function LeaderboardPage() {
   useDocumentTitle('Leaderboard')
   const navigate = useNavigate()
   return (
-    <div className="game-page-shell forest-leaderboard-page flex flex-col gap-4 pb-2 select-none">
-      {/* ── Clean Header (No Box Card) ── */}
+    <div className="simon-home-screen simon-leaderboard-screen select-none">
       <motion.div
-        initial={{ opacity: 0, y: -4 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="game-page-heading flex items-center justify-between px-1 py-1"
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.05 }}
+        className="simon-landing-card relative flex flex-col items-center justify-center p-4 overflow-y-auto"
+        style={{ backgroundImage: `url(${simonForestBackground})` }}
       >
-        <button onClick={() => navigate('/')} type="button" className="game-page-home-button" aria-label="Return home">⌂</button>
-        <div>
-          <div className="flex items-center gap-2">
-            <span>Hall of fame</span>
-            <span className="game-live-pill"><i /> Live
-            </span>
+        <div className="simon-landing-sky" aria-hidden="true" />
+        <div className="simon-landing-hills" aria-hidden="true" />
+
+        {/* ── 3D Wood Leaderboard Plaque Box ── */}
+        <div className="relative z-10 my-auto flex w-full max-w-[440px] flex-col gap-3.5 rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-5 sm:p-6 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md">
+          
+          {/* Header Bar inside Plaque */}
+          <div className="flex items-center justify-between pb-1.5 border-b border-[#8a4e22]/50">
+            <button
+              onClick={() => navigate('/')}
+              type="button"
+              aria-label="Return home"
+              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-lg font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform active:scale-95 cursor-pointer outline-none"
+            >
+              ⌂
+            </button>
+            <div className="rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-4 py-0.5 text-[11px] font-black uppercase tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408]">
+              RANKINGS & SCOREBOARD
+            </div>
+            <div className="w-10" />
           </div>
-          <h1>Leaderboard</h1>
-          <p>Compete with top players and claim the crown.</p>
+
+          {/* Leaderboard Table Content */}
+          <TopTenTable />
         </div>
       </motion.div>
-
-      {/* ── Main Leaderboard Table ── */}
-      <div className="game-page-content forest-leaderboard-content">
-        <TopTenTable />
-      </div>
     </div>
   )
 }

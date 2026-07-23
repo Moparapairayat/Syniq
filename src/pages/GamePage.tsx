@@ -7,7 +7,7 @@ export default function GamePage() {
   const navigate = useNavigate()
 
   return (
-    <div className="game-page-shell game-page-shell-game py-2">
+    <div className="game-page-shell game-page-shell-game py-2 select-none">
       <button onClick={() => navigate('/')} type="button" className="game-page-home-button game-page-game-home" aria-label="Return home">⌂</button>
       <div className="game-page-content game-game-content">
         <GameContainer />
