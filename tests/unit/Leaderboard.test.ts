@@ -77,4 +77,33 @@ describe('LeaderboardService', () => {
     expect(topScores[0].score).toBe(1400) // Highest score in list
     expect(topScores[9].score).toBe(500) // 10th score
   })
+
+  test('should delete all existing lower entries for the same player when a higher score is achieved', async () => {
+    let list: ScoreEntry[] = [
+      { id: '1', playerId: 'p1', playerName: 'Charlie', score: 100, roundReached: 2, difficulty: Difficulty.Easy, timestamp: new Date() },
+      { id: '2', playerId: 'p1', playerName: 'Charlie', score: 200, roundReached: 3, difficulty: Difficulty.Easy, timestamp: new Date() },
+    ]
+
+    vi.mocked(leaderboardRepository.getAll).mockImplementation(async () => list)
+    vi.mocked(leaderboardRepository.delete).mockImplementation(async (id: string) => {
+      list = list.filter((s) => s.id !== id)
+    })
+    vi.mocked(leaderboardRepository.put).mockImplementation(async (item: ScoreEntry) => {
+      list.push(item)
+    })
+
+    await leaderboardService.addScore({
+      id: '3',
+      playerId: 'p1',
+      playerName: 'Charlie',
+      score: 500,
+      roundReached: 6,
+      difficulty: Difficulty.Medium,
+      timestamp: new Date(),
+    })
+
+    expect(list.length).toBe(1)
+    expect(list[0].id).toBe('3')
+    expect(list[0].score).toBe(500)
+  })
 })

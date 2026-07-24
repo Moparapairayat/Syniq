@@ -41,6 +41,8 @@ export function useGame() {
   const prevStatusRef = useRef<GameStatus | null>(null)
   const countdownIntervalRef = useRef<number | null>(null)
   const prevInputLengthRef = useRef(0)
+  const hasSavedGameOverRef = useRef(false)
+  const inputLitTimerRef = useRef<number | null>(null)
 
   // Subscribe to core engine changes
   useEffect(() => {
@@ -52,6 +54,10 @@ export function useGame() {
   const clearTimers = () => {
     playbackTimersRef.current.forEach((t) => window.clearTimeout(t))
     playbackTimersRef.current = []
+    if (inputLitTimerRef.current !== null) {
+      window.clearTimeout(inputLitTimerRef.current)
+      inputLitTimerRef.current = null
+    }
   }
 
   const clearCountdown = () => {
@@ -60,6 +66,14 @@ export function useGame() {
       countdownIntervalRef.current = null
     }
   }
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      clearTimers()
+      clearCountdown()
+    }
+  }, [])
 
   // Speed adjustments depending on settings config and Game Mode selection
   const getPlaybackSpeed = useCallback(() => {
@@ -163,7 +177,7 @@ export function useGame() {
 
   // Reactive time bonus adjustments for Time Attack mode
   useEffect(() => {
-    if (engine.mode !== GameMode.TimeAttack || timeLeft === null) {
+    if (engine.mode !== GameMode.TimeAttack) {
       prevInputLengthRef.current = state.playerInput.length
       return
     }
@@ -192,11 +206,12 @@ export function useGame() {
     }
 
     prevInputLengthRef.current = currentLength
-  }, [state.playerInput, state.status, state.sequence.length, engine.mode, timeLeft])
+  }, [state.playerInput, state.status, state.sequence.length, engine.mode])
 
-  // Play Game Over sound effect and record persistent scores in IndexedDB
+  // Play Game Over sound effect and record persistent scores in IndexedDB strictly ONCE per session
   useEffect(() => {
-    if (state.status === GameStatus.GameOver) {
+    if (state.status === GameStatus.GameOver && !hasSavedGameOverRef.current) {
+      hasSavedGameOverRef.current = true
       audioService.playGameOver()
       clearCountdown()
 
@@ -228,8 +243,12 @@ export function useGame() {
     }
   }, [state.status, state.score, state.round, engine])
 
-  const startGame = async (mode: GameMode = GameMode.Classic) => {
+  const startGame = async (
+    mode: GameMode = GameMode.Classic,
+    difficulty: Difficulty = Difficulty.Easy,
+  ) => {
     try {
+      hasSavedGameOverRef.current = false
       audioService.playStart()
       clearCountdown()
 
@@ -241,7 +260,7 @@ export function useGame() {
 
       const profile = await playerService.getOrCreateProfile()
       const activePlayer = new Player(profile)
-      engine.initialize(activePlayer, Difficulty.Easy, mode)
+      engine.initialize(activePlayer, difficulty, mode)
       engine.start()
     } catch (error) {
       console.warn('Failed to load profile. Initializing with default player.', error)
@@ -253,7 +272,7 @@ export function useGame() {
         highestScore: 0,
         highestLevel: 0,
       })
-      engine.initialize(fallbackPlayer, Difficulty.Easy, mode)
+      engine.initialize(fallbackPlayer, difficulty, mode)
       engine.start()
     }
   }
@@ -262,15 +281,21 @@ export function useGame() {
     if (state.status !== GameStatus.PlayerTurn) {
       return
     }
+    if (inputLitTimerRef.current !== null) {
+      window.clearTimeout(inputLitTimerRef.current)
+      inputLitTimerRef.current = null
+    }
     setActiveLitColor(color)
     audioService.playColor(color)
-    setTimeout(() => {
+    inputLitTimerRef.current = window.setTimeout(() => {
       setActiveLitColor(null)
+      inputLitTimerRef.current = null
     }, 220)
     engine.submitInput(color)
   }
 
   const resetGame = () => {
+    hasSavedGameOverRef.current = false
     audioService.playRestart()
     clearTimers()
     clearCountdown()

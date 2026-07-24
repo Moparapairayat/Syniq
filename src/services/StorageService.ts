@@ -21,7 +21,14 @@ export class StorageService {
       }
 
       request.onsuccess = (e) => {
-        this.#db = (e.target as IDBOpenDBRequest).result
+        const db = (e.target as IDBOpenDBRequest).result
+        db.onclose = () => {
+          this.#db = null
+        }
+        db.onerror = () => {
+          this.#db = null
+        }
+        this.#db = db
         resolve(this.#db)
       }
 

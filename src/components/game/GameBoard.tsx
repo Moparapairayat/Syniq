@@ -19,22 +19,22 @@ export interface GameBoardProps {
 const padConfig = {
   [SimonColor.Green]: {
     label: 'GREEN',
-    keyHint: '2',
+    keyHint: '1',
     normalGrad: 'linear-gradient(145deg, #64cf4a 0%, #3ca822 55%, #2a8216 100%)',
     activeGrad: 'linear-gradient(145deg, #ffffff 0%, #a3f380 40%, #4ade80 100%)',
     borderColor: '#1c590d',
     glowColor: 'rgba(74, 222, 128, 0.95)',
-    ariaLabel: 'Green Pad (Key 2)',
+    ariaLabel: 'Green Pad (Key 1)',
     corners: 'rounded-tl-[38px] rounded-tr-2xl rounded-bl-2xl rounded-br-md',
   },
   [SimonColor.Red]: {
     label: 'RED',
-    keyHint: '1',
+    keyHint: '2',
     normalGrad: 'linear-gradient(145deg, #f85b5b 0%, #dc2626 55%, #b91c1c 100%)',
     activeGrad: 'linear-gradient(145deg, #ffffff 0%, #fca5a5 40%, #f87171 100%)',
     borderColor: '#7f1d1d',
     glowColor: 'rgba(248, 113, 113, 0.95)',
-    ariaLabel: 'Red Pad (Key 1)',
+    ariaLabel: 'Red Pad (Key 2)',
     corners: 'rounded-tr-[38px] rounded-tl-2xl rounded-br-2xl rounded-bl-md',
   },
   [SimonColor.Blue]: {
@@ -242,9 +242,9 @@ export function GameBoard({
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
       let targetColor: SimonColor | null = null
       switch (e.key) {
-        case '1': case 'ArrowUp': targetColor = SimonColor.Red; break
-        case '2': case 'ArrowLeft': targetColor = SimonColor.Green; break
-        case '3': case 'ArrowRight': targetColor = SimonColor.Blue; break
+        case '1': case 'ArrowUp': case 'ArrowLeft': targetColor = SimonColor.Green; break
+        case '2': case 'ArrowRight': targetColor = SimonColor.Red; break
+        case '3': targetColor = SimonColor.Blue; break
         case '4': case 'ArrowDown': targetColor = SimonColor.Yellow; break
         default: break
       }

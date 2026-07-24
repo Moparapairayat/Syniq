@@ -59,11 +59,18 @@ export class LeaderboardService {
   public async addScore(entry: ScoreEntry): Promise<void> {
     try {
       const allScores = await leaderboardRepository.getAll()
-      const existingEntry = allScores.find((s) => s.playerName === entry.playerName)
+      const matchingEntries = allScores.filter(
+        (s) =>
+          s.playerName === entry.playerName ||
+          (entry.playerId && s.playerId === entry.playerId),
+      )
 
-      if (existingEntry) {
-        if (entry.score > existingEntry.score) {
-          await leaderboardRepository.delete(existingEntry.id)
+      if (matchingEntries.length > 0) {
+        const maxExistingScore = Math.max(...matchingEntries.map((s) => s.score))
+        if (entry.score > maxExistingScore) {
+          for (const match of matchingEntries) {
+            await leaderboardRepository.delete(match.id)
+          }
           await leaderboardRepository.put(entry)
         }
       } else {

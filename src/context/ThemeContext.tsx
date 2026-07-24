@@ -1,43 +1,43 @@
-import { useState, useEffect, type ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import type { ThemeMode } from '@/types/theme'
-import { defaultThemeMode, ThemeContext } from './themeStore'
+import { ThemeContext } from './themeStore'
+import { useSettings } from './SettingsContext'
 
 export interface ThemeProviderProps {
   readonly children: ReactNode
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [themeMode, setThemeModeState] = useState<ThemeMode>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('syniq-theme-mode') as ThemeMode | null
-      if (stored === 'light' || stored === 'dark') return stored
-    }
-    return defaultThemeMode
-  })
+  const { settings, updateSetting } = useSettings()
+
+  const currentThemeMode: ThemeMode =
+    settings.themeMode === 'light' ? 'light' : 'dark'
 
   useEffect(() => {
     const root = document.documentElement
-    root.setAttribute('data-theme', themeMode)
-    if (themeMode === 'light') {
+    root.setAttribute('data-theme', currentThemeMode)
+    if (currentThemeMode === 'light') {
       root.classList.add('light-theme')
       root.classList.remove('dark-theme')
     } else {
       root.classList.add('dark-theme')
       root.classList.remove('light-theme')
     }
-    localStorage.setItem('syniq-theme-mode', themeMode)
-  }, [themeMode])
+  }, [currentThemeMode])
 
   const toggleTheme = () => {
-    setThemeModeState((prev) => (prev === 'dark' ? 'light' : 'dark'))
+    const nextMode: ThemeMode = currentThemeMode === 'dark' ? 'light' : 'dark'
+    updateSetting({ themeMode: nextMode })
   }
 
   const setThemeMode = (mode: ThemeMode) => {
-    setThemeModeState(mode)
+    updateSetting({ themeMode: mode })
   }
 
   return (
-    <ThemeContext.Provider value={{ themeMode, toggleTheme, setThemeMode }}>
+    <ThemeContext.Provider
+      value={{ themeMode: currentThemeMode, toggleTheme, setThemeMode }}
+    >
       {children}
     </ThemeContext.Provider>
   )
