@@ -6,6 +6,7 @@ import { RoutePath } from '@/routes/routePaths'
 import { playerService, dailyStreakService } from '@/services'
 import type { DailyStreakData } from '@/services'
 import { GameMode } from '@/core/game/GameMode'
+import { PWAInstallBanner } from '@/components/ui'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 export default function HomePage() {
@@ -37,7 +38,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="simon-home-screen select-none">
+    <div className="simon-home-screen select-none flex flex-col items-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -58,6 +59,7 @@ export default function HomePage() {
             <span className="simon-coin-counter">✦ {highScore.toLocaleString()}</span>
           </div>
         </div>
+        <PWAInstallBanner />
         <button onClick={() => navigate(RoutePath.leaderboard)} type="button" className="simon-leaderboard-launch" aria-label="Open leaderboard">
           <span aria-hidden="true">♛</span>
           <span><small>Hall of fame</small><strong>Rankings</strong></span>

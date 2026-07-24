@@ -43,3 +43,5 @@ export { ThemeSelector } from './ThemeSelector'
 export type { ThemeSelectorProps } from './ThemeSelector'
 export { ConfirmationDialog } from './ConfirmationDialog'
 export type { ConfirmationDialogProps } from './ConfirmationDialog'
+export { PWAInstallBanner } from './PWAInstallBanner'
+
