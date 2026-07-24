@@ -155,7 +155,7 @@ export function GameContainer() {
           >
             ⌂
           </button>
-          
+
           <div className="memory-hud flex-1" aria-label="Game metrics">
             <div className="memory-hud-metric"><span>Round</span><strong>{state.round || '—'}</strong></div>
             <div className="memory-hud-divider" aria-hidden="true" />

@@ -77,8 +77,8 @@ function WoodDropdown<T extends string>({
                     setIsOpen(false)
                   }}
                   className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-black transition-all cursor-pointer ${isSelected
-                      ? 'bg-gradient-to-r from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-sm'
-                      : 'text-[#ffe49e] hover:bg-[#4a2713]/80 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-sm'
+                    : 'text-[#ffe49e] hover:bg-[#4a2713]/80 hover:text-white'
                     }`}
                 >
                   <span>{opt.label}</span>
@@ -175,8 +175,8 @@ export default function SettingsPage() {
                     onClick={() => updateSetting({ animationSpeed: speed })}
                     type="button"
                     className={`flex-1 rounded-lg py-1 sm:py-1.5 text-center text-[11px] sm:text-xs font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${isActive
-                        ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
-                        : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
+                      ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
+                      : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
                       }`}
                   >
                     {speed}

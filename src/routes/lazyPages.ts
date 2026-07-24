@@ -1,8 +1,15 @@
-import { lazy } from 'react'
+import HomePage from '@/pages/HomePage'
+import GamePage from '@/pages/GamePage'
+import LeaderboardPage from '@/pages/LeaderboardPage'
+import SettingsPage from '@/pages/SettingsPage'
+import ProfilePage from '@/pages/ProfilePage'
+import NotFoundPage from '@/pages/NotFoundPage'
 
-export const HomePage = lazy(() => import('@/pages/HomePage'))
-export const GamePage = lazy(() => import('@/pages/GamePage'))
-export const LeaderboardPage = lazy(() => import('@/pages/LeaderboardPage'))
-export const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
-export const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
-export const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
+export {
+  HomePage,
+  GamePage,
+  LeaderboardPage,
+  SettingsPage,
+  ProfilePage,
+  NotFoundPage,
+}
