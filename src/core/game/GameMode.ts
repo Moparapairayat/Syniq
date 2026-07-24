@@ -3,4 +3,5 @@ export enum GameMode {
   SpeedRush = 'speed_rush',
   Reverse = 'reverse',
   TimeAttack = 'time_attack',
+  DailyChallenge = 'daily_challenge',
 }

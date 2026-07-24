@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CardSkeleton, useToast } from '@/components/ui'
-import { playerService } from '@/services'
+import { playerService, achievementService, dailyStreakService } from '@/services'
 import type { PlayerProfile } from '@/models/Player'
+import type { Achievement } from '@/models/Achievement'
+import type { DailyStreakData } from '@/services'
 import { AvatarDisplay, AVATARS, AVATAR_SETS } from '@/components/avatar'
 import { cn } from '@/utils/classNames'
 
@@ -16,25 +18,25 @@ function getRankInfo(score: number): { label: string; cls: string; icon: string;
 /* Animated circular stat ring */
 function StatRing({ value, max, color, label }: { value: number; max: number; color: string; label: string }) {
   const pct = Math.min(value / Math.max(max, 1), 1)
-  const r = 27; const circ = 2 * Math.PI * r
+  const r = 24; const circ = 2 * Math.PI * r
 
   return (
-    <div className="flex flex-col items-center gap-1.5">
+    <div className="flex flex-col items-center gap-1">
       <div className="relative flex items-center justify-center">
-        <svg width="68" height="68" className="-rotate-90">
-          <circle cx="34" cy="34" r={r} fill="none" stroke="#2a1307" strokeWidth="5.5" />
+        <svg width="60" height="60" className="-rotate-90">
+          <circle cx="30" cy="30" r={r} fill="none" stroke="#2a1307" strokeWidth="5" />
           <motion.circle
-            cx="34" cy="34" r={r} fill="none"
-            stroke={color} strokeWidth="5.5" strokeLinecap="round"
+            cx="30" cy="30" r={r} fill="none"
+            stroke={color} strokeWidth="5" strokeLinecap="round"
             strokeDasharray={circ}
             initial={{ strokeDashoffset: circ }}
             animate={{ strokeDashoffset: circ - circ * pct }}
-            transition={{ duration: 1.2, ease: [0.34, 1.56, 0.64, 1], delay: 0.3 }}
+            transition={{ duration: 1.2, ease: [0.34, 1.56, 0.64, 1], delay: 0.2 }}
           />
         </svg>
         <span className="absolute font-mono text-sm font-black text-[#fff3cd] leading-none">{value}</span>
       </div>
-      <span className="text-[10px] font-black tracking-wider text-[#ffe49e] uppercase">{label}</span>
+      <span className="text-[9.5px] font-black tracking-wider text-[#ffe49e] uppercase">{label}</span>
     </div>
   )
 }
@@ -65,6 +67,8 @@ function AvatarPickItem({ avatarId, isActive, onClick }: { avatarId: number; isA
 
 export function PlayerProfileCard() {
   const [profile, setProfile] = useState<PlayerProfile | null>(null)
+  const [achievements, setAchievements] = useState<ReadonlyArray<Achievement>>([])
+  const [streakData, setStreakData] = useState<DailyStreakData | null>(null)
   const [nameInput, setNameInput] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
@@ -77,9 +81,13 @@ export function PlayerProfileCard() {
     async function load() {
       try {
         const data = await playerService.getOrCreateProfile()
+        const achs = await achievementService.getAchievements()
+        const streak = await dailyStreakService.getStreakData()
         if (!active) return
         setProfile(data)
         setNameInput(data.name)
+        setAchievements(achs)
+        setStreakData(streak)
         const stored = localStorage.getItem('syniq-avatar-id')
         if (stored) setSelectedAvatarId(parseInt(stored, 10))
       } catch (e) { console.error(e) }
@@ -118,11 +126,11 @@ export function PlayerProfileCard() {
     <div className="flex flex-col gap-3.5 select-none">
 
       {/* ── Profile Hero Card ── */}
-      <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-4.5 flex flex-col items-center gap-3 text-center shadow-inner">
+      <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-4 flex flex-col items-center gap-2.5 text-center shadow-inner">
 
         {/* Avatar + edit badge */}
-        <div className="relative mt-1">
-          <AvatarDisplay avatarId={selectedAvatarId} size={84} ringClass="avatar-ring-neon" />
+        <div className="relative mt-0.5">
+          <AvatarDisplay avatarId={selectedAvatarId} size={82} ringClass="avatar-ring-neon" />
           <button
             type="button"
             onClick={() => setShowAvatarPicker((s) => !s)}
@@ -134,26 +142,25 @@ export function PlayerProfileCard() {
 
         {/* Name + rank badge */}
         <div className="relative text-center">
-          <h2 className="text-xl font-black text-[#fff3cd]">{profile.name}</h2>
-          <p className="text-[10px] font-bold text-[#ffe49e]/60 tracking-widest uppercase mt-0.5">
+          <h2 className="text-xl font-black text-[#fff3cd] leading-tight">{profile.name}</h2>
+          <p className="text-[9.5px] font-bold text-[#ffe49e]/60 tracking-widest uppercase mt-0.5">
             MEMBER SINCE {new Date(profile.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase()}
           </p>
-          <div className="mx-auto mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#78431e] bg-[#2a1307] px-3.5 py-1 text-xs font-black text-[#ffe49e]">
+          <div className="mx-auto mt-1.5 inline-flex items-center gap-1.5 rounded-full border border-[#78431e] bg-[#2a1307] px-3.5 py-1 text-xs font-black text-[#ffe49e]">
             <span>{rank.icon}</span>
             <span>{rank.label}</span>
           </div>
         </div>
 
         {/* XP progress bar */}
-        <div className="relative w-full mt-1.5">
-          <div className="mb-1.5 flex justify-between text-[10px] font-black uppercase tracking-wider">
+        <div className="relative w-full mt-1">
+          <div className="mb-1 flex justify-between text-[10px] font-black uppercase tracking-wider">
             <span style={{ color: rank.color }}>{rank.icon} {rank.label}</span>
             <span className="text-[#fcd34d]">{xpPct}% TO NEXT RANK</span>
           </div>
           <div className="h-2.5 w-full overflow-hidden rounded-full border border-[#4a2713] bg-[#2a1307] p-0.5">
             <div className="h-full rounded-full bg-gradient-to-r from-[#e29741] via-[#fcd34d] to-[#c97020] transition-all duration-300" style={{ width: `${xpPct}%` }} />
           </div>
-          <div className="mt-1 text-right text-[10px] font-bold text-[#ffe49e]/60">{profile.highestScore} / {rank.next === Infinity ? '∞' : rank.next} PTS</div>
         </div>
       </div>
 
@@ -165,7 +172,7 @@ export function PlayerProfileCard() {
             className="overflow-hidden"
           >
             <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-              <p className="mb-2.5 text-center text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">
+              <p className="mb-2 text-center text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">
                 Choose Avatar
               </p>
               <div className="grid grid-cols-4 gap-2.5">
@@ -180,7 +187,7 @@ export function PlayerProfileCard() {
 
       {/* ── Rename Form Card ── */}
       <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-        <p className="mb-2 text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">Player Nickname</p>
+        <p className="mb-1.5 text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">Player Nickname</p>
         <form className="flex gap-2" onSubmit={handleRename}>
           <input
             id="nickname-input"
@@ -189,7 +196,7 @@ export function PlayerProfileCard() {
             placeholder="Enter player name"
             value={nameInput}
             type="text"
-            className="flex-grow rounded-xl px-3.5 py-2 text-sm font-bold border border-[#78431e] bg-[#2a1307] text-[#fff3cd] outline-none focus:border-[#fcd34d]"
+            className="flex-grow rounded-xl px-3.5 py-2 text-xs font-bold border border-[#78431e] bg-[#2a1307] text-[#fff3cd] outline-none focus:border-[#fcd34d]"
           />
           <button
             disabled={isSaving || nameInput.trim() === profile.name}
@@ -202,9 +209,32 @@ export function PlayerProfileCard() {
         </form>
       </div>
 
+      {/* ── Daily Play Streak Mission Card ── */}
+      <div className="rounded-2xl border border-[#fcd34d]/60 bg-gradient-to-r from-[#78350f]/80 via-[#3a1d0d]/90 to-[#78350f]/80 p-3 flex items-center justify-between shadow-[0_0_12px_rgba(252,211,77,0.2)]">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-xl shadow-inner">
+            🔥
+          </div>
+          <div className="flex flex-col text-left">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#fcd34d]">
+              DAILY PLAY STREAK
+            </span>
+            <span className="text-sm font-black text-[#fff3cd]">
+              {streakData?.currentStreak || 0} Day{streakData?.currentStreak === 1 ? '' : 's'} Active
+            </span>
+          </div>
+        </div>
+        <div className="flex flex-col items-end text-right">
+          <span className="text-[9px] font-bold text-[#ffe49e]/70 uppercase tracking-wider">HIGHEST</span>
+          <span className="font-mono text-xs font-black text-[#38bdf8]">
+            🔥 {streakData?.highestStreak || 0} DAYS
+          </span>
+        </div>
+      </div>
+
       {/* ── Stat Rings ── */}
       <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-        <p className="mb-2.5 text-center text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">Game Statistics</p>
+        <p className="mb-2 text-center text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">Game Statistics</p>
         <div className="flex justify-around">
           <StatRing value={profile.highestScore} max={Math.max(profile.highestScore, 100)} color="#f59e0b" label="BEST SCORE" />
           <StatRing value={profile.highestLevel > 0 ? profile.highestLevel : 0} max={Math.max(profile.highestLevel, 20)} color="#a855f7" label="LEVEL" />
@@ -212,27 +242,53 @@ export function PlayerProfileCard() {
         </div>
       </div>
 
-      {/* ── Achievements Row ── */}
+      {/* ── Achievements Badges Section ── */}
       <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-        <p className="mb-2.5 text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">Achievements</p>
-        <div className="flex gap-2">
-          {[
-            { icon: '🎯', label: 'Sharpshooter', done: profile.gamesPlayed >= 5 },
-            { icon: '⚡', label: 'On Fire',       done: profile.highestScore >= 50 },
-            { icon: '💎', label: 'Diamond',       done: profile.highestScore >= 200 },
-            { icon: '👑', label: 'Legend',        done: profile.highestScore >= 400 },
-          ].map((a) => (
-            <div key={a.label} className="flex-1 flex flex-col items-center gap-1 rounded-xl p-2.5 border transition-all"
-              style={{
-                background: a.done ? 'rgba(252,211,77,0.15)' : 'rgba(42,19,7,0.5)',
-                borderColor: a.done ? '#fcd34d' : 'rgba(120,67,30,0.4)',
-                opacity: a.done ? 1 : 0.45,
-              }}
-            >
-              <span className="text-xl" style={{ filter: a.done ? 'none' : 'grayscale(1)' }}>{a.icon}</span>
-              <span className="text-[9px] font-bold text-[#fff3cd] text-center leading-tight">{a.label}</span>
-            </div>
-          ))}
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">
+            🏆 Achievement Badges
+          </p>
+          <span className="font-mono text-[10px] font-black text-[#fcd34d]">
+            {achievements.filter((a) => a.unlockedAt).length}/{achievements.length} UNLOCKED
+          </span>
+        </div>
+
+        {/* Badges Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+          {achievements.slice(0, 8).map((a) => {
+            const isUnlocked = Boolean(a.unlockedAt)
+            return (
+              <div
+                key={a.id}
+                title={`${a.title}: ${a.description}`}
+                className="group relative flex flex-col items-center gap-0.5 rounded-xl p-2 border transition-all cursor-default text-center"
+                style={{
+                  background: isUnlocked ? 'rgba(252,211,77,0.14)' : 'rgba(42,19,7,0.5)',
+                  borderColor: isUnlocked ? '#fcd34d' : 'rgba(120,67,30,0.4)',
+                  opacity: isUnlocked ? 1 : 0.55,
+                }}
+              >
+                <span className="text-xl" style={{ filter: isUnlocked ? 'none' : 'grayscale(1)' }}>
+                  {a.icon}
+                </span>
+                <span className="text-[9.5px] font-black text-[#fff3cd] leading-tight truncate w-full">
+                  {a.title}
+                </span>
+                <span className="text-[8px] font-medium text-[#ffe49e]/70 leading-none line-clamp-1">
+                  {a.description}
+                </span>
+                {isUnlocked ? (
+                  <span className="mt-0.5 text-[7.5px] font-black text-[#fcd34d] uppercase tracking-wider">
+                    UNLOCKED
+                  </span>
+                ) : (
+                  <span className="mt-0.5 text-[7.5px] font-bold text-[#ffe49e]/40 uppercase tracking-wider">
+                    LOCKED 🔒
+                  </span>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

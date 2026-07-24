@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { RoutePath } from '@/routes/routePaths'
-import { playerService } from '@/services'
+import { playerService, dailyStreakService } from '@/services'
+import type { DailyStreakData } from '@/services'
 import { GameMode } from '@/core/game/GameMode'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
@@ -12,6 +13,7 @@ const MODE_LABELS: Record<GameMode, string> = {
   [GameMode.SpeedRush]: 'Speed rush',
   [GameMode.Reverse]: 'Reverse recall',
   [GameMode.TimeAttack]: 'Time attack',
+  [GameMode.DailyChallenge]: 'Daily challenge',
 }
 
 export default function HomePage() {
@@ -20,14 +22,17 @@ export default function HomePage() {
 
   const [highScore, setHighScore] = useState(0)
   const [lastMode, setLastMode] = useState<GameMode>(GameMode.Classic)
+  const [streakData, setStreakData] = useState<DailyStreakData | null>(null)
 
   useEffect(() => {
     let active = true
     async function loadStats() {
       try {
         const profile = await playerService.getOrCreateProfile()
+        const streak = await dailyStreakService.getStreakData()
         if (!active) return
         setHighScore(profile.highestScore)
+        setStreakData(streak)
         const storedMode = localStorage.getItem('syniq-last-mode') as GameMode | null
         if (storedMode && Object.values(GameMode).includes(storedMode)) setLastMode(storedMode)
       } catch (e) {
@@ -59,7 +64,12 @@ export default function HomePage() {
           <button onClick={() => navigate(RoutePath.profile)} type="button" className="simon-home-profile-token" aria-label="Open profile" title="Profile">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.25" /><path d="M5.5 20c.6-3.4 3-5.25 6.5-5.25s5.9 1.85 6.5 5.25" /></svg>
           </button>
-          <span className="simon-coin-counter">✦ {highScore.toLocaleString()}</span>
+          <div className="flex items-center gap-1.5">
+            <span className="simon-coin-counter font-mono font-black text-[#fcd34d]">
+              🔥 {streakData?.currentStreak || 0} DAY STREAK
+            </span>
+            <span className="simon-coin-counter">✦ {highScore.toLocaleString()}</span>
+          </div>
         </div>
         <button onClick={() => navigate(RoutePath.leaderboard)} type="button" className="simon-leaderboard-launch" aria-label="Open leaderboard">
           <span aria-hidden="true">♛</span>
@@ -96,7 +106,7 @@ export default function HomePage() {
         </div>
         <div className="simon-launch-actions">
           <button onClick={() => startMode(GameMode.Classic)} type="button" className="simon-action-button is-start"><span className="simon-start-wood-icon" aria-hidden="true">▶</span>Start new game</button>
-          <button onClick={() => startMode(lastMode)} type="button" className="simon-action-button is-continue">Continue <small>{MODE_LABELS[lastMode]}</small></button>
+          <button onClick={() => startMode(GameMode.DailyChallenge)} type="button" className="simon-action-button is-continue border border-[#fcd34d]/60 bg-gradient-to-b from-[#78350f] to-[#3a1d0d] text-[#fcd34d] font-bold">🎯 Daily Challenge <small>🔥 {streakData?.currentStreak || 0} Day Streak</small></button>
         </div>
       </motion.div>
     </div>

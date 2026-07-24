@@ -8,8 +8,9 @@ import { StatusPanel } from './StatusPanel'
 import { ControlPanel } from './ControlPanel'
 import { GameStatus } from '@/core/game/GameStatus'
 import { GameMode } from '@/core/game/GameMode'
-import { playerService, leaderboardService } from '@/services'
+import { playerService, leaderboardService, achievementService, dailyStreakService } from '@/services'
 import type { ScoreEntry } from '@/models/ScoreEntry'
+import type { Achievement } from '@/models/Achievement'
 
 export function GameContainer() {
   const location = useLocation()
@@ -22,8 +23,8 @@ export function GameContainer() {
   const [showQuitDialog, setShowQuitDialog] = useState(false)
   const [screenFlash, setScreenFlash] = useState(false)
   const [bestScore, setBestScore] = useState(0)
-  const [isNewBest, setIsNewBest] = useState(false)
   const [topScores, setTopScores] = useState<ReadonlyArray<ScoreEntry>>([])
+  const [newlyUnlocked, setNewlyUnlocked] = useState<ReadonlyArray<Achievement>>([])
   const prevRound = useRef(state.round)
   const bestScoreRef = useRef(0)
 
@@ -40,21 +41,32 @@ export function GameContainer() {
   useEffect(() => {
     if (state.status === GameStatus.GameOver) {
       const achievedNewBest = state.score > 0 && state.score > bestScoreRef.current
-      setIsNewBest(achievedNewBest)
       if (achievedNewBest) {
         bestScoreRef.current = state.score
-        setBestScore(state.score)
+        Promise.resolve().then(() => setBestScore(state.score))
       }
-      setScreenFlash(true)
-      setTimeout(() => setScreenFlash(false), 600)
+      Promise.resolve().then(() => setScreenFlash(true))
+      const timer = setTimeout(() => setScreenFlash(false), 600)
       leaderboardService.getTopScores().then((scores) => {
         setTopScores(scores)
       }).catch(() => undefined)
+
+      achievementService.evaluateGameRun({
+        round: state.round,
+        score: state.score,
+        mode: routeMode,
+      }).then((unlocked) => {
+        setNewlyUnlocked(unlocked)
+      }).catch(() => undefined)
+
+      dailyStreakService.recordPlayToday(routeMode === GameMode.DailyChallenge).catch(() => undefined)
+
       Promise.resolve().then(() => setShowGameOverModal(true))
+      return () => clearTimeout(timer)
     } else {
       Promise.resolve().then(() => setShowGameOverModal(false))
     }
-  }, [state.score, state.status])
+  }, [state.score, state.status, state.round, routeMode])
 
   /* Screen flash on round clear */
   useEffect(() => {
@@ -173,9 +185,18 @@ export function GameContainer() {
             <p className="mt-1 text-xs font-bold text-[#ffe49e]/70 uppercase tracking-widest">
               REACHED ROUND {state.round}
             </p>
-            {isNewBest && (
-              <div className="mx-auto mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#fcd34d] bg-gradient-to-r from-[#d97706]/30 via-[#fcd34d]/30 to-[#d97706]/30 px-3.5 py-1 text-xs font-black text-[#fcd34d] shadow-[0_0_12px_rgba(252,211,77,0.4)] animate-pulse">
-                <span>✨</span> NEW PERSONAL BEST! <span>✨</span>
+            {newlyUnlocked.length > 0 && (
+              <div className="mx-auto mt-2 flex flex-col items-center gap-1 rounded-2xl border border-[#fcd34d] bg-gradient-to-r from-[#d97706]/40 via-[#fcd34d]/20 to-[#d97706]/40 p-2 text-center shadow-[0_0_15px_rgba(252,211,77,0.3)] animate-pulse">
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#fcd34d]">
+                  🎉 {newlyUnlocked.length} NEW ACHIEVEMENT{newlyUnlocked.length > 1 ? 'S' : ''} UNLOCKED!
+                </span>
+                <div className="flex flex-wrap items-center justify-center gap-1.5 mt-0.5">
+                  {newlyUnlocked.map((ach) => (
+                    <span key={ach.id} className="inline-flex items-center gap-1 rounded-lg bg-[#3a1d0d] px-2 py-0.5 text-xs font-bold text-[#fff3cd] border border-[#fcd34d]/50">
+                      <span>{ach.icon}</span> {ach.title}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </div>

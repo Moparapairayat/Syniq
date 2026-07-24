@@ -4,7 +4,7 @@
  */
 export class StorageService {
   readonly #dbName = 'SyniqDB'
-  readonly #dbVersion = 2
+  readonly #dbVersion = 3
   #db: IDBDatabase | null = null
 
   /**
@@ -48,6 +48,11 @@ export class StorageService {
         // Setup store for settings entries
         if (!db.objectStoreNames.contains('settings')) {
           db.createObjectStore('settings', { keyPath: 'id' })
+        }
+
+        // Setup store for achievement entries
+        if (!db.objectStoreNames.contains('achievements')) {
+          db.createObjectStore('achievements', { keyPath: 'id' })
         }
       }
     })
