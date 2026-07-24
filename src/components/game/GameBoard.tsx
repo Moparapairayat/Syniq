@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SimonColor } from '@/core/game/SimonColor'
 import { GameStatus } from '@/core/game/GameStatus'
+import { ScorePopups, type PopupItem } from './ScorePopups'
 
 export interface GameBoardProps {
   readonly activeLitColor: SimonColor | null
@@ -11,6 +12,7 @@ export interface GameBoardProps {
   readonly status: GameStatus
   readonly round: number
   readonly onCenterHubClick?: () => void
+  readonly popups?: ReadonlyArray<PopupItem>
 }
 
 /* ══════════════════════════════════════════
@@ -235,6 +237,7 @@ export function GameBoard({
   status,
   round,
   onCenterHubClick,
+  popups = [],
 }: GameBoardProps) {
   useEffect(() => {
     if (isDisabled || status !== GameStatus.PlayerTurn) return
@@ -264,6 +267,9 @@ export function GameBoard({
       className={`relative mx-auto w-full max-w-[min(350px,85vw,48vh)] select-none ${status === GameStatus.PlayerTurn ? 'memory-board-ready' : ''
         }`}
     >
+      {/* Floating Animated Score & Celebration Popups */}
+      <ScorePopups popups={popups} />
+
       {/* Outer Bezel */}
       <div
         className="game-bezel relative overflow-hidden rounded-[42px] p-4"

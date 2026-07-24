@@ -7,6 +7,7 @@ import { playerService, dailyStreakService } from '@/services'
 import type { DailyStreakData } from '@/services'
 import { GameMode } from '@/core/game/GameMode'
 import { PWAInstallBanner } from '@/components/ui'
+import { ForestParticles } from '@/components/effects/ForestParticles'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 export default function HomePage() {
@@ -45,9 +46,12 @@ export default function HomePage() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.05 }}
-        className="simon-landing-card"
+        className="simon-landing-card relative overflow-hidden"
         style={{ backgroundImage: `url(${simonForestBackground})` }}
       >
+        {/* Ambient Forest Particles Overlay */}
+        <ForestParticles />
+
         <div className="simon-landing-sky" aria-hidden="true" />
         <div className="simon-landing-hills" aria-hidden="true" />
         <div className="simon-landing-topbar">

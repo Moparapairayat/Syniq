@@ -2,10 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useGame } from '@/hooks/useGame'
+import { useSettings } from '@/hooks/useSettings'
 import { Modal, ConfirmationDialog } from '@/components/ui'
 import { GameBoard } from './GameBoard'
 import { StatusPanel } from './StatusPanel'
 import { ControlPanel } from './ControlPanel'
+import { ConfettiEffect } from '@/components/effects/ConfettiEffect'
+import type { PopupItem } from './ScorePopups'
 import { GameStatus } from '@/core/game/GameStatus'
 import { GameMode } from '@/core/game/GameMode'
 import { playerService, achievementService, dailyStreakService, audioService } from '@/services'
@@ -16,15 +19,27 @@ export function GameContainer() {
   const navigate = useNavigate()
   const routeMode = (location.state as { mode?: GameMode })?.mode || GameMode.Classic
 
+  const { settings, updateSetting } = useSettings()
   const { state, activeLitColor, timeLeft, startGame, submitInput, resetGame, nextRound, isPlaybackActive } = useGame()
 
   const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [showQuitDialog, setShowQuitDialog] = useState(false)
   const [screenFlash, setScreenFlash] = useState(false)
   const [bestScore, setBestScore] = useState(0)
+  const [isNewRecord, setIsNewRecord] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [popups, setPopups] = useState<ReadonlyArray<PopupItem>>([])
   const [newlyUnlocked, setNewlyUnlocked] = useState<ReadonlyArray<Achievement>>([])
   const prevStatusRef = useRef(state.status)
   const bestScoreRef = useRef(0)
+
+  const addPopup = (text: string, color?: string) => {
+    const id = `${Date.now()}-${Math.random()}`
+    setPopups((prev) => [...prev.slice(-2), { id, text, color }])
+    setTimeout(() => {
+      setPopups((prev) => prev.filter((p) => p.id !== id))
+    }, 850)
+  }
 
   useEffect(() => {
     let isMounted = true
@@ -41,7 +56,12 @@ export function GameContainer() {
       const achievedNewBest = state.score > 0 && state.score > bestScoreRef.current
       if (achievedNewBest) {
         bestScoreRef.current = state.score
+        setIsNewRecord(true)
+        setShowConfetti(true)
+        audioService.playHarmonicChime('high_score')
         Promise.resolve().then(() => setBestScore(state.score))
+      } else {
+        setIsNewRecord(false)
       }
       Promise.resolve().then(() => setScreenFlash(true))
       const timer = setTimeout(() => setScreenFlash(false), 600)
@@ -52,6 +72,9 @@ export function GameContainer() {
         mode: routeMode,
       }).then((unlocked) => {
         setNewlyUnlocked(unlocked)
+        if (unlocked.length > 0) {
+          setShowConfetti(true)
+        }
       }).catch(() => undefined)
 
       dailyStreakService.recordPlayToday(routeMode === GameMode.DailyChallenge).catch(() => undefined)
@@ -60,23 +83,27 @@ export function GameContainer() {
       return () => clearTimeout(timer)
     } else {
       Promise.resolve().then(() => setShowGameOverModal(false))
+      setShowConfetti(false)
     }
   }, [state.score, state.status, state.round, routeMode])
 
-  /* Screen flash and harmonic chime on round clear */
+  /* Screen flash, popups, and harmonic chime on round clear */
   useEffect(() => {
     if (prevStatusRef.current !== GameStatus.RoundCompleted && state.status === GameStatus.RoundCompleted) {
       setScreenFlash(true)
+      const isMilestone = state.round % 5 === 0
+      addPopup(isMilestone ? 'PERFECT! 🔥' : 'ROUND CLEAR! ✨')
       audioService.playHarmonicChime('round_clear')
       const timer = setTimeout(() => setScreenFlash(false), 450)
       prevStatusRef.current = state.status
       return () => clearTimeout(timer)
     }
     prevStatusRef.current = state.status
-  }, [state.status])
+  }, [state.status, state.round])
 
   const handlePlayAgain = () => {
     setShowGameOverModal(false)
+    setShowConfetti(false)
     resetGame()
     setTimeout(() => startGame(routeMode), 150)
   }
@@ -93,8 +120,16 @@ export function GameContainer() {
     navigate('/')
   }
 
+  const handleSoundToggle = () => {
+    const nextVol = settings.soundVolume > 0 ? 0 : 0.8
+    updateSetting({ soundVolume: nextVol, musicVolume: nextVol })
+  }
+
   return (
     <div className="memory-arena relative mx-auto flex w-full max-w-[480px] flex-col items-center gap-5 overflow-hidden py-3 select-none">
+      {/* Golden Celebration Confetti Canvas */}
+      <ConfettiEffect isActive={showConfetti} />
+
       <div className="memory-arena-orb memory-arena-orb-one" aria-hidden="true" />
       <div className="memory-arena-orb memory-arena-orb-two" aria-hidden="true" />
 
@@ -118,6 +153,7 @@ export function GameContainer() {
           >
             ⌂
           </button>
+          
           <div className="memory-hud flex-1" aria-label="Game metrics">
             <div className="memory-hud-metric"><span>Round</span><strong>{state.round || '—'}</strong></div>
             <div className="memory-hud-divider" aria-hidden="true" />
@@ -125,6 +161,16 @@ export function GameContainer() {
             <div className="memory-hud-divider" aria-hidden="true" />
             <div className="memory-hud-metric"><span>Best</span><strong>{bestScore.toLocaleString()}</strong></div>
           </div>
+
+          {/* Quick HUD Sound Toggle Button */}
+          <button
+            onClick={handleSoundToggle}
+            type="button"
+            aria-label="Toggle sound effects"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] text-lg font-black text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),inset_0_-2px_0_rgba(30,12,4,0.6),0_4px_0_#381c0d,0_8px_16px_rgba(5,15,5,0.6)] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:scale-105"
+          >
+            {settings.soundVolume > 0 ? '🔊' : '🔇'}
+          </button>
         </div>
         <StatusPanel playerInputLength={state.playerInput.length} status={state.status} targetSequenceLength={state.sequence.length} />
       </div>
@@ -134,10 +180,12 @@ export function GameContainer() {
         <GameBoard
           activeLitColor={activeLitColor}
           isDisabled={isBoardDisabled}
+          popups={popups}
           onColorClick={(color) => {
             if (state.status === GameStatus.Idle || state.status === GameStatus.GameOver) {
               startGame(routeMode)
             } else if (state.status === GameStatus.PlayerTurn) {
+              addPopup('+10')
               submitInput(color)
             }
           }}
@@ -163,9 +211,23 @@ export function GameContainer() {
         onClose={() => setShowGameOverModal(false)}
         title="GAME OVER"
       >
-        <div className="flex flex-col items-center gap-4 py-1 text-center select-none">
+        <div className="flex flex-col items-center gap-3.5 py-1 text-center select-none">
 
-          {/* Animated Skull / Emblem Mark */}
+          {/* New Record Banner if player achieved a new High Score */}
+          {isNewRecord && (
+            <motion.div
+              initial={{ scale: 0.8, y: -10, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              transition={{ type: 'spring', bounce: 0.6 }}
+              className="flex w-full items-center justify-center gap-1.5 rounded-2xl border-2 border-[#fcd34d] bg-gradient-to-r from-[#d97706] via-[#f59e0b] to-[#d97706] px-4 py-1.5 text-xs font-black uppercase tracking-widest text-[#3a1d0d] shadow-[0_0_20px_rgba(252,211,77,0.7)]"
+            >
+              <span>👑</span>
+              <span>NEW PERSONAL HIGH SCORE!</span>
+              <span>👑</span>
+            </motion.div>
+          )}
+
+          {/* Animated Emblem Mark */}
           <motion.div
             initial={{ scale: 0.5, rotate: -15, opacity: 0 }}
             animate={showGameOverModal ? { scale: 1, rotate: 0, opacity: 1 } : {}}
@@ -173,12 +235,12 @@ export function GameContainer() {
             aria-hidden="true"
             className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#78350f] bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#450a0a] text-3xl shadow-[inset_0_2px_0_rgba(255,255,255,0.4),0_6px_12px_rgba(0,0,0,0.6)]"
           >
-            💀
+            {isNewRecord ? '🏆' : '💀'}
           </motion.div>
 
           <div>
             <h2 className="text-xl font-black uppercase tracking-wider text-[#fca5a5]">
-              PATTERN LOST!
+              {isNewRecord ? 'NEW RECORD!' : 'PATTERN LOST!'}
             </h2>
             <p className="mt-1 text-xs font-bold text-[#ffe49e]/70 uppercase tracking-widest">
               REACHED ROUND {state.round}
@@ -248,3 +310,4 @@ export function GameContainer() {
     </div>
   )
 }
+

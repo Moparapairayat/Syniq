@@ -8,6 +8,7 @@ import {
 } from '@/components/ui'
 import { useSettings } from '@/hooks/useSettings'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { ForestParticles } from '@/components/effects/ForestParticles'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 interface OptionItem<T extends string> {
@@ -115,9 +116,12 @@ export default function SettingsPage() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.05 }}
-        className="simon-landing-card relative flex flex-col items-center justify-center p-3.5 sm:p-4 overflow-y-auto"
+        className="simon-landing-card relative flex flex-col items-center justify-center p-3.5 sm:p-4 overflow-hidden overflow-y-auto"
         style={{ backgroundImage: `url(${simonForestBackground})` }}
       >
+        {/* Ambient Forest Particles Overlay */}
+        <ForestParticles />
+
         <div className="simon-landing-sky" aria-hidden="true" />
         <div className="simon-landing-hills" aria-hidden="true" />
 
