@@ -6,7 +6,6 @@ import { RoutePath } from '@/routes/routePaths'
 import { playerService, dailyStreakService } from '@/services'
 import type { DailyStreakData } from '@/services'
 import { GameMode } from '@/core/game/GameMode'
-import { FEATURES } from '@/config/features'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 export default function HomePage() {
@@ -53,11 +52,9 @@ export default function HomePage() {
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.25" /><path d="M5.5 20c.6-3.4 3-5.25 6.5-5.25s5.9 1.85 6.5 5.25" /></svg>
           </button>
           <div className="flex items-center gap-1.5">
-            {FEATURES.SHOW_DAILY_CHALLENGE && (
-              <span className="simon-coin-counter font-mono font-black text-[#fcd34d]">
-                🔥 {streakData?.currentStreak || 0} DAY STREAK
-              </span>
-            )}
+            <span className="simon-coin-counter font-mono font-black text-[#fcd34d]">
+              🔥 {streakData?.currentStreak || 0} DAY STREAK
+            </span>
             <span className="simon-coin-counter">✦ {highScore.toLocaleString()}</span>
           </div>
         </div>
@@ -96,9 +93,7 @@ export default function HomePage() {
         </div>
         <div className="simon-launch-actions">
           <button onClick={() => startMode(GameMode.Classic)} type="button" className="simon-action-button is-start"><span className="simon-start-wood-icon" aria-hidden="true">▶</span>Start new game</button>
-          {FEATURES.SHOW_DAILY_CHALLENGE && (
-            <button onClick={() => startMode(GameMode.DailyChallenge)} type="button" className="simon-action-button is-continue border border-[#fcd34d]/60 bg-gradient-to-b from-[#78350f] to-[#3a1d0d] text-[#fcd34d] font-bold">🎯 Daily Challenge <small>🔥 {streakData?.currentStreak || 0} Day Streak</small></button>
-          )}
+          <button onClick={() => startMode(GameMode.DailyChallenge)} type="button" className="simon-action-button is-continue border border-[#fcd34d]/60 bg-gradient-to-b from-[#78350f] to-[#3a1d0d] text-[#fcd34d] font-bold">🎯 Daily Challenge <small>🔥 {streakData?.currentStreak || 0} Day Streak</small></button>
         </div>
       </motion.div>
     </div>

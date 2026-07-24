@@ -7,13 +7,12 @@ import type { Achievement } from '@/models/Achievement'
 import type { DailyStreakData } from '@/services'
 import { AvatarDisplay, AVATARS, AVATAR_SETS } from '@/components/avatar'
 import { cn } from '@/utils/classNames'
-import { FEATURES } from '@/config/features'
 
 function getRankInfo(score: number): { label: string; cls: string; icon: string; next: number; color: string } {
-  if (score < 50)  return { label: 'Novice',  cls: 'rank-novice',  icon: '🔰', next: 50,  color: '#9ca3af' }
-  if (score < 150) return { label: 'Expert',  cls: 'rank-expert',  icon: '⚡', next: 150, color: '#38bdf8' }
-  if (score < 400) return { label: 'Master',  cls: 'rank-master',  icon: '💎', next: 400, color: '#c084fc' }
-  return              { label: 'Legend',  cls: 'rank-legend',  icon: '👑', next: Infinity, color: '#fbbf24' }
+  if (score < 50) return { label: 'Novice', cls: 'rank-novice', icon: '🔰', next: 50, color: '#9ca3af' }
+  if (score < 150) return { label: 'Expert', cls: 'rank-expert', icon: '⚡', next: 150, color: '#38bdf8' }
+  if (score < 400) return { label: 'Master', cls: 'rank-master', icon: '💎', next: 400, color: '#c084fc' }
+  return { label: 'Legend', cls: 'rank-legend', icon: '👑', next: Infinity, color: '#fbbf24' }
 }
 
 /* Animated circular stat ring */
@@ -211,29 +210,27 @@ export function PlayerProfileCard() {
       </div>
 
       {/* ── Daily Play Streak Mission Card ── */}
-      {FEATURES.SHOW_DAILY_CHALLENGE && (
-        <div className="rounded-2xl border border-[#fcd34d]/60 bg-gradient-to-r from-[#78350f]/80 via-[#3a1d0d]/90 to-[#78350f]/80 p-3 flex items-center justify-between shadow-[0_0_12px_rgba(252,211,77,0.2)]">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-xl shadow-inner">
-              🔥
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#fcd34d]">
-                DAILY PLAY STREAK
-              </span>
-              <span className="text-sm font-black text-[#fff3cd]">
-                {streakData?.currentStreak || 0} Day{streakData?.currentStreak === 1 ? '' : 's'} Active
-              </span>
-            </div>
+      <div className="rounded-2xl border border-[#fcd34d]/60 bg-gradient-to-r from-[#78350f]/80 via-[#3a1d0d]/90 to-[#78350f]/80 p-3 flex items-center justify-between shadow-[0_0_12px_rgba(252,211,77,0.2)]">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-xl shadow-inner">
+            🔥
           </div>
-          <div className="flex flex-col items-end text-right">
-            <span className="text-[9px] font-bold text-[#ffe49e]/70 uppercase tracking-wider">HIGHEST</span>
-            <span className="font-mono text-xs font-black text-[#38bdf8]">
-              🔥 {streakData?.highestStreak || 0} DAYS
+          <div className="flex flex-col text-left">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#fcd34d]">
+              DAILY PLAY STREAK
+            </span>
+            <span className="text-sm font-black text-[#fff3cd]">
+              {streakData?.currentStreak || 0} Day{streakData?.currentStreak === 1 ? '' : 's'} Active
             </span>
           </div>
         </div>
-      )}
+        <div className="flex flex-col items-end text-right">
+          <span className="text-[9px] font-bold text-[#ffe49e]/70 uppercase tracking-wider">HIGHEST</span>
+          <span className="font-mono text-xs font-black text-[#38bdf8]">
+            🔥 {streakData?.highestStreak || 0} DAYS
+          </span>
+        </div>
+      </div>
 
       {/* ── Stat Rings ── */}
       <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
@@ -246,56 +243,54 @@ export function PlayerProfileCard() {
       </div>
 
       {/* ── Achievements Badges Section ── */}
-      {FEATURES.SHOW_BADGE_SYSTEM && (
-        <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">
-              🏆 Achievement Badges
-            </p>
-            <span className="font-mono text-[10px] font-black text-[#fcd34d]">
-              {achievements.filter((a) => a.unlockedAt).length}/{achievements.length} UNLOCKED
-            </span>
-          </div>
-
-          {/* Badges Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-            {achievements.slice(0, 8).map((a) => {
-              const isUnlocked = Boolean(a.unlockedAt)
-              return (
-                <div
-                  key={a.id}
-                  title={`${a.title}: ${a.description}`}
-                  className="group relative flex flex-col items-center gap-0.5 rounded-xl p-2 border transition-all cursor-default text-center"
-                  style={{
-                    background: isUnlocked ? 'rgba(252,211,77,0.14)' : 'rgba(42,19,7,0.5)',
-                    borderColor: isUnlocked ? '#fcd34d' : 'rgba(120,67,30,0.4)',
-                    opacity: isUnlocked ? 1 : 0.55,
-                  }}
-                >
-                  <span className="text-xl" style={{ filter: isUnlocked ? 'none' : 'grayscale(1)' }}>
-                    {a.icon}
-                  </span>
-                  <span className="text-[9.5px] font-black text-[#fff3cd] leading-tight truncate w-full">
-                    {a.title}
-                  </span>
-                  <span className="text-[8px] font-medium text-[#ffe49e]/70 leading-none line-clamp-1">
-                    {a.description}
-                  </span>
-                  {isUnlocked ? (
-                    <span className="mt-0.5 text-[7.5px] font-black text-[#fcd34d] uppercase tracking-wider">
-                      UNLOCKED
-                    </span>
-                  ) : (
-                    <span className="mt-0.5 text-[7.5px] font-bold text-[#ffe49e]/40 uppercase tracking-wider">
-                      LOCKED 🔒
-                    </span>
-                  )}
-                </div>
-              )
-            })}
-          </div>
+      <div className="rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-[10px] font-black tracking-widest text-[#ffe49e] uppercase">
+            🏆 Achievement Badges
+          </p>
+          <span className="font-mono text-[10px] font-black text-[#fcd34d]">
+            {achievements.filter((a) => a.unlockedAt).length}/{achievements.length} UNLOCKED
+          </span>
         </div>
-      )}
+
+        {/* Badges Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+          {achievements.slice(0, 8).map((a) => {
+            const isUnlocked = Boolean(a.unlockedAt)
+            return (
+              <div
+                key={a.id}
+                title={`${a.title}: ${a.description}`}
+                className="group relative flex flex-col items-center gap-0.5 rounded-xl p-2 border transition-all cursor-default text-center"
+                style={{
+                  background: isUnlocked ? 'rgba(252,211,77,0.14)' : 'rgba(42,19,7,0.5)',
+                  borderColor: isUnlocked ? '#fcd34d' : 'rgba(120,67,30,0.4)',
+                  opacity: isUnlocked ? 1 : 0.55,
+                }}
+              >
+                <span className="text-xl" style={{ filter: isUnlocked ? 'none' : 'grayscale(1)' }}>
+                  {a.icon}
+                </span>
+                <span className="text-[9.5px] font-black text-[#fff3cd] leading-tight truncate w-full">
+                  {a.title}
+                </span>
+                <span className="text-[8px] font-medium text-[#ffe49e]/70 leading-none line-clamp-1">
+                  {a.description}
+                </span>
+                {isUnlocked ? (
+                  <span className="mt-0.5 text-[7.5px] font-black text-[#fcd34d] uppercase tracking-wider">
+                    UNLOCKED
+                  </span>
+                ) : (
+                  <span className="mt-0.5 text-[7.5px] font-bold text-[#ffe49e]/40 uppercase tracking-wider">
+                    LOCKED 🔒
+                  </span>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
     </div>
   )
 }
