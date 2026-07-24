@@ -96,39 +96,43 @@
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Engineering Tools
 
 <a id="tech-stack"></a>
 
-### Core & Frontend
+### Frontend Engineering & UI Core
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,html,css,js,figma" alt="Core engineering icons" />
+  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,html,css,js" alt="Core engineering icons" />
   <br><br>
   <img src="https://img.shields.io/badge/React_19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black&labelColor=0D1117" alt="React 19" />
-  <img src="https://img.shields.io/badge/TypeScript_6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white&labelColor=0D1117" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Vite_8.1-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=0D1117" alt="Vite" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS_4.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white&labelColor=0D1117" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white&labelColor=0D1117" alt="Framer Motion" />
+  <img src="https://img.shields.io/badge/React_Router_7.1-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white&labelColor=0D1117" alt="React Router 7" />
+  <img src="https://img.shields.io/badge/TypeScript_6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white&labelColor=0D1117" alt="TypeScript 6" />
+  <img src="https://img.shields.io/badge/Vite_8.1-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=0D1117" alt="Vite 8" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS_4.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white&labelColor=0D1117" alt="Tailwind CSS 4" />
+  <img src="https://img.shields.io/badge/Framer_Motion_12-0055FF?style=for-the-badge&logo=framer&logoColor=white&labelColor=0D1117" alt="Framer Motion 12" />
 </p>
 
-### Storage, Audio & Offline Engine
+### Storage, Audio, Haptics & PWA Offline Engine
 
 <p align="center">
-  <img src="https://img.shields.io/badge/IndexedDB_Async-0D1117?style=for-the-badge&labelColor=0D1117&color=F97316" alt="IndexedDB" />
-  <img src="https://img.shields.io/badge/Web_Audio_Synthesizer-0D1117?style=for-the-badge&labelColor=0D1117&color=10B981" alt="Web Audio API" />
-  <img src="https://img.shields.io/badge/PWA_Offline_Engine-0D1117?style=for-the-badge&labelColor=0D1117&color=7C3AED" alt="PWA" />
-  <img src="https://img.shields.io/badge/Domain_Driven_OOP-0D1117?style=for-the-badge&labelColor=0D1117&color=38BDF8" alt="OOP Engine" />
+  <img src="https://img.shields.io/badge/IndexedDB_Async_Engine-0D1117?style=for-the-badge&labelColor=0D1117&color=F97316" alt="IndexedDB Engine" />
+  <img src="https://img.shields.io/badge/Web_Audio_Harmonics-0D1117?style=for-the-badge&labelColor=0D1117&color=10B981" alt="Web Audio API" />
+  <img src="https://img.shields.io/badge/Tactile_Haptics_API-0D1117?style=for-the-badge&labelColor=0D1117&color=EC4899" alt="Haptics API" />
+  <img src="https://img.shields.io/badge/Vite_PWA_Offline_1.3-0D1117?style=for-the-badge&labelColor=0D1117&color=7C3AED" alt="PWA Engine" />
+  <img src="https://img.shields.io/badge/Domain_Driven_OOP_Core-0D1117?style=for-the-badge&labelColor=0D1117&color=38BDF8" alt="OOP Engine" />
 </p>
 
-### Quality Assurance & Tooling
+### Testing, Code Quality & Development Tooling
 
 <p align="center">
   <img src="https://skillicons.dev/icons?i=vitest,vscode,git,github" alt="Tooling icons" />
   <br><br>
-  <img src="https://img.shields.io/badge/Vitest_Unit_Suite-6E9F18?style=for-the-badge&logo=vitest&logoColor=white&labelColor=0D1117" alt="Vitest" />
-  <img src="https://img.shields.io/badge/ESLint_Strict-4B32C3?style=for-the-badge&logo=eslint&logoColor=white&labelColor=0D1117" alt="ESLint" />
-  <img src="https://img.shields.io/badge/MIT_License-0D1117?style=for-the-badge&labelColor=0D1117&color=EAB308" alt="MIT License" />
+  <img src="https://img.shields.io/badge/Vitest_4.1-6E9F18?style=for-the-badge&logo=vitest&logoColor=white&labelColor=0D1117" alt="Vitest 4" />
+  <img src="https://img.shields.io/badge/Testing_Library-E33332?style=for-the-badge&logo=testinglibrary&logoColor=white&labelColor=0D1117" alt="Testing Library" />
+  <img src="https://img.shields.io/badge/JSDOM_29-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black&labelColor=0D1117" alt="JSDOM" />
+  <img src="https://img.shields.io/badge/ESLint_9-4B32C3?style=for-the-badge&logo=eslint&logoColor=white&labelColor=0D1117" alt="ESLint 9" />
+  <img src="https://img.shields.io/badge/Prettier_3-F7B93E?style=for-the-badge&logo=prettier&logoColor=black&labelColor=0D1117" alt="Prettier 3" />
 </p>
 
 ---
