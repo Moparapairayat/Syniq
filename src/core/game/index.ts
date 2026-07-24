@@ -1,7 +1,5 @@
 export { GameEngine } from './GameEngine'
 export type { GameEngineDependencies, GameStateChangeListener } from './GameEngine'
-export { GameSession } from './GameSession'
-export type { GameSessionOptions } from './GameSession'
 export { GameStatus } from './GameStatus'
 export { SimonColor } from './SimonColor'
 export { Difficulty } from './Difficulty'

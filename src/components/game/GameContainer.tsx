@@ -82,8 +82,10 @@ export function GameContainer() {
       Promise.resolve().then(() => setShowGameOverModal(true))
       return () => clearTimeout(timer)
     } else {
-      Promise.resolve().then(() => setShowGameOverModal(false))
-      setShowConfetti(false)
+      Promise.resolve().then(() => {
+        setShowGameOverModal(false)
+        setShowConfetti(false)
+      })
     }
   }, [state.score, state.status, state.round, routeMode])
 

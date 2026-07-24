@@ -1,7 +1,5 @@
 export { GameContainer } from './GameContainer'
 export { GameBoard } from './GameBoard'
-export { SimonButton } from './SimonButton'
-export { ScorePanel } from './ScorePanel'
 export { StatusPanel } from './StatusPanel'
 export { ControlPanel } from './ControlPanel'
-export { GameModeCard } from './GameModeCard'
+
