@@ -38,7 +38,7 @@
 ### Core & Frontend
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,html,css,figma" alt="Core engineering icons" />
+  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,html,css,js,figma" alt="Core engineering icons" />
   <br><br>
   <img src="https://img.shields.io/badge/React_19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black&labelColor=0D1117" alt="React 19" />
   <img src="https://img.shields.io/badge/TypeScript_6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white&labelColor=0D1117" alt="TypeScript" />
