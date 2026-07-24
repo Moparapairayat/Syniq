@@ -38,11 +38,8 @@ export default function HomePage() {
   }
 
   return (
-    <div className="simon-home-screen select-none flex flex-col items-center justify-center p-3">
-      {/* PWA Install Notification Bar (Cleanly placed above game card) */}
-      <div className="w-full max-w-[440px] mb-2 z-20">
-        <PWAInstallBanner />
-      </div>
+    <div className="simon-home-screen select-none">
+      <PWAInstallBanner />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
