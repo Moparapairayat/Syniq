@@ -31,15 +31,68 @@
 
 ---
 
-## 🎓 Academic Project Information
+<div align="center">
 
-| Field | Information |
-| :--- | :--- |
-| **Student Name** | Mopara Pair Ayat |
-| **Instructor** | Ziana Mehnaz Ruhee |
-| **Institution** | BITHM College Of Professionals |
-| **Level** | OTHM Level 4 in IT |
-| **Subject Name** | Software Engineering |
+  <a id="academic-submission"></a>
+
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3987-4801-a50e-c67081e2b58b.gif" width="100%" alt="Header Divider Animation" />
+
+  <h2>📜 ACADEMIC SUBMISSION & COURSE DOSSIER</h2>
+
+  <p align="center">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=700&size=19&pause=1400&color=FCD34D&center=true&vCenter=true&width=850&lines=%E2%9C%A8+Software+Engineering+Major+Coursework+%E2%9C%A8;Student%3A+Mopara+Pair+Ayat;Instructor%3A+Ziana+Mehnaz+Ruhee;Institution%3A+BITHM+College+Of+Professionals;Qualification%3A+OTHM+Level+5+in+IT%2FCSE" alt="Academic Header Typing Banner" />
+  </p>
+
+  <p align="center">
+    <a href="#academic-submission"><img src="https://img.shields.io/badge/STUDENT_NAME-Mopara_Pair_Ayat-0EA5E9?style=for-the-badge&logo=github&logoColor=white&labelColor=0D1117" alt="Student Name" /></a>
+    <a href="#academic-submission"><img src="https://img.shields.io/badge/INSTRUCTOR-Ziana_Mehnaz_Ruhee-F59E0B?style=for-the-badge&logo=award&logoColor=white&labelColor=0D1117" alt="Instructor" /></a>
+  </p>
+
+  <p align="center">
+    <a href="#academic-submission"><img src="https://img.shields.io/badge/INSTITUTION-BITHM_College_Of_Professionals-10B981?style=for-the-badge&logo=graduation-cap&logoColor=white&labelColor=0D1117" alt="Institution" /></a>
+  </p>
+
+  <p align="center">
+    <a href="#academic-submission"><img src="https://img.shields.io/badge/QUALIFICATION-OTHM_Level_5_in_IT%2FCSE-8B5CF6?style=for-the-badge&labelColor=0D1117" alt="Qualification" /></a>
+    <a href="#academic-submission"><img src="https://img.shields.io/badge/SUBJECT-Software_Engineering-EC4899?style=for-the-badge&labelColor=0D1117" alt="Subject" /></a>
+  </p>
+
+  <br>
+
+  <table align="center" width="95%">
+    <thead>
+      <tr>
+        <th align="center" width="35%">⚜️ Specification Field</th>
+        <th align="left" width="65%">🏆 Academic Record</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="center"><b>👤 Student Name</b></td>
+        <td><code>Mopara Pair Ayat</code> &nbsp;&nbsp; 🌟 <i>Primary Developer</i></td>
+      </tr>
+      <tr>
+        <td align="center"><b>👩‍🏫 Course Instructor</b></td>
+        <td><code>Ziana Mehnaz Ruhee</code> &nbsp;&nbsp; 🎓 <i>Project Evaluator & Mentor</i></td>
+      </tr>
+      <tr>
+        <td align="center"><b>🏛️ Educational Institute</b></td>
+        <td><b>BITHM College Of Professionals</b> &nbsp;&nbsp; 🏫 <i>Affiliated Campus</i></td>
+      </tr>
+      <tr>
+        <td align="center"><b>📜 Qualification Level</b></td>
+        <td><code>OTHM Level 5 in IT/CSE</code> &nbsp;&nbsp; 🇬🇧 <i>UK Regulated Framework</i></td>
+      </tr>
+      <tr>
+        <td align="center"><b>📚 Subject Name</b></td>
+        <td><code>Software Engineering</code> &nbsp;&nbsp; 💻 <i>Core Computer Science Unit</i></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3987-4801-a50e-c67081e2b58b.gif" width="100%" alt="Divider Animation" />
+
+</div>
 
 ---
 
