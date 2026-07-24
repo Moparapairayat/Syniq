@@ -1,6 +1,30 @@
 import type { PlayerProfile } from '@/models/Player'
 import { playerRepository } from '@/repositories/PlayerRepository'
 
+const COOL_GAMING_NAMES = [
+  'CyberNova',
+  'NeonKnight',
+  'ShadowPulse',
+  'PixelMaster',
+  'VortexStriker',
+  'AeroSpark',
+  'TitanMind',
+  'QuantumBlaze',
+  'HyperGhost',
+  'ZenithRogue',
+  'SonicPulse',
+  'StarlightHero',
+  'TurboEcho',
+  'GlitchMaster',
+  'SolarVortex',
+] as const
+
+export function getRandomGamingName(): string {
+  const randomIndex = Math.floor(Math.random() * COOL_GAMING_NAMES.length)
+  const randomNumber = Math.floor(Math.random() * 89 + 10)
+  return `${COOL_GAMING_NAMES[randomIndex]}${randomNumber}`
+}
+
 /**
  * Handles coordination of player configurations and statistical telemetry updates.
  */
@@ -23,7 +47,7 @@ export class PlayerService {
 
       const newProfile: PlayerProfile = {
         id: this.#defaultId,
-        name: 'Agent 1',
+        name: getRandomGamingName(),
         createdAt: new Date(),
         gamesPlayed: 0,
         highestScore: 0,
@@ -35,7 +59,7 @@ export class PlayerService {
       console.warn('Failed to load profile from IndexedDB, using fallback:', error)
       return {
         id: this.#defaultId,
-        name: 'Agent 1',
+        name: getRandomGamingName(),
         createdAt: new Date(),
         gamesPlayed: 0,
         highestScore: 0,
@@ -67,7 +91,7 @@ export class PlayerService {
     const profile = await this.getOrCreateProfile()
     const updatedProfile: PlayerProfile = {
       ...profile,
-      name: newName.trim() || 'Agent 1',
+      name: newName.trim() || getRandomGamingName(),
     }
     await playerRepository.put(updatedProfile)
     this.notifyUpdate()

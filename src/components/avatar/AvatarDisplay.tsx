@@ -19,17 +19,14 @@ export function AvatarDisplay({
   return (
     <div
       className={cn('relative overflow-hidden rounded-full', ringClass, className)}
-      style={{ width: size, height: size, flexShrink: 0 }}
-    >
-      <div
-        style={{
-          width: size * 2,
-          height: size * 2,
-          backgroundImage: `url(${src})`,
-          backgroundSize: '200% 200%',
-          backgroundPosition: avatar.pos,
-        }}
-      />
-    </div>
+      style={{
+        width: size,
+        height: size,
+        flexShrink: 0,
+        backgroundImage: `url(${src})`,
+        backgroundSize: '200% 200%',
+        backgroundPosition: avatar.pos,
+      }}
+    />
   )
 }

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { mainNavigationItems } from '@/routes/navigation'
 import { cn } from '@/utils/classNames'
 import { playerService } from '@/services'
+import { getRandomGamingName } from '@/services/PlayerService'
 import { useTheme } from '@/context/themeStore'
 import { NicknameAuthModal } from '@/components/auth/NicknameAuthModal'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
@@ -63,7 +64,7 @@ const NavIcons: Record<string, (active: boolean) => React.ReactNode> = {
 export function AppLayout() {
   const [showSplash, setShowSplash] = useState(true)
   const [splashProgress, setSplashProgress] = useState(0)
-  const [playerName, setPlayerName] = useState('Agent')
+  const [playerName, setPlayerName] = useState(() => getRandomGamingName())
   const [highScore, setHighScore] = useState(0)
   const [avatarId, setAvatarId] = useState(1)
   const [showAuthModal, setShowAuthModal] = useState(false)
@@ -75,14 +76,19 @@ export function AppLayout() {
 
   useEffect(() => {
     playerService.getOrCreateProfile().then((p) => {
-      setPlayerName(p.name)
+      let nameToUse = p.name
+      if (!p.name || p.name.startsWith('Agent')) {
+        nameToUse = getRandomGamingName()
+        playerService.renamePlayer(nameToUse).catch(() => undefined)
+      }
+      setPlayerName(nameToUse)
       setHighScore(p.highestScore)
       const stored = localStorage.getItem('syniq-avatar-id')
       if (stored) setAvatarId(parseInt(stored, 10))
 
       const isAuthSet = localStorage.getItem('syniq-nickname-set')
-      if (!isAuthSet || p.name.startsWith('Player 1')) {
-        setTimeout(() => setShowAuthModal(true), 1500)
+      if (!isAuthSet) {
+        setTimeout(() => setShowAuthModal(true), 1200)
       }
     }).catch(() => { })
   }, [location.pathname])

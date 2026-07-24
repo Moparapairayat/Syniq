@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { playerService } from '@/services'
+import { getRandomGamingName } from '@/services/PlayerService'
 import { AVATARS, AVATAR_SETS } from '@/components/avatar'
 
 interface NicknameAuthModalProps {
@@ -18,7 +19,11 @@ export function NicknameAuthModal({
   initialAvatarId = 1,
   onAuthSuccess,
 }: NicknameAuthModalProps) {
-  const [name, setName] = useState(initialName)
+  const [name, setName] = useState(() =>
+    !initialName || initialName.startsWith('Agent')
+      ? getRandomGamingName()
+      : initialName,
+  )
   const [selectedAvatarId, setSelectedAvatarId] = useState(initialAvatarId)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -152,17 +157,29 @@ export function NicknameAuthModal({
                 <span className="text-[#ffe49e] uppercase tracking-widest">PLAYER NAME</span>
                 <span className="text-[#ffe49e]/70">{name.length} / 15</span>
               </div>
-              <input
-                type="text"
-                maxLength={15}
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value)
-                  if (error) setError(null)
-                }}
-                placeholder="Enter player name"
-                className="w-full rounded-xl border border-[#78431e] bg-[#2a1307] px-3.5 py-2.5 text-xs font-black text-[#fff3cd] placeholder-[#ffe49e]/40 outline-none focus:border-[#fcd34d] shadow-inner"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  maxLength={15}
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value)
+                    if (error) setError(null)
+                  }}
+                  placeholder="Enter player name"
+                  style={{ backgroundColor: '#2a1307', color: '#fff3cd' }}
+                  className="flex-grow rounded-xl border border-[#78431e] bg-[#2a1307] px-3.5 py-2 text-xs font-black text-[#fff3cd] placeholder-[#ffe49e]/40 outline-none focus:border-[#fcd34d] shadow-inner"
+                />
+                <button
+                  type="button"
+                  onClick={() => setName(getRandomGamingName())}
+                  aria-label="Generate random name"
+                  title="Roll random gaming name"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#78350f] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] text-sm text-[#3a1d0d] shadow-sm hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+                >
+                  🎲
+                </button>
+              </div>
               {error && (
                 <span className="text-xs font-black text-rose-400 drop-shadow">{error}</span>
               )}
