@@ -1,15 +1,96 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Syniq">
-  <rect width="64" height="64" rx="14" fill="#101215" />
-  <path
-    fill="#9cbcff"
-    d="M18 20.5C18 16.9 20.9 14 24.5 14h15C43.1 14 46 16.9 46 20.5S43.1 27 39.5 27h-15C20.9 27 18 24.1 18 20.5Z"
-  />
-  <path
-    fill="#8de0c0"
-    d="M18 43.5C18 39.9 20.9 37 24.5 37h15C43.1 37 46 39.9 46 43.5S43.1 50 39.5 50h-15C20.9 50 18 47.1 18 43.5Z"
-  />
-  <path
-    fill="#f4f7fb"
-    d="M26 32a6 6 0 0 1 6-6h6a6 6 0 0 1 0 12h-6a6 6 0 0 1-6-6Z"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="SYNIQ Memory Challenge">
+  <defs>
+    <!-- Outer Bezel Gold Gradient -->
+    <linearGradient id="goldBezel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff3cd"/>
+      <stop offset="30%" stop-color="#fcd34d"/>
+      <stop offset="70%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#54290c"/>
+    </linearGradient>
+
+    <!-- Wood Background Gradient -->
+    <linearGradient id="woodBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#753f1a"/>
+      <stop offset="40%" stop-color="#54290c"/>
+      <stop offset="100%" stop-color="#2a1307"/>
+    </linearGradient>
+
+    <!-- Green Emerald Gem -->
+    <linearGradient id="greenGem" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a3f380"/>
+      <stop offset="45%" stop-color="#4ade80"/>
+      <stop offset="85%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+
+    <!-- Red Ruby Gem -->
+    <linearGradient id="redGem" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fca5a5"/>
+      <stop offset="45%" stop-color="#f87171"/>
+      <stop offset="85%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#7f1d1d"/>
+    </linearGradient>
+
+    <!-- Blue Sapphire Gem -->
+    <linearGradient id="blueGem" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#bae6fd"/>
+      <stop offset="45%" stop-color="#38bdf8"/>
+      <stop offset="85%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+
+    <!-- Yellow Topaz Gem -->
+    <linearGradient id="yellowGem" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="45%" stop-color="#fde047"/>
+      <stop offset="85%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#854d0e"/>
+    </linearGradient>
+
+    <!-- Gloss Glare Gradient -->
+    <linearGradient id="glossGlare" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Center Core Gold -->
+    <linearGradient id="coreGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#fff3cd"/>
+      <stop offset="70%" stop-color="#fcd34d"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer 3D Plaque Shield Base -->
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#goldBezel)" />
+  <rect x="28" y="28" width="456" height="456" rx="100" fill="url(#woodBg)" stroke="#3e2211" stroke-width="6" />
+
+  <!-- Inner Bezel Ring -->
+  <circle cx="256" cy="256" r="204" fill="none" stroke="#78431e" stroke-width="8" opacity="0.6" />
+
+  <!-- SIMON GEMSTONE QUADRANTS -->
+  <!-- Top-Left GREEN Pad -->
+  <path d="M 120 240 L 240 240 L 240 120 C 173.7 120 120 173.7 120 240 Z" fill="url(#greenGem)" stroke="#1c590d" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="180" cy="165" rx="35" ry="15" fill="url(#glossGlare)" transform="rotate(-35 180 165)" />
+
+  <!-- Top-Right RED Pad -->
+  <path d="M 272 120 L 272 240 L 392 240 C 392 173.7 338.3 120 272 120 Z" fill="url(#redGem)" stroke="#7f1d1d" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="332" cy="165" rx="35" ry="15" fill="url(#glossGlare)" transform="rotate(35 332 165)" />
+
+  <!-- Bottom-Left BLUE Pad -->
+  <path d="M 120 272 C 120 338.3 173.7 392 240 392 L 240 272 L 120 272 Z" fill="url(#blueGem)" stroke="#0c4a6e" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="180" cy="347" rx="35" ry="15" fill="url(#glossGlare)" transform="rotate(35 180 347)" />
+
+  <!-- Bottom-Right YELLOW Pad -->
+  <path d="M 272 272 L 272 392 C 338.3 392 392 338.3 392 272 L 272 272 Z" fill="url(#yellowGem)" stroke="#854d0e" stroke-width="8" stroke-linejoin="round" />
+  <ellipse cx="332" cy="347" rx="35" ry="15" fill="url(#glossGlare)" transform="rotate(-35 332 347)" />
+
+  <!-- CENTER GOLD ORB HUB -->
+  <circle cx="256" cy="256" r="62" fill="url(#goldBezel)" />
+  <circle cx="256" cy="256" r="54" fill="#2a1307" stroke="#78431e" stroke-width="4" />
+  <circle cx="256" cy="256" r="44" fill="url(#woodBg)" />
+
+  <!-- Center Diamond Sparkle Star -->
+  <path d="M 256 218 L 267 245 L 294 256 L 267 267 L 256 294 L 245 267 L 218 256 L 245 245 Z" fill="url(#coreGold)" />
 </svg>
