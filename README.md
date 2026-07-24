@@ -2,26 +2,27 @@
 
   <img src="./public/favicon.svg" alt="SYNIQ Logo" width="130" height="130" />
 
-  # ✦ SYNIQ — Modern Memory Challenge ✦
+  # SYNIQ — Modern Memory Challenge
 
-  **Next-Gen Cognitive Training Laboratory & 3D Memory Arena**
+  **Enterprise Cognitive Training Platform & 3D Memory Arena**
 
   <p align="center">
     <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=20&pause=1400&color=38BDF8&center=true&vCenter=true&width=900&lines=SYNIQ+3D+Memory+Challenge;React+19+%E2%80%A2+TypeScript+%E2%80%A2+Vite+%E2%80%A2+IndexedDB;Clean+SOLID+OOP+Architecture+%E2%80%A2+Zero-Warning+Quality" alt="Typing animation" />
   </p>
 
   <p align="center">
-    <img src="https://img.shields.io/badge/ACCESS_ONLINE-0D1117?style=for-the-badge&labelColor=0D1117&color=38BDF8" alt="Access online" />
-    <img src="https://img.shields.io/badge/AI_NATIVE_FLOW-0D1117?style=for-the-badge&labelColor=0D1117&color=7C3AED" alt="AI native flow" />
-    <img src="https://img.shields.io/badge/PRODUCTION_MODE-0D1117?style=for-the-badge&labelColor=0D1117&color=10B981" alt="Production mode" />
+    <img src="https://img.shields.io/badge/BUILD-PASSING-10B981?style=for-the-badge&labelColor=0D1117" alt="Build Passing" />
+    <img src="https://img.shields.io/badge/TESTS-14%2F14_PASSED-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="Tests Passed" />
+    <img src="https://img.shields.io/badge/TS_STRICT-6.0-3178C6?style=for-the-badge&labelColor=0D1117" alt="TypeScript Strict" />
+    <img src="https://img.shields.io/badge/LINT-ZERO_WARNINGS-7C3AED?style=for-the-badge&labelColor=0D1117" alt="Lint Zero Warnings" />
   </p>
 
   <p align="center">
-    <a href="#-next-zen-technology-universe"><img src="https://img.shields.io/badge/Tech_Universe-10B981?style=for-the-badge&labelColor=0D1117" alt="Tech Universe" /></a>
-    <a href="#-key-features"><img src="https://img.shields.io/badge/Key_Features-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="Key Features" /></a>
+    <a href="#-tech-stack"><img src="https://img.shields.io/badge/Tech_Stack-10B981?style=for-the-badge&labelColor=0D1117" alt="Tech Stack" /></a>
+    <a href="#-core-features"><img src="https://img.shields.io/badge/Core_Features-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="Core Features" /></a>
     <a href="#-game-modes"><img src="https://img.shields.io/badge/Game_Modes-7C3AED?style=for-the-badge&labelColor=0D1117" alt="Game Modes" /></a>
     <a href="#-architecture--oop-design"><img src="https://img.shields.io/badge/Architecture-F97316?style=for-the-badge&labelColor=0D1117" alt="Architecture" /></a>
-    <a href="#-installation--getting-started"><img src="https://img.shields.io/badge/Getting_Started-EF4444?style=for-the-badge&labelColor=0D1117" alt="Getting Started" /></a>
+    <a href="#-getting-started"><img src="https://img.shields.io/badge/Getting_Started-EF4444?style=for-the-badge&labelColor=0D1117" alt="Getting Started" /></a>
   </p>
 
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3987-4801-a50e-c67081e2b58b.gif" width="100%" alt="Header Divider Animation" />
@@ -30,14 +31,14 @@
 
 ---
 
-## ⚡ Next-Zen Technology Universe
+## 🛠️ Tech Stack
 
-<a id="next-zen-technology-universe"></a>
+<a id="tech-stack"></a>
 
-### 🌌 Core & Frontend Engineering
+### Core & Frontend
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,html,css,js,figma" alt="Core engineering icons" />
+  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,html,css,figma" alt="Core engineering icons" />
   <br><br>
   <img src="https://img.shields.io/badge/React_19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black&labelColor=0D1117" alt="React 19" />
   <img src="https://img.shields.io/badge/TypeScript_6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white&labelColor=0D1117" alt="TypeScript" />
@@ -46,7 +47,7 @@
   <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white&labelColor=0D1117" alt="Framer Motion" />
 </p>
 
-### 🗄️ Database, Audio & PWA Engine
+### Storage, Audio & Offline Engine
 
 <p align="center">
   <img src="https://img.shields.io/badge/IndexedDB_Async-0D1117?style=for-the-badge&labelColor=0D1117&color=F97316" alt="IndexedDB" />
@@ -55,7 +56,7 @@
   <img src="https://img.shields.io/badge/Domain_Driven_OOP-0D1117?style=for-the-badge&labelColor=0D1117&color=38BDF8" alt="OOP Engine" />
 </p>
 
-### 🧪 Quality, Tooling & Testing Stack
+### Quality Assurance & Tooling
 
 <p align="center">
   <img src="https://skillicons.dev/icons?i=vitest,vscode,git,github" alt="Tooling icons" />
@@ -67,7 +68,7 @@
 
 ---
 
-## 🚀 Overview
+## 📦 Overview
 
 **SYNIQ** (Simon Nexus) is an enterprise-grade, high-performance cognitive memory training application built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS**, and **Framer Motion**.
 
@@ -75,9 +76,9 @@ Featuring a **3D Wood & Gemstone Gaming Aesthetic**, Web Audio API sound synthes
 
 ---
 
-## ✨ Key Features
+## 🎯 Core Features
 
-<a id="key-features"></a>
+<a id="core-features"></a>
 
 - 🎮 **4 Distinct Training Modes**: Challenge forward recall, reverse sequence processing, accelerating speeds, and time-attack countdowns.
 - 🔊 **Web Audio Synthesizer**: Programmatic audio chime synthesis built with browser `AudioContext` and `OscillatorNode` instances (0 static audio file downloads required).
@@ -90,7 +91,7 @@ Featuring a **3D Wood & Gemstone Gaming Aesthetic**, Web Audio API sound synthes
 
 ---
 
-## 🎯 Game Modes
+## 🕹️ Game Modes
 
 <a id="game-modes"></a>
 
@@ -141,9 +142,9 @@ src/
 
 ---
 
-## 💻 Installation & Getting Started
+## ⚙️ Getting Started
 
-<a id="installation--getting-started"></a>
+<a id="getting-started"></a>
 
 ### Prerequisites
 - **Node.js**: `v18.0.0` or higher
@@ -174,7 +175,7 @@ src/
 
 ---
 
-## 🧪 Testing & Verification
+## 🧪 Quality & Verification
 
 SYNIQ maintains a zero-warning, zero-error code quality guarantee.
 
@@ -205,6 +206,6 @@ This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE)
 
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3987-4801-a50e-c67081e2b58b.gif" width="100%" alt="Footer Divider Animation" />
 
-  <sub>Built with ❤️ for cognitive training & visual memory precision.</sub>
+  <sub>Built with care for cognitive training & visual memory precision.</sub>
 
 </div>
