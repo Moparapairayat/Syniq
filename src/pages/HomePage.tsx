@@ -38,7 +38,12 @@ export default function HomePage() {
   }
 
   return (
-    <div className="simon-home-screen select-none flex flex-col items-center">
+    <div className="simon-home-screen select-none flex flex-col items-center justify-center p-3">
+      {/* PWA Install Notification Bar (Cleanly placed above game card) */}
+      <div className="w-full max-w-[440px] mb-2 z-20">
+        <PWAInstallBanner />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -59,7 +64,6 @@ export default function HomePage() {
             <span className="simon-coin-counter">✦ {highScore.toLocaleString()}</span>
           </div>
         </div>
-        <PWAInstallBanner />
         <button onClick={() => navigate(RoutePath.leaderboard)} type="button" className="simon-leaderboard-launch" aria-label="Open leaderboard">
           <span aria-hidden="true">♛</span>
           <span><small>Hall of fame</small><strong>Rankings</strong></span>
