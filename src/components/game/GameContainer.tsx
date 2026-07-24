@@ -8,8 +8,7 @@ import { StatusPanel } from './StatusPanel'
 import { ControlPanel } from './ControlPanel'
 import { GameStatus } from '@/core/game/GameStatus'
 import { GameMode } from '@/core/game/GameMode'
-import { playerService, leaderboardService, achievementService, dailyStreakService, audioService } from '@/services'
-import type { ScoreEntry } from '@/models/ScoreEntry'
+import { playerService, achievementService, dailyStreakService, audioService } from '@/services'
 import type { Achievement } from '@/models/Achievement'
 
 export function GameContainer() {
@@ -23,7 +22,6 @@ export function GameContainer() {
   const [showQuitDialog, setShowQuitDialog] = useState(false)
   const [screenFlash, setScreenFlash] = useState(false)
   const [bestScore, setBestScore] = useState(0)
-  const [topScores, setTopScores] = useState<ReadonlyArray<ScoreEntry>>([])
   const [newlyUnlocked, setNewlyUnlocked] = useState<ReadonlyArray<Achievement>>([])
   const prevStatusRef = useRef(state.status)
   const bestScoreRef = useRef(0)
@@ -47,9 +45,6 @@ export function GameContainer() {
       }
       Promise.resolve().then(() => setScreenFlash(true))
       const timer = setTimeout(() => setScreenFlash(false), 600)
-      leaderboardService.getTopScores().then((scores) => {
-        setTopScores(scores)
-      }).catch(() => undefined)
 
       achievementService.evaluateGameRun({
         round: state.round,
@@ -220,46 +215,6 @@ export function GameContainer() {
             </div>
           </div>
 
-          {/* Top 10 High Scores Section (Syllabus Requirement) */}
-          <div className="w-full rounded-2xl border border-[#8a4e22]/60 bg-[#2a1307]/80 p-3 text-left shadow-inner mt-1">
-            <div className="flex items-center justify-between pb-1.5 border-b border-[#78350f]/50">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#fcd34d]">
-                🏆 TOP 10 HIGH SCORES
-              </span>
-              <span className="text-[9px] font-bold text-[#ffe49e]/70">
-                GLOBAL RANKINGS
-              </span>
-            </div>
-            <div className="mt-2 max-h-32 overflow-y-auto pr-1 flex flex-col gap-1 custom-scrollbar">
-              {topScores.length === 0 ? (
-                <p className="py-2 text-center text-xs text-[#ffe49e]/60">No scores recorded yet</p>
-              ) : (
-                topScores.slice(0, 10).map((entry, idx) => (
-                  <div
-                    key={entry.id || idx}
-                    className={`flex items-center justify-between rounded-lg px-2.5 py-1 text-xs ${
-                      entry.score === state.score
-                        ? 'bg-[#d97706]/40 border border-[#fcd34d] font-bold text-[#fcd34d]'
-                        : 'bg-[#3e2211]/60 text-[#fff3cd]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="w-4 font-mono font-bold text-[10px] text-[#ffe49e]/70">
-                        #{idx + 1}
-                      </span>
-                      <span className="font-bold truncate max-w-[120px]">
-                        {entry.playerName}
-                      </span>
-                    </div>
-                    <span className="font-mono font-black text-[#fcd34d]">
-                      {entry.score} PTS
-                    </span>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
           {/* Action Buttons */}
           <div className="flex w-full flex-col gap-2.5 mt-2">
             <button
@@ -272,7 +227,7 @@ export function GameContainer() {
             <button
               type="button"
               onClick={() => { setShowGameOverModal(false); navigate('/leaderboard') }}
-              className="w-full rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] py-2.5 text-xs font-black uppercase tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform active:translate-y-0.5 cursor-pointer outline-none"
+              className="w-full rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] py-2.5 text-xs font-black uppercase tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:border-[#fcd34d]"
             >
               🏆 VIEW LEADERBOARD
             </button>
