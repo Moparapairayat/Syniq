@@ -7,7 +7,7 @@ vi.mock('@/services/StorageService', () => {
   const storeMap = new Map<string, Achievement>()
   return {
     storageService: {
-      executeTransaction: vi.fn().mockImplementation(async (_storeName, mode, callback) => {
+      executeTransaction: vi.fn().mockImplementation(async (_storeName, _mode, callback) => {
         const mockObjStore = {
           getAll: () => Array.from(storeMap.values()),
           put: (item: Achievement) => {
