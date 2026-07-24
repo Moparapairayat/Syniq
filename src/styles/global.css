@@ -2072,6 +2072,7 @@
   display: inline-block;
   background: linear-gradient(180deg, #fff3cd 0%, #ffd075 30%, #e59336 60%, #b8621b 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 1.5px #482006;
   filter: drop-shadow(0 6px 8px rgba(15, 8, 2, 0.6));
