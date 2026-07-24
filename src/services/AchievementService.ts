@@ -125,12 +125,17 @@ export class AchievementService {
       if (unlock) {
         const updated: Achievement = { ...achievement, unlockedAt: now }
         newlyUnlocked.push(updated)
-        await storageService.executeTransaction(
-          this.#storeName,
-          'readwrite',
-          (store) => store.put(updated),
-        ).catch(() => undefined)
       }
+    }
+
+    if (newlyUnlocked.length > 0) {
+      await Promise.all(
+        newlyUnlocked.map((item) =>
+          storageService
+            .executeTransaction(this.#storeName, 'readwrite', (store) => store.put(item))
+            .catch(() => undefined),
+        ),
+      )
     }
 
     return newlyUnlocked

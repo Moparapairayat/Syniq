@@ -25,7 +25,7 @@ export function GameContainer() {
   const [bestScore, setBestScore] = useState(0)
   const [topScores, setTopScores] = useState<ReadonlyArray<ScoreEntry>>([])
   const [newlyUnlocked, setNewlyUnlocked] = useState<ReadonlyArray<Achievement>>([])
-  const prevRound = useRef(state.round)
+  const prevStatusRef = useRef(state.status)
   const bestScoreRef = useRef(0)
 
   useEffect(() => {
@@ -68,15 +68,17 @@ export function GameContainer() {
     }
   }, [state.score, state.status, state.round, routeMode])
 
-  /* Screen flash on round clear */
+  /* Screen flash and harmonic chime on round clear */
   useEffect(() => {
-    if (state.round > prevRound.current && state.status === GameStatus.RoundCompleted) {
+    if (prevStatusRef.current !== GameStatus.RoundCompleted && state.status === GameStatus.RoundCompleted) {
       setScreenFlash(true)
       audioService.playHarmonicChime('round_clear')
-      setTimeout(() => setScreenFlash(false), 450)
+      const timer = setTimeout(() => setScreenFlash(false), 450)
+      prevStatusRef.current = state.status
+      return () => clearTimeout(timer)
     }
-    prevRound.current = state.round
-  }, [state.round, state.status])
+    prevStatusRef.current = state.status
+  }, [state.status])
 
   const handlePlayAgain = () => {
     setShowGameOverModal(false)

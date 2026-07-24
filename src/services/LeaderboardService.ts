@@ -37,12 +37,13 @@ export class LeaderboardService {
         allScores = await leaderboardRepository.getAll()
       }
 
-      // Deduplicate: Keep only highest score per player
+      // Deduplicate: Keep only highest score per unique player ID or player Name
       const highestScorePerPlayer = new Map<string, ScoreEntry>()
       for (const entry of allScores) {
-        const existing = highestScorePerPlayer.get(entry.playerName)
+        const key = entry.playerId ? `id_${entry.playerId}` : `name_${entry.playerName}`
+        const existing = highestScorePerPlayer.get(key)
         if (!existing || entry.score > existing.score) {
-          highestScorePerPlayer.set(entry.playerName, entry)
+          highestScorePerPlayer.set(key, entry)
         }
       }
 
@@ -61,11 +62,12 @@ export class LeaderboardService {
   public async addScore(entry: ScoreEntry): Promise<void> {
     try {
       const allScores = await leaderboardRepository.getAll()
-      const matchingEntries = allScores.filter(
-        (s) =>
-          s.playerName === entry.playerName ||
-          (entry.playerId && s.playerId === entry.playerId),
-      )
+      const matchingEntries = allScores.filter((s) => {
+        if (entry.playerId && s.playerId) {
+          return s.playerId === entry.playerId
+        }
+        return s.playerName === entry.playerName
+      })
 
       if (matchingEntries.length > 0) {
         const maxExistingScore = Math.max(...matchingEntries.map((s) => s.score))

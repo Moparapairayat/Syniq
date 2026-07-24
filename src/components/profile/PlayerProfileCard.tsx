@@ -43,7 +43,7 @@ function StatRing({ value, max, color, label }: { value: number; max: number; co
 
 /* Avatar picker grid item */
 function AvatarPickItem({ avatarId, isActive, onClick }: { avatarId: number; isActive: boolean; onClick: () => void }) {
-  const avatar = AVATARS.find((a) => a.id === avatarId)!
+  const avatar = AVATARS.find((a) => a.id === avatarId) ?? AVATARS[0]
   const src = AVATAR_SETS[avatar.set]
   return (
     <motion.button

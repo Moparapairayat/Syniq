@@ -12,15 +12,21 @@ export class DailyStreakService {
   readonly #storeName = 'settings'
   readonly #key = 'daily_streak_data'
 
+  #formatLocalDate(date: Date): string {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
   public getTodayDateString(): string {
-    const now = new Date()
-    return now.toISOString().split('T')[0]
+    return this.#formatLocalDate(new Date())
   }
 
   public getYesterdayDateString(): string {
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
-    return yesterday.toISOString().split('T')[0]
+    return this.#formatLocalDate(yesterday)
   }
 
   public async getStreakData(): Promise<DailyStreakData> {
