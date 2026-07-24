@@ -8,7 +8,8 @@ import { StatusPanel } from './StatusPanel'
 import { ControlPanel } from './ControlPanel'
 import { GameStatus } from '@/core/game/GameStatus'
 import { GameMode } from '@/core/game/GameMode'
-import { playerService } from '@/services'
+import { playerService, leaderboardService } from '@/services'
+import type { ScoreEntry } from '@/models/ScoreEntry'
 
 export function GameContainer() {
   const location = useLocation()
@@ -22,6 +23,7 @@ export function GameContainer() {
   const [screenFlash, setScreenFlash] = useState(false)
   const [bestScore, setBestScore] = useState(0)
   const [isNewBest, setIsNewBest] = useState(false)
+  const [topScores, setTopScores] = useState<ReadonlyArray<ScoreEntry>>([])
   const prevRound = useRef(state.round)
   const bestScoreRef = useRef(0)
 
@@ -45,6 +47,9 @@ export function GameContainer() {
       }
       setScreenFlash(true)
       setTimeout(() => setScreenFlash(false), 600)
+      leaderboardService.getTopScores().then((scores) => {
+        setTopScores(scores)
+      }).catch(() => undefined)
       Promise.resolve().then(() => setShowGameOverModal(true))
     } else {
       Promise.resolve().then(() => setShowGameOverModal(false))
@@ -188,6 +193,46 @@ export function GameContainer() {
             <div className="flex flex-col items-center justify-center rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-2.5 shadow-inner">
               <p className="text-[9px] font-black tracking-widest uppercase text-[#ffe49e]">BEST</p>
               <p className="mt-0.5 font-mono text-lg font-black text-[#38bdf8]">{bestScore}</p>
+            </div>
+          </div>
+
+          {/* Top 10 High Scores Section (Syllabus Requirement) */}
+          <div className="w-full rounded-2xl border border-[#8a4e22]/60 bg-[#2a1307]/80 p-3 text-left shadow-inner mt-1">
+            <div className="flex items-center justify-between pb-1.5 border-b border-[#78350f]/50">
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#fcd34d]">
+                🏆 TOP 10 HIGH SCORES
+              </span>
+              <span className="text-[9px] font-bold text-[#ffe49e]/70">
+                GLOBAL RANKINGS
+              </span>
+            </div>
+            <div className="mt-2 max-h-32 overflow-y-auto pr-1 flex flex-col gap-1 custom-scrollbar">
+              {topScores.length === 0 ? (
+                <p className="py-2 text-center text-xs text-[#ffe49e]/60">No scores recorded yet</p>
+              ) : (
+                topScores.slice(0, 10).map((entry, idx) => (
+                  <div
+                    key={entry.id || idx}
+                    className={`flex items-center justify-between rounded-lg px-2.5 py-1 text-xs ${
+                      entry.score === state.score
+                        ? 'bg-[#d97706]/40 border border-[#fcd34d] font-bold text-[#fcd34d]'
+                        : 'bg-[#3e2211]/60 text-[#fff3cd]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="w-4 font-mono font-bold text-[10px] text-[#ffe49e]/70">
+                        #{idx + 1}
+                      </span>
+                      <span className="font-bold truncate max-w-[120px]">
+                        {entry.playerName}
+                      </span>
+                    </div>
+                    <span className="font-mono font-black text-[#fcd34d]">
+                      {entry.score} PTS
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 

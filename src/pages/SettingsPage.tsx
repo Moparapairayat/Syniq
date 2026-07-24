@@ -75,11 +75,10 @@ function WoodDropdown<T extends string>({
                     onChange(opt.value)
                     setIsOpen(false)
                   }}
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-black transition-all cursor-pointer ${
-                    isSelected
+                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-black transition-all cursor-pointer ${isSelected
                       ? 'bg-gradient-to-r from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-sm'
                       : 'text-[#ffe49e] hover:bg-[#4a2713]/80 hover:text-white'
-                  }`}
+                    }`}
                 >
                   <span>{opt.label}</span>
                   {isSelected && <span className="text-sm font-black">✓</span>}
@@ -124,7 +123,7 @@ export default function SettingsPage() {
 
         {/* ── 3D Wood Settings Plaque Box ── */}
         <div className="relative z-10 my-auto flex w-full max-w-[440px] flex-col gap-3.5 rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-5 sm:p-6 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md">
-          
+
           {/* Header Bar inside Plaque */}
           <div className="flex items-center justify-between pb-2 border-b border-[#8a4e22]/50">
             <button
@@ -171,11 +170,10 @@ export default function SettingsPage() {
                     key={speed}
                     onClick={() => updateSetting({ animationSpeed: speed })}
                     type="button"
-                    className={`flex-1 rounded-lg py-1.5 text-center text-xs font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${
-                      isActive
+                    className={`flex-1 rounded-lg py-1.5 text-center text-xs font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${isActive
                         ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
                         : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
-                    }`}
+                      }`}
                   >
                     {speed}
                   </button>

@@ -103,7 +103,7 @@ export function AppLayout() {
 
   return (
     <div className={`nature-shell relative flex min-h-screen flex-col select-none ${isHomeRoute ? 'is-home-route' : ''}`}>
-      <div className="nature-backdrop" style={{ backgroundImage: `url(${simonForestBackground})` }} aria-hidden="true" />
+      <div className="nature-backdrop" aria-hidden="true" />
       {/* ── 3D Forest Game Cinematic Splash (Self-contained) ── */}
       <AnimatePresence>
         {showSplash && (
