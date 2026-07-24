@@ -7,11 +7,13 @@ interface BeforeInstallPromptEvent extends Event {
 
 export function usePWA() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
-  const [isInstallable, setIsInstallable] = useState(false)
   const [isOffline, setIsOffline] = useState(
     typeof navigator !== 'undefined' ? !navigator.onLine : false,
   )
   const [isStandalone, setIsStandalone] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [isDismissed, setIsDismissed] = useState(false)
 
   useEffect(() => {
     // Check if app is running as a standalone PWA
@@ -21,14 +23,27 @@ export function usePWA() {
         (window.navigator as unknown as { standalone?: boolean }).standalone === true
       setIsStandalone(Boolean(isStandaloneMode))
     }
+
+    // Check operating system & device environment
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+    const iosDevice = /iphone|ipad|ipod/i.test(ua)
+    const mobileDevice = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua)
+
+    setIsIOS(iosDevice)
+    setIsMobile(mobileDevice)
     checkStandalone()
 
-    // Listen for beforeinstallprompt event
+    // Check if user dismissed banner during current browser session
+    const dismissedSession = sessionStorage.getItem('syniq-pwa-dismissed') === 'true'
+    if (dismissedSession) {
+      setIsDismissed(true)
+    }
+
+    // Listen for beforeinstallprompt event (Chrome, Edge, Android)
     const handleInstallPrompt = (e: Event) => {
       e.preventDefault()
       const promptEvent = e as BeforeInstallPromptEvent
       setDeferredPrompt(promptEvent)
-      setIsInstallable(true)
     }
 
     // Listen for online / offline network status
@@ -47,25 +62,38 @@ export function usePWA() {
   }, [])
 
   const installPWA = useCallback(async () => {
-    if (!deferredPrompt) return false
-    try {
-      await deferredPrompt.prompt()
-      const choice = await deferredPrompt.userChoice
-      if (choice.outcome === 'accepted') {
-        setIsInstallable(false)
-        setDeferredPrompt(null)
-        return true
+    if (deferredPrompt) {
+      try {
+        await deferredPrompt.prompt()
+        const choice = await deferredPrompt.userChoice
+        if (choice.outcome === 'accepted') {
+          setDeferredPrompt(null)
+          return 'installed'
+        }
+      } catch (error) {
+        console.warn('PWA installation prompt error:', error)
       }
-    } catch (error) {
-      console.warn('PWA installation prompt error:', error)
     }
-    return false
-  }, [deferredPrompt])
+    if (isIOS) return 'ios_instructions'
+    return 'browser_instructions'
+  }, [deferredPrompt, isIOS])
+
+  const dismissBanner = useCallback(() => {
+    setIsDismissed(true)
+    sessionStorage.setItem('syniq-pwa-dismissed', 'true')
+  }, [])
+
+  // App is installable if it's NOT already running in standalone mode AND hasn't been dismissed
+  const showBanner = !isStandalone && !isDismissed
 
   return {
-    isInstallable: isInstallable && !isStandalone,
+    showBanner,
+    hasNativePrompt: Boolean(deferredPrompt),
     isOffline,
     isStandalone,
+    isIOS,
+    isMobile,
     installPWA,
+    dismissBanner,
   }
 }
