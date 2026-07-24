@@ -2,6 +2,7 @@
   "name": "syniq",
   "private": true,
   "version": "0.0.0",
+  "author": "Mopara Pair Ayat",
   "type": "module",
   "scripts": {
     "dev": "vite",

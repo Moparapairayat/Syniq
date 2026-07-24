@@ -10,10 +10,25 @@ export function usePWA() {
   const [isOffline, setIsOffline] = useState(
     typeof navigator !== 'undefined' ? !navigator.onLine : false,
   )
-  const [isStandalone, setIsStandalone] = useState(false)
-  const [isIOS, setIsIOS] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-  const [isDismissed, setIsDismissed] = useState(false)
+  const [isStandalone, setIsStandalone] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as unknown as { standalone?: boolean }).standalone === true
+    )
+  })
+  const [isIOS] = useState(() => {
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+    return /iphone|ipad|ipod/i.test(ua)
+  })
+  const [isMobile] = useState(() => {
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+    return /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua)
+  })
+  const [isDismissed, setIsDismissed] = useState(() => {
+    if (typeof sessionStorage === 'undefined') return false
+    return sessionStorage.getItem('syniq-pwa-dismissed') === 'true'
+  })
 
   useEffect(() => {
     // Check if app is running as a standalone PWA
@@ -23,21 +38,7 @@ export function usePWA() {
         (window.navigator as unknown as { standalone?: boolean }).standalone === true
       setIsStandalone(Boolean(isStandaloneMode))
     }
-
-    // Check operating system & device environment
-    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
-    const iosDevice = /iphone|ipad|ipod/i.test(ua)
-    const mobileDevice = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua)
-
-    setIsIOS(iosDevice)
-    setIsMobile(mobileDevice)
     checkStandalone()
-
-    // Check if user dismissed banner during current browser session
-    const dismissedSession = sessionStorage.getItem('syniq-pwa-dismissed') === 'true'
-    if (dismissedSession) {
-      setIsDismissed(true)
-    }
 
     // Listen for beforeinstallprompt event (Chrome, Edge, Android)
     const handleInstallPrompt = (e: Event) => {
