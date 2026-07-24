@@ -8,7 +8,7 @@ import { StatusPanel } from './StatusPanel'
 import { ControlPanel } from './ControlPanel'
 import { GameStatus } from '@/core/game/GameStatus'
 import { GameMode } from '@/core/game/GameMode'
-import { playerService, leaderboardService, achievementService, dailyStreakService } from '@/services'
+import { playerService, leaderboardService, achievementService, dailyStreakService, audioService } from '@/services'
 import type { ScoreEntry } from '@/models/ScoreEntry'
 import type { Achievement } from '@/models/Achievement'
 
@@ -72,6 +72,7 @@ export function GameContainer() {
   useEffect(() => {
     if (state.round > prevRound.current && state.status === GameStatus.RoundCompleted) {
       setScreenFlash(true)
+      audioService.playHarmonicChime('round_clear')
       setTimeout(() => setScreenFlash(false), 450)
     }
     prevRound.current = state.round

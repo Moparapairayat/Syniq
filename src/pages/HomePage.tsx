@@ -8,20 +8,11 @@ import type { DailyStreakData } from '@/services'
 import { GameMode } from '@/core/game/GameMode'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
-const MODE_LABELS: Record<GameMode, string> = {
-  [GameMode.Classic]: 'Classic memory',
-  [GameMode.SpeedRush]: 'Speed rush',
-  [GameMode.Reverse]: 'Reverse recall',
-  [GameMode.TimeAttack]: 'Time attack',
-  [GameMode.DailyChallenge]: 'Daily challenge',
-}
-
 export default function HomePage() {
   useDocumentTitle('Syniq - Memory Training')
   const navigate = useNavigate()
 
   const [highScore, setHighScore] = useState(0)
-  const [lastMode, setLastMode] = useState<GameMode>(GameMode.Classic)
   const [streakData, setStreakData] = useState<DailyStreakData | null>(null)
 
   useEffect(() => {
@@ -33,8 +24,6 @@ export default function HomePage() {
         if (!active) return
         setHighScore(profile.highestScore)
         setStreakData(streak)
-        const storedMode = localStorage.getItem('syniq-last-mode') as GameMode | null
-        if (storedMode && Object.values(GameMode).includes(storedMode)) setLastMode(storedMode)
       } catch (e) {
         console.error(e)
       }
@@ -44,8 +33,6 @@ export default function HomePage() {
   }, [])
 
   const startMode = (mode: GameMode) => {
-    localStorage.setItem('syniq-last-mode', mode)
-    setLastMode(mode)
     navigate(RoutePath.game, { state: { mode } })
   }
 
