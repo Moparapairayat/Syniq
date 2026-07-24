@@ -115,34 +115,34 @@ export default function SettingsPage() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.05 }}
-        className="simon-landing-card relative flex flex-col items-center justify-center p-4 overflow-y-auto"
+        className="simon-landing-card relative flex flex-col items-center justify-center p-3.5 sm:p-4 overflow-y-auto"
         style={{ backgroundImage: `url(${simonForestBackground})` }}
       >
         <div className="simon-landing-sky" aria-hidden="true" />
         <div className="simon-landing-hills" aria-hidden="true" />
 
         {/* ── 3D Wood Settings Plaque Box ── */}
-        <div className="relative z-10 my-auto flex w-full max-w-[440px] flex-col gap-3.5 rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-5 sm:p-6 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md">
+        <div className="relative z-10 my-auto flex w-full max-w-[440px] flex-col gap-3 rounded-[24px] sm:rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-3.5 xs:p-4 sm:p-6 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md overflow-y-auto custom-scrollbar max-h-[90vh]">
 
           {/* Header Bar inside Plaque */}
-          <div className="flex items-center justify-between pb-2 border-b border-[#8a4e22]/50">
+          <div className="flex items-center justify-between pb-1.5 sm:pb-2 border-b border-[#8a4e22]/50">
             <button
               onClick={() => navigate('/')}
               type="button"
               aria-label="Return home"
-              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-lg font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform active:scale-95 cursor-pointer outline-none"
+              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-base sm:text-lg font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform active:scale-95 cursor-pointer outline-none hover:scale-105"
             >
               ⌂
             </button>
-            <div className="rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-5 py-1 text-xs font-black uppercase tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408]">
+            <div className="rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-3.5 sm:px-5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black uppercase tracking-wider sm:tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408]">
               GAME SETTINGS
             </div>
-            <div className="w-10" />
+            <div className="w-9 sm:w-10" />
           </div>
 
           {/* Group 1: Volume Controls */}
-          <div className="flex flex-col gap-3 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-            <span className="text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
+          <div className="flex flex-col gap-2 sm:gap-3 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 sm:p-3.5 shadow-inner">
+            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
               🔊 Audio & Sound Effects
             </span>
             <VolumeSlider
@@ -158,8 +158,8 @@ export default function SettingsPage() {
           </div>
 
           {/* Group 2: Animation & Speed */}
-          <div className="flex flex-col gap-2.5 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-            <span className="text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
+          <div className="flex flex-col gap-2 sm:gap-2.5 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 sm:p-3.5 shadow-inner">
+            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
               ⚡ Animation Speed
             </span>
             <div className="flex rounded-xl border border-[#5a341a] bg-[#2a1307] p-1">
@@ -170,7 +170,7 @@ export default function SettingsPage() {
                     key={speed}
                     onClick={() => updateSetting({ animationSpeed: speed })}
                     type="button"
-                    className={`flex-1 rounded-lg py-1.5 text-center text-xs font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${isActive
+                    className={`flex-1 rounded-lg py-1 sm:py-1.5 text-center text-[11px] sm:text-xs font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${isActive
                         ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
                         : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
                       }`}
@@ -183,8 +183,8 @@ export default function SettingsPage() {
           </div>
 
           {/* Group 3: Accessibility Customization */}
-          <div className="flex flex-col gap-2.5 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-            <span className="text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
+          <div className="flex flex-col gap-2 sm:gap-2.5 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 sm:p-3.5 shadow-inner">
+            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
               👁️ Accessibility
             </span>
             <ToggleSwitch
@@ -213,11 +213,11 @@ export default function SettingsPage() {
           </div>
 
           {/* Reset Action Button */}
-          <div className="mt-1 flex justify-center">
+          <div className="mt-0.5 sm:mt-1 flex justify-center">
             <button
               onClick={() => setIsResetOpen(true)}
               type="button"
-              className="w-full rounded-xl border border-[#78281a] bg-gradient-to-b from-[#c93b2b] to-[#801b10] py-2.5 text-xs font-black uppercase tracking-widest text-[#ffe49e] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_3px_0_#4a0d06] transition-transform active:translate-y-0.5 cursor-pointer"
+              className="w-full rounded-xl border border-[#78281a] bg-gradient-to-b from-[#c93b2b] to-[#801b10] py-2 sm:py-2.5 text-xs font-black uppercase tracking-widest text-[#ffe49e] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_3px_0_#4a0d06] transition-transform active:translate-y-0.5 cursor-pointer hover:border-[#fca5a5]"
             >
               Reset All Preferences
             </button>

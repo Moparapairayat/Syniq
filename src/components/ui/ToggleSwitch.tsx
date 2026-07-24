@@ -25,8 +25,8 @@ export function ToggleSwitch({
   }
 
   return (
-    <label className="flex cursor-pointer items-center justify-between gap-4 py-2 select-none">
-      <span className="text-sm font-medium text-[var(--color-text-primary)]">
+    <label className="flex cursor-pointer items-center justify-between gap-3 py-1.5 sm:py-2 select-none">
+      <span className="text-xs sm:text-sm font-bold text-[#fff3cd]">
         {label}
       </span>
       <button
