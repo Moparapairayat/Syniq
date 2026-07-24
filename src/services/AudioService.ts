@@ -79,6 +79,8 @@ export class AudioService {
     try {
       this.#vibrate(18) // Crisp tactile tap
 
+      if (this.#volume <= 0) return
+
       const ctx = this.#getAudioContext()
       if (ctx.state === 'suspended') {
         ctx.resume()
@@ -86,8 +88,9 @@ export class AudioService {
 
       const f0 = this.#currentTheme.getFrequency(color)
       const duration = this.#currentTheme.duration
+      const initialGain = Math.max(0.0001, 0.1 * this.#volume)
       const masterGain = ctx.createGain()
-      masterGain.gain.setValueAtTime(0.1 * this.#volume, ctx.currentTime)
+      masterGain.gain.setValueAtTime(initialGain, ctx.currentTime)
       masterGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration)
       masterGain.connect(ctx.destination)
 
@@ -130,6 +133,8 @@ export class AudioService {
    */
   public playHarmonicChime(type: ChimeType): void {
     try {
+      if (this.#volume <= 0) return
+
       const ctx = this.#getAudioContext()
       if (ctx.state === 'suspended') {
         ctx.resume()
@@ -145,8 +150,9 @@ export class AudioService {
 
         chords.forEach((chord, i) => {
           const startTime = ctx.currentTime + i * 0.1
+          const initialGain = Math.max(0.0001, 0.08 * this.#volume)
           const g = ctx.createGain()
-          g.gain.setValueAtTime(0.08 * this.#volume, startTime)
+          g.gain.setValueAtTime(initialGain, startTime)
           g.gain.exponentialRampToValueAtTime(0.0001, startTime + chord.duration)
           g.connect(ctx.destination)
 
@@ -177,8 +183,9 @@ export class AudioService {
         notes.forEach((n, idx) => {
           const startTime = ctx.currentTime + idx * 0.08
           const duration = 0.2
+          const initialGain = Math.max(0.0001, 0.09 * this.#volume)
           const g = ctx.createGain()
-          g.gain.setValueAtTime(0.09 * this.#volume, startTime)
+          g.gain.setValueAtTime(initialGain, startTime)
           g.gain.exponentialRampToValueAtTime(0.0001, startTime + duration)
           g.connect(ctx.destination)
 
@@ -215,6 +222,7 @@ export class AudioService {
   public playStart(): void {
     try {
       this.#vibrate([20, 30, 20])
+      if (this.#volume <= 0) return
 
       const ctx = this.#getAudioContext()
       if (ctx.state === 'suspended') {
@@ -253,6 +261,7 @@ export class AudioService {
   public playRestart(): void {
     try {
       this.#vibrate([15, 35, 15])
+      if (this.#volume <= 0) return
 
       const ctx = this.#getAudioContext()
       if (ctx.state === 'suspended') {
@@ -291,6 +300,7 @@ export class AudioService {
   public playGameOver(): void {
     try {
       this.#vibrate([120, 60, 180]) // Heavy fail buzz vibration
+      if (this.#volume <= 0) return
 
       const ctx = this.#getAudioContext()
       if (ctx.state === 'suspended') {

@@ -104,7 +104,7 @@ export class AchievementService {
 
       let unlock = false
 
-      if (achievement.id === 'first_step' && ctx.round >= 2) {
+      if (achievement.id === 'first_step' && (ctx.round >= 2 || (ctx.round >= 1 && ctx.score > 0))) {
         unlock = true
       } else if (achievement.id === 'memory_apprentice' && ctx.mode === GameMode.Classic && ctx.round >= 5) {
         unlock = true

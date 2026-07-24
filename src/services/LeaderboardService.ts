@@ -48,7 +48,13 @@ export class LeaderboardService {
       }
 
       return Array.from(highestScorePerPlayer.values())
-        .sort((a, b) => b.score - a.score || new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+        .sort((a, b) => {
+          const scoreDiff = b.score - a.score
+          if (scoreDiff !== 0) return scoreDiff
+          const timeA = a.timestamp ? new Date(a.timestamp).getTime() || 0 : 0
+          const timeB = b.timestamp ? new Date(b.timestamp).getTime() || 0 : 0
+          return timeB - timeA
+        })
         .slice(0, this.#maxEntries)
     } catch (error) {
       console.warn('Failed to load leaderboard from IndexedDB, returning default demo list:', error)

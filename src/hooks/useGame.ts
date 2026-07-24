@@ -249,6 +249,7 @@ export function useGame() {
   ) => {
     try {
       hasSavedGameOverRef.current = false
+      prevInputLengthRef.current = 0
       audioService.playStart()
       clearCountdown()
 
@@ -296,6 +297,7 @@ export function useGame() {
 
   const resetGame = () => {
     hasSavedGameOverRef.current = false
+    prevInputLengthRef.current = 0
     audioService.playRestart()
     clearTimers()
     clearCountdown()
