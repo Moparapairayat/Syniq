@@ -30,18 +30,18 @@ describe('SettingsService', () => {
     expect(settings.soundVolume).toBe(0.8)
     expect(settings.musicVolume).toBe(0.5)
     expect(settings.animationSpeed).toBe('normal')
-    expect(settings.buttonSymbols).toBe(false)
+    expect(settings.reduceMotion).toBe(false)
   })
 
   test('should update specific settings fields successfully', async () => {
     const updated = await settingsService.updateSettings({
       themeMode: 'light',
-      buttonSymbols: true,
+      reduceMotion: true,
       soundVolume: 0.25,
     })
 
     expect(updated.themeMode).toBe('light')
-    expect(updated.buttonSymbols).toBe(true)
+    expect(updated.reduceMotion).toBe(true)
     expect(updated.soundVolume).toBe(0.25)
     expect(updated.musicVolume).toBe(0.5) // Unaffected
 

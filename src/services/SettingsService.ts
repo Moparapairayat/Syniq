@@ -16,7 +16,6 @@ export class SettingsService {
     reduceMotion: false,
     highContrast: false,
     colorBlindMode: 'none',
-    buttonSymbols: false,
   }
 
   /**

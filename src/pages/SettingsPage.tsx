@@ -193,11 +193,6 @@ export default function SettingsPage() {
               onChange={(checked) => updateSetting({ highContrast: checked })}
             />
             <ToggleSwitch
-              checked={settings.buttonSymbols}
-              label="Optional Button Symbols"
-              onChange={(checked) => updateSetting({ buttonSymbols: checked })}
-            />
-            <ToggleSwitch
               checked={settings.reduceMotion}
               label="Reduced Motion Mode"
               onChange={(checked) => updateSetting({ reduceMotion: checked })}
@@ -213,10 +208,10 @@ export default function SettingsPage() {
           </div>
 
           {/* Developer Credit Badge */}
-          <div className="flex items-center justify-center gap-1.5 rounded-xl border border-[#78431e]/60 bg-gradient-to-r from-[#2a1307]/70 via-[#3a1d0d]/90 to-[#2a1307]/70 px-4 py-2.5 text-xs select-none shadow-[inset_0_1px_0_rgba(255,226,162,0.15)]">
+          <div className="flex items-center justify-center gap-1 xs:gap-1.5 rounded-xl border border-[#78431e]/60 bg-gradient-to-r from-[#2a1307]/70 via-[#3a1d0d]/90 to-[#2a1307]/70 px-2 xs:px-3 sm:px-4 py-2 text-[10px] xs:text-[11px] sm:text-xs select-none shadow-[inset_0_1px_0_rgba(255,226,162,0.15)] whitespace-nowrap">
             <span className="text-[#fcd34d]">✦</span>
-            <span className="font-semibold tracking-wide text-[#d4b896]">Designed & Developed by</span>
-            <span className="font-black text-[#fcd34d] tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+            <span className="font-semibold tracking-tight xs:tracking-wide text-[#d4b896]">Designed & Developed by</span>
+            <span className="font-black text-[#fcd34d] tracking-normal xs:tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
               Mopara Pair Ayat
             </span>
             <span className="text-[#fcd34d]">✦</span>

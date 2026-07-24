@@ -10,7 +10,6 @@ export interface AppSettings {
   readonly reduceMotion: boolean
   readonly highContrast: boolean
   readonly colorBlindMode: 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia'
-  readonly buttonSymbols: boolean
 }
 
 /**
