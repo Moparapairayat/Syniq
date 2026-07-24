@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useState, useEffect, useRef } from 'react'
 import { Outlet, useLocation, NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -9,61 +8,8 @@ import { useTheme } from '@/context/themeStore'
 import { NicknameAuthModal } from '@/components/auth/NicknameAuthModal'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
-export const AVATARS = [
-  { id: 1, label: 'Cyberpunk', set: 1, pos: '0% 0%' },
-  { id: 2, label: 'Android', set: 1, pos: '100% 0%' },
-  { id: 3, label: 'Mage', set: 1, pos: '0% 100%' },
-  { id: 4, label: 'Alien', set: 1, pos: '100% 100%' },
-  { id: 5, label: 'Marine', set: 2, pos: '0% 0%' },
-  { id: 6, label: 'AI Entity', set: 2, pos: '100% 0%' },
-  { id: 7, label: 'Dragon', set: 2, pos: '0% 100%' },
-  { id: 8, label: 'Space Elf', set: 2, pos: '100% 100%' },
-  { id: 9, label: 'Samurai', set: 3, pos: '0% 0%' },
-  { id: 10, label: 'Phantom', set: 3, pos: '100% 0%' },
-  { id: 11, label: 'Cyber Wolf', set: 3, pos: '0% 100%' },
-  { id: 12, label: 'Cosmic', set: 3, pos: '100% 100%' },
-]
-
-import avatarSet1 from '@/assets/avatars-set1.png'
-import avatarSet2 from '@/assets/avatars-set2.png'
-import avatarSet3 from '@/assets/avatars-set3.png'
-
-export const AVATAR_SETS: Record<number, string> = {
-  1: avatarSet1,
-  2: avatarSet2,
-  3: avatarSet3,
-}
-
-export function AvatarDisplay({
-  avatarId,
-  size = 34,
-  className = '',
-  ringClass = 'avatar-ring-neon',
-}: {
-  avatarId: number
-  size?: number
-  className?: string
-  ringClass?: string
-}) {
-  const avatar = AVATARS.find((a) => a.id === avatarId) ?? AVATARS[0]
-  const src = AVATAR_SETS[avatar.set]
-  return (
-    <div
-      className={cn('relative overflow-hidden rounded-full', ringClass, className)}
-      style={{ width: size, height: size, flexShrink: 0 }}
-    >
-      <div
-        style={{
-          width: size * 2,
-          height: size * 2,
-          backgroundImage: `url(${src})`,
-          backgroundSize: '200% 200%',
-          backgroundPosition: avatar.pos,
-        }}
-      />
-    </div>
-  )
-}
+import { AvatarDisplay, AVATARS, AVATAR_SETS } from '@/components/avatar'
+export { AvatarDisplay, AVATARS, AVATAR_SETS }
 
 function CoinBadge({ amount }: { amount: number }) {
   return (

@@ -3,7 +3,7 @@ import { TableSkeleton, EmptyState } from '@/components/ui'
 import { leaderboardService, playerService } from '@/services'
 import type { ScoreEntry } from '@/models/ScoreEntry'
 import type { PlayerProfile } from '@/models/Player'
-import { AvatarDisplay, AVATARS } from '@/layouts/AppLayout'
+import { AvatarDisplay, AVATARS } from '@/components/avatar'
 
 const getAvatarId = (name: string): number => {
   let hash = 0

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { playerService } from '@/services'
-import { AVATARS, AVATAR_SETS } from '@/layouts/AppLayout'
+import { AVATARS, AVATAR_SETS } from '@/components/avatar'
 
 interface NicknameAuthModalProps {
   readonly isOpen: boolean

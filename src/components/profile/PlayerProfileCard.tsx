@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CardSkeleton, useToast } from '@/components/ui'
 import { playerService } from '@/services'
 import type { PlayerProfile } from '@/models/Player'
-import { AvatarDisplay, AVATARS, AVATAR_SETS } from '@/layouts/AppLayout'
+import { AvatarDisplay, AVATARS, AVATAR_SETS } from '@/components/avatar'
 import { cn } from '@/utils/classNames'
 
 function getRankInfo(score: number): { label: string; cls: string; icon: string; next: number; color: string } {

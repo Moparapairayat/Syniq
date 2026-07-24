@@ -1,0 +1,6 @@
+export { default as HomePage } from './HomePage'
+export { default as GamePage } from './GamePage'
+export { default as ProfilePage } from './ProfilePage'
+export { default as LeaderboardPage } from './LeaderboardPage'
+export { default as SettingsPage } from './SettingsPage'
+export { default as NotFoundPage } from './NotFoundPage'
