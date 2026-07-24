@@ -31,6 +31,18 @@
 
 ---
 
+## 🎓 Academic Project Information
+
+| Field | Information |
+| :--- | :--- |
+| **Student Name** | Mopara Pair Ayat |
+| **Instructor** | Ziana Mehnaz Ruhee |
+| **Institution** | BITHM College Of Professionals |
+| **Level** | OTHM Level 4 in IT |
+| **Subject Name** | Software Engineering |
+
+---
+
 ## 🛠️ Tech Stack
 
 <a id="tech-stack"></a>
