@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { playerService } from '@/services'
 import { getRandomGamingName } from '@/services/PlayerService'
-import { AVATARS, AVATAR_SETS, AvatarDisplay } from '@/components/avatar'
+import { AVATARS, AvatarDisplay } from '@/components/avatar'
 
 interface NicknameAuthModalProps {
   readonly isOpen: boolean
