@@ -3,7 +3,6 @@ import type { IRepository } from './IRepository'
 
 export interface AppSettings {
   readonly id: string // e.g. 'current_settings'
-  readonly themeMode: 'dark'
   readonly soundVolume: number
   readonly musicVolume: number
   readonly animationSpeed: 'slow' | 'normal' | 'fast'

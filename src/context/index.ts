@@ -1,5 +1,2 @@
 export { SettingsProvider, useSettings } from './SettingsContext'
 export type { SettingsContextType } from './SettingsContext'
-export { ThemeProvider } from './ThemeContext'
-export type { ThemeProviderProps } from './ThemeContext'
-export { ThemeContext, defaultThemeMode, useTheme } from './themeStore'

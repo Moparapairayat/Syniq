@@ -26,7 +26,6 @@ describe('SettingsService', () => {
 
   test('should load factory defaults when store is empty', async () => {
     const settings = await settingsService.getSettings()
-    expect(settings.themeMode).toBe('dark')
     expect(settings.soundVolume).toBe(0.8)
     expect(settings.musicVolume).toBe(0.5)
     expect(settings.animationSpeed).toBe('normal')
@@ -35,29 +34,25 @@ describe('SettingsService', () => {
 
   test('should update specific settings fields successfully', async () => {
     const updated = await settingsService.updateSettings({
-      themeMode: 'light',
       reduceMotion: true,
       soundVolume: 0.25,
     })
 
-    expect(updated.themeMode).toBe('light')
     expect(updated.reduceMotion).toBe(true)
     expect(updated.soundVolume).toBe(0.25)
     expect(updated.musicVolume).toBe(0.5) // Unaffected
 
     const current = await settingsService.getSettings()
-    expect(current.themeMode).toBe('light')
+    expect(current.reduceMotion).toBe(true)
   })
 
   test('should reset all preferences to factory defaults', async () => {
     await settingsService.updateSettings({
-      themeMode: 'light',
       animationSpeed: 'fast',
       highContrast: true,
     })
 
     const reset = await settingsService.resetSettings()
-    expect(reset.themeMode).toBe('dark')
     expect(reset.animationSpeed).toBe('normal')
     expect(reset.highContrast).toBe(false)
   })

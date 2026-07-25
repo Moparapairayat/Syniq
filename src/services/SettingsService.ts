@@ -2,14 +2,13 @@ import { settingsRepository } from '@/repositories/SettingsRepository'
 import type { AppSettings } from '@/repositories/SettingsRepository'
 
 /**
- * Handles coordination of application preferences (theme, volume, motion, symbols).
+ * Handles coordination of application preferences (volume, motion, symbols).
  */
 export class SettingsService {
   readonly #defaultId = 'current_settings'
 
   public readonly defaultSettings: AppSettings = {
     id: this.#defaultId,
-    themeMode: 'dark',
     soundVolume: 0.8,
     musicVolume: 0.5,
     animationSpeed: 'normal',
