@@ -58,9 +58,10 @@ export function TopTenTable() {
   // Deduplicate entries by playerName (Strict unique player rule)
   const uniqueScoresMap = new Map<string, ScoreEntry>()
   for (const s of scores) {
-    const existing = uniqueScoresMap.get(s.playerName)
+    const key = (s.playerName || '').trim().toLowerCase()
+    const existing = uniqueScoresMap.get(key)
     if (!existing || s.score > existing.score) {
-      uniqueScoresMap.set(s.playerName, s)
+      uniqueScoresMap.set(key, s)
     }
   }
   const uniqueScores = Array.from(uniqueScoresMap.values()).sort((a, b) => b.score - a.score)
@@ -76,7 +77,7 @@ export function TopTenTable() {
 
   const top3 = [0, 1, 2].map((i) => displayScores[i] ?? { playerName: `Player ${i + 1}`, score: 0, id: `ph-${i}` })
   const rest = displayScores.slice(3)
-  const userRank = uniqueScores.findIndex((s) => s.playerName === playerProfile?.name) + 1
+  const userRank = uniqueScores.findIndex((s) => (s.playerName || '').trim().toLowerCase() === (playerProfile?.name || '').trim().toLowerCase()) + 1
 
   return (
     <div className="flex flex-col gap-2.5 sm:gap-3 select-none w-full">

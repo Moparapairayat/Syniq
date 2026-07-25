@@ -5,7 +5,6 @@ import { mainNavigationItems } from '@/routes/navigation'
 import { cn } from '@/utils/classNames'
 import { playerService } from '@/services'
 import { getRandomGamingName } from '@/services/PlayerService'
-import { useTheme } from '@/context/themeStore'
 import { NicknameAuthModal } from '@/components/auth/NicknameAuthModal'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
@@ -68,7 +67,6 @@ export function AppLayout() {
   const [highScore, setHighScore] = useState(0)
   const [avatarId, setAvatarId] = useState(1)
   const [showAuthModal, setShowAuthModal] = useState(false)
-  const { themeMode, toggleTheme } = useTheme()
   const location = useLocation()
   const isHomeRoute = location.pathname === '/'
   const showHeader = false
@@ -244,17 +242,8 @@ export function AppLayout() {
             </span>
           </NavLink>
 
-          {/* Right: Controls (Theme Toggle + High Score) */}
+          {/* Right: Controls (High Score) */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              type="button"
-              title={`Switch to ${themeMode === 'dark' ? 'Light' : 'Dark'} Mode`}
-              className="nature-icon-button flex h-8 w-8 items-center justify-center rounded-xl text-sm cursor-pointer transition-colors outline-none"
-            >
-              {themeMode === 'dark' ? '☀️' : '🌙'}
-            </button>
-
             <CoinBadge amount={highScore} />
           </div>
         </div>

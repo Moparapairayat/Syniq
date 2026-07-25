@@ -8,30 +8,22 @@ export interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const { settings, updateSetting } = useSettings()
-
-  const currentThemeMode: ThemeMode =
-    settings.themeMode === 'light' ? 'light' : 'dark'
+  const { updateSetting } = useSettings()
+  const currentThemeMode: ThemeMode = 'dark'
 
   useEffect(() => {
     const root = document.documentElement
-    root.setAttribute('data-theme', currentThemeMode)
-    if (currentThemeMode === 'light') {
-      root.classList.add('light-theme')
-      root.classList.remove('dark-theme')
-    } else {
-      root.classList.add('dark-theme')
-      root.classList.remove('light-theme')
-    }
-  }, [currentThemeMode])
+    root.setAttribute('data-theme', 'dark')
+    root.classList.add('dark-theme')
+    root.classList.remove('light-theme')
+  }, [])
 
   const toggleTheme = () => {
-    const nextMode: ThemeMode = currentThemeMode === 'dark' ? 'light' : 'dark'
-    updateSetting({ themeMode: nextMode })
+    updateSetting({ themeMode: 'dark' })
   }
 
-  const setThemeMode = (mode: ThemeMode) => {
-    updateSetting({ themeMode: mode })
+  const setThemeMode = (_mode: ThemeMode) => {
+    updateSetting({ themeMode: 'dark' })
   }
 
   return (

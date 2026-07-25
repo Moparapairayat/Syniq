@@ -9,6 +9,7 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     description: 'Complete Round 1 in any mode',
     icon: '🔰',
     category: 'beginner',
+    rarity: 'common',
   },
   {
     id: 'memory_apprentice',
@@ -16,6 +17,7 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     description: 'Reach Round 5 in Classic Mode',
     icon: '🥇',
     category: 'beginner',
+    rarity: 'rare',
   },
   {
     id: 'memory_master',
@@ -23,6 +25,7 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     description: 'Reach Round 10 in Classic Mode',
     icon: '🏆',
     category: 'mastery',
+    rarity: 'epic',
   },
   {
     id: 'century_club',
@@ -30,6 +33,7 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     description: 'Score 100+ points in a single run',
     icon: '🔥',
     category: 'score',
+    rarity: 'epic',
   },
   {
     id: 'reverse_genius',
@@ -37,6 +41,7 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     description: 'Reach Round 5 in Reverse Mode',
     icon: '🔄',
     category: 'mastery',
+    rarity: 'epic',
   },
   {
     id: 'speed_demon',
@@ -44,6 +49,7 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     description: 'Reach Round 5 in Speed Rush Mode',
     icon: '⚡',
     category: 'speed',
+    rarity: 'rare',
   },
   {
     id: 'time_warrior',
@@ -51,6 +57,7 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     description: 'Reach Round 5 in Time Attack Mode',
     icon: '⏱️',
     category: 'speed',
+    rarity: 'rare',
   },
   {
     id: 'titan_mind',
@@ -58,6 +65,7 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     description: 'Reach a sequence length of 15',
     icon: '👑',
     category: 'mastery',
+    rarity: 'legendary',
   },
 ]
 
@@ -99,43 +107,44 @@ export class AchievementService {
     const newlyUnlocked: Achievement[] = []
     const now = new Date().toISOString()
 
-    for (const achievement of achievements) {
-      if (achievement.unlockedAt) continue // Already unlocked
+    for (const ach of achievements) {
+      if (ach.unlockedAt) continue
 
-      let unlock = false
+      let isConditionMet = false
 
-      if (achievement.id === 'first_step' && (ctx.round >= 2 || (ctx.round >= 1 && ctx.score > 0))) {
-        unlock = true
-      } else if (achievement.id === 'memory_apprentice' && ctx.mode === GameMode.Classic && ctx.round >= 5) {
-        unlock = true
-      } else if (achievement.id === 'memory_master' && ctx.mode === GameMode.Classic && ctx.round >= 10) {
-        unlock = true
-      } else if (achievement.id === 'century_club' && ctx.score >= 100) {
-        unlock = true
-      } else if (achievement.id === 'reverse_genius' && ctx.mode === GameMode.Reverse && ctx.round >= 5) {
-        unlock = true
-      } else if (achievement.id === 'speed_demon' && ctx.mode === GameMode.SpeedRush && ctx.round >= 5) {
-        unlock = true
-      } else if (achievement.id === 'time_warrior' && ctx.mode === GameMode.TimeAttack && ctx.round >= 5) {
-        unlock = true
-      } else if (achievement.id === 'titan_mind' && ctx.round >= 15) {
-        unlock = true
+      if (ach.id === 'first_step' && ctx.round >= 1) {
+        isConditionMet = true
+      } else if (ach.id === 'memory_apprentice' && ctx.mode === GameMode.Classic && ctx.round >= 5) {
+        isConditionMet = true
+      } else if (ach.id === 'memory_master' && ctx.mode === GameMode.Classic && ctx.round >= 10) {
+        isConditionMet = true
+      } else if (ach.id === 'century_club' && ctx.score >= 100) {
+        isConditionMet = true
+      } else if (ach.id === 'reverse_genius' && ctx.mode === GameMode.Reverse && ctx.round >= 5) {
+        isConditionMet = true
+      } else if (ach.id === 'speed_demon' && ctx.mode === GameMode.SpeedRush && ctx.round >= 5) {
+        isConditionMet = true
+      } else if (ach.id === 'time_warrior' && ctx.mode === GameMode.TimeAttack && ctx.round >= 5) {
+        isConditionMet = true
+      } else if (ach.id === 'titan_mind' && ctx.round >= 15) {
+        isConditionMet = true
       }
 
-      if (unlock) {
-        const updated: Achievement = { ...achievement, unlockedAt: now }
-        newlyUnlocked.push(updated)
+      if (isConditionMet) {
+        const unlockedItem: Achievement = { ...ach, unlockedAt: now }
+        try {
+          await storageService.executeTransaction<void>(
+            this.#storeName,
+            'readwrite',
+            (store) => {
+              store.put(unlockedItem)
+            },
+          )
+          newlyUnlocked.push(unlockedItem)
+        } catch (err) {
+          console.error(`Failed to persist unlocked achievement ${ach.id}:`, err)
+        }
       }
-    }
-
-    if (newlyUnlocked.length > 0) {
-      await Promise.all(
-        newlyUnlocked.map((item) =>
-          storageService
-            .executeTransaction(this.#storeName, 'readwrite', (store) => store.put(item))
-            .catch(() => undefined),
-        ),
-      )
     }
 
     return newlyUnlocked

@@ -244,11 +244,12 @@ export function GameBoard({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
       let targetColor: SimonColor | null = null
-      switch (e.key) {
-        case '1': case 'ArrowUp': case 'ArrowLeft': targetColor = SimonColor.Green; break
-        case '2': case 'ArrowRight': targetColor = SimonColor.Red; break
-        case '3': targetColor = SimonColor.Blue; break
-        case '4': case 'ArrowDown': targetColor = SimonColor.Yellow; break
+      const k = e.key.toLowerCase()
+      switch (k) {
+        case '1': case 'q': case 'w': case 'arrowup': targetColor = SimonColor.Green; break
+        case '2': case 'e': case 'arrowright': targetColor = SimonColor.Red; break
+        case '3': case 'a': case 'z': case 'arrowleft': targetColor = SimonColor.Blue; break
+        case '4': case 's': case 'd': case 'x': case 'arrowdown': targetColor = SimonColor.Yellow; break
         default: break
       }
       if (targetColor) {

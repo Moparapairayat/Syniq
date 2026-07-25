@@ -319,7 +319,6 @@ export function useGame() {
     submitInput,
     resetGame,
     nextRound,
-    isPlaybackActive:
-      activeLitColor !== null || state.status === GameStatus.ShowingSequence,
+    isPlaybackActive: state.status === GameStatus.ShowingSequence,
   }
 }
