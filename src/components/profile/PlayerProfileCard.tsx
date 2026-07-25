@@ -90,6 +90,9 @@ export function PlayerProfileCard() {
     localStorage.setItem('syniq-avatar-id', String(id))
     setShowAvatarPicker(false)
     showToast('Avatar updated! 🎭')
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('syniq-profile-updated'))
+    }
   }
 
   if (isLoading) return <CardSkeleton />

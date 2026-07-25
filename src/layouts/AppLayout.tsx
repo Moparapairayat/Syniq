@@ -73,22 +73,34 @@ export function AppLayout() {
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
-    playerService.getOrCreateProfile().then((p) => {
-      let nameToUse = p.name
-      if (!p.name || p.name.startsWith('Agent')) {
-        nameToUse = getRandomGamingName()
-        playerService.renamePlayer(nameToUse).catch(() => undefined)
-      }
-      setPlayerName(nameToUse)
-      setHighScore(p.highestScore)
-      const stored = localStorage.getItem('syniq-avatar-id')
-      if (stored) setAvatarId(parseInt(stored, 10))
+    let authTimer: ReturnType<typeof setTimeout> | null = null
 
-      const isAuthSet = localStorage.getItem('syniq-nickname-set')
-      if (!isAuthSet) {
-        setTimeout(() => setShowAuthModal(true), 1200)
-      }
-    }).catch(() => { })
+    const syncProfile = () => {
+      playerService.getOrCreateProfile().then((p) => {
+        let nameToUse = p.name
+        if (!p.name || p.name.startsWith('Agent')) {
+          nameToUse = getRandomGamingName()
+          playerService.renamePlayer(nameToUse).catch(() => undefined)
+        }
+        setPlayerName(nameToUse)
+        setHighScore(p.highestScore)
+        const stored = localStorage.getItem('syniq-avatar-id')
+        if (stored) setAvatarId(parseInt(stored, 10))
+
+        const isAuthSet = localStorage.getItem('syniq-nickname-set')
+        if (!isAuthSet) {
+          authTimer = setTimeout(() => setShowAuthModal(true), 1200)
+        }
+      }).catch(() => { })
+    }
+
+    syncProfile()
+    window.addEventListener('syniq-profile-updated', syncProfile)
+
+    return () => {
+      window.removeEventListener('syniq-profile-updated', syncProfile)
+      if (authTimer) clearTimeout(authTimer)
+    }
   }, [location.pathname])
 
   useEffect(() => {
