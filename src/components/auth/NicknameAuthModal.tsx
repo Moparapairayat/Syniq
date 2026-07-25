@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { playerService } from '@/services'
 import { getRandomGamingName } from '@/services/PlayerService'
-import { AVATARS, AVATAR_SETS } from '@/components/avatar'
+import { AVATARS, AVATAR_SETS, AvatarDisplay } from '@/components/avatar'
 
 interface NicknameAuthModalProps {
   readonly isOpen: boolean
@@ -102,20 +102,11 @@ export function NicknameAuthModal({
                 CHOOSE AVATAR
               </span>
               <div className="relative">
-                <div
-                  className="relative overflow-hidden rounded-full border-2 border-[#fcd34d] shadow-[0_0_12px_rgba(252,211,77,0.5)]"
-                  style={{ width: 68, height: 68 }}
-                >
-                  <div
-                    style={{
-                      width: 136,
-                      height: 136,
-                      backgroundImage: `url(${AVATAR_SETS[activeAvatar.set]})`,
-                      backgroundSize: '200% 200%',
-                      backgroundPosition: activeAvatar.pos,
-                    }}
-                  />
-                </div>
+                <AvatarDisplay
+                  avatarId={selectedAvatarId}
+                  size={68}
+                  ringClass="border-2 border-[#fcd34d] shadow-[0_0_12px_rgba(252,211,77,0.5)]"
+                />
                 <span className="absolute -bottom-1 -right-1 rounded-full border border-[#78431e] bg-[#2a1307] px-2 py-0.5 text-[9px] font-black text-[#ffe49e] shadow-md">
                   {activeAvatar.label}
                 </span>
@@ -130,20 +121,16 @@ export function NicknameAuthModal({
                       key={av.id}
                       type="button"
                       onClick={() => setSelectedAvatarId(av.id)}
-                      className={`relative overflow-hidden rounded-full aspect-square border-2 transition-all cursor-pointer ${
+                      className={`relative overflow-hidden rounded-full aspect-square border-2 transition-all cursor-pointer flex items-center justify-center p-0 ${
                         isSelected
                           ? 'border-[#fcd34d] scale-110 shadow-[0_0_10px_rgba(252,211,77,0.8)]'
                           : 'border-[#78431e] opacity-60 hover:opacity-100 bg-[#2a1307]'
                       }`}
                     >
-                      <div
-                        style={{
-                          width: '200%',
-                          height: '200%',
-                          backgroundImage: `url(${AVATAR_SETS[av.set]})`,
-                          backgroundSize: '200% 200%',
-                          backgroundPosition: av.pos,
-                        }}
+                      <AvatarDisplay
+                        avatarId={av.id}
+                        size={36}
+                        ringClass="border-0"
                       />
                     </button>
                   )
