@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block game state URLs from being indexed (no useful content for crawlers)
+Disallow: /game
+
+# Sitemap location
+Sitemap: https://syniq.vercel.app/sitemap.xml
