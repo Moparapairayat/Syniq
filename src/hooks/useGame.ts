@@ -154,7 +154,7 @@ export function useGame() {
       state.status === GameStatus.PlayerTurn ||
       state.status === GameStatus.ShowingSequence
 
-    if (engine.mode === GameMode.TimeAttack && isPlaying) {
+    if (engine.mode === GameMode.TimeAttack && isPlaying && timeLeft !== null) {
       clearCountdown()
 
       countdownIntervalRef.current = window.setInterval(() => {
@@ -173,7 +173,7 @@ export function useGame() {
     }
 
     return () => clearCountdown()
-  }, [state.status, engine.mode, engine])
+  }, [state.status, engine.mode, engine, timeLeft])
 
   // Reactive time bonus adjustments for Time Attack mode
   useEffect(() => {
@@ -239,7 +239,13 @@ export function useGame() {
         }
       }
 
-      saveMetrics()
+      void (async () => {
+        try {
+          await saveMetrics()
+        } catch (error) {
+          console.error('Unhandled error in saveMetrics:', error)
+        }
+      })()
     }
   }, [state.status, state.score, state.round, engine])
 

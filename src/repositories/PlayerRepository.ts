@@ -17,7 +17,7 @@ export class PlayerRepository implements IRepository<PlayerProfile, string> {
   }
 
   public async put(item: PlayerProfile): Promise<void> {
-    await storageService.put(this.#storeName, item as unknown as Record<string, unknown>)
+    await storageService.put(this.#storeName, item)
   }
 
   public async delete(key: string): Promise<void> {

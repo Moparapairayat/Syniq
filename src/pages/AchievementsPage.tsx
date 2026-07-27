@@ -81,7 +81,7 @@ export default function AchievementsPage() {
   }, [])
 
   const categories = [
-    { id: 'all', label: 'All Badges', icon: '🏆' },
+    { id: 'all', label: 'All', icon: '🏆' },
     { id: 'beginner', label: 'Beginner', icon: '🔰' },
     { id: 'mastery', label: 'Mastery', icon: '👑' },
     { id: 'speed', label: 'Speed', icon: '⚡' },
@@ -147,8 +147,8 @@ export default function AchievementsPage() {
             </div>
           </div>
 
-          {/* Category Filter Tabs (Touch scrollable) */}
-          <div className="flex gap-1 overflow-x-auto p-1 custom-scrollbar rounded-xl border border-[#5a341a] bg-[#2a1307] select-none text-nowrap">
+          {/* Category Filter Tabs — 5-column grid, always fits on one row */}
+          <div className="grid grid-cols-5 gap-1 p-1 rounded-xl border border-[#5a341a] bg-[#2a1307]">
             {categories.map((cat) => {
               const isActive = activeCategory === cat.id
               return (
@@ -156,14 +156,15 @@ export default function AchievementsPage() {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   type="button"
-                  className={`flex shrink-0 items-center gap-1 rounded-lg px-2 xs:px-2.5 py-1 text-[9.5px] xs:text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all cursor-pointer outline-none ${
+                  aria-pressed={isActive}
+                  className={`flex flex-col xs:flex-row items-center justify-center gap-0.5 xs:gap-1 rounded-lg px-1 py-1.5 xs:py-1 text-[8px] xs:text-[9.5px] sm:text-[11px] font-black uppercase tracking-wide transition-all cursor-pointer outline-none w-full ${
                     isActive
                       ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
-                      : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
+                      : 'text-[#ffe49e]/70 hover:text-[#ffe49e] hover:bg-white/5'
                   }`}
                 >
-                  <span>{cat.icon}</span>
-                  <span>{cat.label}</span>
+                  <span className="text-sm xs:text-base leading-none">{cat.icon}</span>
+                  <span className="leading-tight truncate">{cat.label}</span>
                 </button>
               )
             })}
@@ -190,11 +191,10 @@ export default function AchievementsPage() {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedBadge(ach)}
                     type="button"
-                    className={`relative flex flex-col items-center justify-between rounded-2xl border-2 p-2 sm:p-2.5 text-center transition-all cursor-pointer outline-none select-none min-h-[110px] xs:min-h-[120px] overflow-hidden ${
-                      isUnlocked
+                    className={`relative flex flex-col items-center justify-between rounded-2xl border-2 p-2 sm:p-2.5 text-center transition-all cursor-pointer outline-none select-none min-h-[110px] xs:min-h-[120px] overflow-hidden ${isUnlocked
                         ? `${rarityStyle.borderCls} ${rarityStyle.bgCls} ${rarityStyle.glowShadow}`
                         : 'border-[#78431e]/40 bg-[#2a1307]/60 opacity-60 hover:opacity-85'
-                    }`}
+                      }`}
                   >
                     {/* Animated Hologram Gloss Sheen Beam for Unlocked Badges */}
                     {isUnlocked && (
@@ -206,9 +206,8 @@ export default function AchievementsPage() {
                     )}
 
                     {/* 3D Gemstone Shield Rim */}
-                    <div className={`relative my-0.5 sm:my-1 flex h-10 w-10 xs:h-11 xs:w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl text-xl xs:text-2xl sm:text-3xl shadow-lg transition-transform ${
-                      isUnlocked ? rarityStyle.badgeRim : 'border-2 border-[#78431e]/50 bg-[#3a1d0d] text-[#ffe49e]/40'
-                    }`}>
+                    <div className={`relative my-0.5 sm:my-1 flex h-10 w-10 xs:h-11 xs:w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl text-xl xs:text-2xl sm:text-3xl shadow-lg transition-transform ${isUnlocked ? rarityStyle.badgeRim : 'border-2 border-[#78431e]/50 bg-[#3a1d0d] text-[#ffe49e]/40'
+                      }`}>
                       <span style={{ filter: isUnlocked ? 'none' : 'grayscale(1)' }}>{ach.icon}</span>
                       {!isUnlocked && (
                         <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#1a0c04] border border-[#78431e] text-[9px]">🔒</span>
@@ -221,11 +220,10 @@ export default function AchievementsPage() {
                     </span>
 
                     {/* 3D Tier Ribbon / Status */}
-                    <span className={`mt-1 w-full rounded-full py-0.5 text-[7.5px] xs:text-[8px] sm:text-[8.5px] font-black uppercase tracking-wider shadow-sm ${
-                      isUnlocked
+                    <span className={`mt-1 w-full rounded-full py-0.5 text-[7.5px] xs:text-[8px] sm:text-[8.5px] font-black uppercase tracking-wider shadow-sm ${isUnlocked
                         ? rarityStyle.ribbonCls
                         : 'bg-black/40 text-[#ffe49e]/40 border border-[#78431e]/30'
-                    }`}>
+                      }`}>
                       {isUnlocked ? rarityStyle.label : 'LOCKED'}
                     </span>
                   </motion.button>
@@ -262,9 +260,8 @@ export default function AchievementsPage() {
                   <motion.div
                     animate={{ rotateY: [0, 360] }}
                     transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-                    className={`relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-3xl ${
-                      unlocked ? rStyle.badgeRim + ' ' + rStyle.glowShadow : 'border-2 border-[#78431e] bg-[#2a1307]'
-                    } text-4xl sm:text-5xl shadow-2xl`}
+                    className={`relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-3xl ${unlocked ? rStyle.badgeRim + ' ' + rStyle.glowShadow : 'border-2 border-[#78431e] bg-[#2a1307]'
+                      } text-4xl sm:text-5xl shadow-2xl`}
                   >
                     <span style={{ filter: unlocked ? 'none' : 'grayscale(1)' }}>
                       {selectedBadge.icon}
@@ -275,7 +272,7 @@ export default function AchievementsPage() {
                     <h3 className="text-lg sm:text-xl font-black text-[#fcd34d] uppercase tracking-wide drop-shadow-md">
                       {selectedBadge.title}
                     </h3>
-                    
+
                     {/* Rarity Ribbon Tag */}
                     <div className="mt-1 inline-flex items-center gap-1.5 rounded-full px-3 py-0.5 text-[10px] font-black uppercase tracking-widest border border-white/20 shadow-inner"
                       style={{

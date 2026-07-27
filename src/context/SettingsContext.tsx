@@ -1,13 +1,13 @@
 import {
-  createContext,
-  useContext,
   useState,
   useEffect,
+  useCallback,
   type ReactNode,
 } from 'react'
 import type { AppSettings } from '@/repositories/SettingsRepository'
 import { settingsService } from '@/services/SettingsService'
 import { audioService } from '@/services/AudioService'
+import { SettingsContext } from './SettingsContextObject'
 
 export interface SettingsContextValue {
   readonly settings: AppSettings
@@ -18,23 +18,13 @@ export interface SettingsContextValue {
 
 export type SettingsContextType = SettingsContextValue
 
-const SettingsContext = createContext<SettingsContextValue | undefined>(undefined)
-
-export function useSettings(): SettingsContextValue {
-  const context = useContext(SettingsContext)
-  if (!context) {
-    throw new Error('useSettings must be used within a SettingsProvider')
-  }
-  return context
-}
-
 export function SettingsProvider({ children }: { readonly children: ReactNode }) {
   const [settings, setSettings] = useState<AppSettings>(
     () => settingsService.defaultSettings,
   )
   const [isLoading, setIsLoading] = useState(true)
 
-  const applySettings = (data: AppSettings) => {
+  const applySettings = useCallback((data: AppSettings) => {
     // 1. High Contrast Configuration
     document.documentElement.setAttribute('data-high-contrast', String(data.highContrast))
 
@@ -43,7 +33,7 @@ export function SettingsProvider({ children }: { readonly children: ReactNode })
 
     // 3. Audio Volumes Configuration
     audioService.setVolume(data.soundVolume)
-  }
+  }, [])
 
   // Load preferences from IndexedDB on startup
   useEffect(() => {
@@ -64,7 +54,7 @@ export function SettingsProvider({ children }: { readonly children: ReactNode })
     return () => {
       active = false
     }
-  }, [])
+  }, [applySettings])
 
   const updateSetting = async (updates: Partial<AppSettings>) => {
     try {

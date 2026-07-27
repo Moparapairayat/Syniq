@@ -74,10 +74,11 @@ export class StorageService {
 
   /**
    * Inserts or updates a record in the given store.
+   * Accepts any object — including ones with Date fields.
    */
-  public async put<T extends Record<string, unknown>>(storeName: StoreName, item: T): Promise<void> {
+  public async put<T extends object>(storeName: StoreName, item: T): Promise<void> {
     const db = await this.getDatabase()
-    await db.put(storeName, item)
+    await db.put(storeName, item as Record<string, unknown>)
   }
 
   /**

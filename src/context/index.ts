@@ -1,2 +1,3 @@
-export { SettingsProvider, useSettings } from './SettingsContext'
-export type { SettingsContextType } from './SettingsContext'
+export { SettingsProvider } from './SettingsContext'
+export { SettingsContext } from './SettingsContextObject'
+export type { SettingsContextType, SettingsContextValue } from './SettingsContext'

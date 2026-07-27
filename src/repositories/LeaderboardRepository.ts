@@ -17,7 +17,7 @@ export class LeaderboardRepository implements IRepository<ScoreEntry, string> {
   }
 
   public async put(item: ScoreEntry): Promise<void> {
-    await storageService.put(this.#storeName, item as unknown as Record<string, unknown>)
+    await storageService.put(this.#storeName, item)
   }
 
   public async delete(key: string): Promise<void> {

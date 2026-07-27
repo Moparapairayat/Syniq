@@ -67,6 +67,14 @@ export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>
     category: 'mastery',
     rarity: 'legendary',
   },
+  {
+    id: 'score_legend',
+    title: 'Score Legend',
+    description: 'Score 200+ points in a single run',
+    icon: '💎',
+    category: 'score',
+    rarity: 'legendary',
+  },
 ]
 
 export interface EvaluationContext {
@@ -124,12 +132,14 @@ export class AchievementService {
         isConditionMet = true
       } else if (ach.id === 'titan_mind' && ctx.round >= 15) {
         isConditionMet = true
+      } else if (ach.id === 'score_legend' && ctx.score >= 200) {
+        isConditionMet = true
       }
 
       if (isConditionMet) {
         const unlockedItem: Achievement = { ...ach, unlockedAt: now }
         try {
-          await storageService.put(this.#storeName, unlockedItem as unknown as Record<string, unknown>)
+          await storageService.put(this.#storeName, unlockedItem)
           newlyUnlocked.push(unlockedItem)
         } catch (err) {
           console.error(`Failed to persist unlocked achievement ${ach.id}:`, err)

@@ -22,9 +22,9 @@ describe('AchievementService', () => {
     service = new AchievementService()
   })
 
-  test('should return all 8 initial achievements', async () => {
+  test('should return all 9 initial achievements', async () => {
     const list = await service.getAchievements()
-    expect(list).toHaveLength(8)
+    expect(list).toHaveLength(9)
     expect(list.every((a) => a.unlockedAt === null)).toBe(true)
   })
 
