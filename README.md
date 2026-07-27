@@ -7,7 +7,7 @@
   **Enterprise Cognitive Training Platform & 3D Memory Arena**
 
   <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=20&pause=1400&color=38BDF8&center=true&vCenter=true&width=900&lines=SYNIQ+3D+Memory+Challenge;React+19+%E2%80%A2+TypeScript+%E2%80%A2+Vite+%E2%80%A2+IndexedDB;Clean+SOLID+OOP+Architecture+%E2%80%A2+Zero-Warning+Quality" alt="Typing animation" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=20&pause=1400&color=38BDF8&center=true&vCenter=true&width=900&lines=SYNIQ+3D+Memory+Challenge;React+19+%E2%80%A2+TypeScript+%E2%80%A2+Vite+%E2%80%A2+idb+IndexedDB;Clean+SOLID+OOP+Architecture+%E2%80%A2+Zero-Warning+Quality" alt="Typing animation" />
   </p>
 
   <p align="center">
@@ -116,7 +116,7 @@
 ### Storage, Audio, Haptics & PWA Offline Engine
 
 <p align="center">
-  <img src="https://img.shields.io/badge/IndexedDB_Async_Engine-0D1117?style=for-the-badge&labelColor=0D1117&color=F97316" alt="IndexedDB Engine" />
+  <img src="https://img.shields.io/badge/idb_IndexedDB_Engine-0D1117?style=for-the-badge&labelColor=0D1117&color=F97316" alt="idb IndexedDB Engine" />
   <img src="https://img.shields.io/badge/Web_Audio_Harmonics-0D1117?style=for-the-badge&labelColor=0D1117&color=10B981" alt="Web Audio API" />
   <img src="https://img.shields.io/badge/Tactile_Haptics_API-0D1117?style=for-the-badge&labelColor=0D1117&color=EC4899" alt="Haptics API" />
   <img src="https://img.shields.io/badge/Vite_PWA_Offline_1.3-0D1117?style=for-the-badge&labelColor=0D1117&color=7C3AED" alt="PWA Engine" />
@@ -141,7 +141,7 @@
 
 **SYNIQ** (Simon Nexus) is an enterprise-grade, high-performance cognitive memory training application built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS**, and **Framer Motion**.
 
-Featuring a **3D Wood & Gemstone Gaming Aesthetic**, Web Audio API sound synthesis, native browser IndexedDB persistent storage, and strict SOLID / Domain-Driven OOP design, SYNIQ delivers an immersive, responsive, and tactile cognitive challenge across mobile and desktop.
+Featuring a **3D Wood & Gemstone Gaming Aesthetic**, Web Audio API sound synthesis, **idb**-backed IndexedDB persistent storage, and strict SOLID / Domain-Driven OOP design, SYNIQ delivers an immersive, responsive, and tactile cognitive challenge across mobile and desktop.
 
 ---
 
@@ -151,7 +151,7 @@ Featuring a **3D Wood & Gemstone Gaming Aesthetic**, Web Audio API sound synthes
 
 - 🎮 **4 Distinct Training Modes**: Challenge forward recall, reverse sequence processing, accelerating speeds, and time-attack countdowns.
 - 🔊 **Web Audio Synthesizer**: Programmatic audio chime synthesis built with browser `AudioContext` and `OscillatorNode` instances (0 static audio file downloads required).
-- 💾 **IndexedDB Async Storage**: High-performance local database transactions for player profiles, top 10 leaderboard deduplication, and game configurations.
+- 💾 **idb-Powered IndexedDB Storage**: High-performance local database transactions via the [`idb`](https://github.com/jakearchibald/idb) wrapper for player profiles, top 10 leaderboard deduplication, and game configurations.
 - 👁️ **Accessibility & Tactile Feedback**:
   - Haptic vibration feedback for mobile devices.
   - High Contrast mode and Color-Blind symbol overlays (Protanopia, Deuteranopia, Tritanopia).
