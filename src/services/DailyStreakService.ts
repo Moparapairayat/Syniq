@@ -31,10 +31,9 @@ export class DailyStreakService {
 
   public async getStreakData(): Promise<DailyStreakData> {
     try {
-      const stored = await storageService.executeTransaction<{ id: string; data: DailyStreakData } | undefined>(
+      const stored = await storageService.get<{ id: string; data: DailyStreakData }>(
         this.#storeName,
-        'readonly',
-        (store) => store.get(this.#key),
+        this.#key,
       )
       if (stored && stored.data) {
         return this.#validateAndCleanStreak(stored.data)
@@ -73,11 +72,9 @@ export class DailyStreakService {
       lastDailyCompletedDate: isDailyCompleted ? today : current.lastDailyCompletedDate,
     }
 
-    await storageService.executeTransaction(
-      this.#storeName,
-      'readwrite',
-      (store) => store.put({ id: this.#key, data: updated }),
-    ).catch(() => undefined)
+    await storageService
+      .put(this.#storeName, { id: this.#key, data: updated })
+      .catch(() => undefined)
 
     return updated
   }

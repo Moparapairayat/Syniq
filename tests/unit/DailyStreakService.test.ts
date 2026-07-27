@@ -6,14 +6,9 @@ vi.mock('@/services/StorageService', () => {
   let mockStore: { id: string; data: unknown } | null = null
   return {
     storageService: {
-      executeTransaction: vi.fn().mockImplementation(async (_storeName, _mode, callback) => {
-        const mockObjStore = {
-          get: () => mockStore,
-          put: (item: { id: string; data: unknown }) => {
-            mockStore = item
-          },
-        }
-        return callback(mockObjStore)
+      get: vi.fn().mockImplementation(async () => mockStore),
+      put: vi.fn().mockImplementation(async (_storeName: string, item: { id: string; data: unknown }) => {
+        mockStore = item
       }),
     },
   }

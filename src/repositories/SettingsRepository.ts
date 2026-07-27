@@ -18,39 +18,19 @@ export class SettingsRepository implements IRepository<AppSettings, string> {
   readonly #storeName = 'settings'
 
   public async get(key: string): Promise<AppSettings | undefined> {
-    return storageService.executeTransaction<AppSettings>(
-      this.#storeName,
-      'readonly',
-      (store) => store.get(key),
-    )
+    return storageService.get<AppSettings>(this.#storeName, key)
   }
 
   public async getAll(): Promise<ReadonlyArray<AppSettings>> {
-    return storageService.executeTransaction<AppSettings[]>(
-      this.#storeName,
-      'readonly',
-      (store) => store.getAll(),
-    )
+    return storageService.getAll<AppSettings>(this.#storeName)
   }
 
   public async put(item: AppSettings): Promise<void> {
-    await storageService.executeTransaction<void>(
-      this.#storeName,
-      'readwrite',
-      (store) => {
-        store.put(item)
-      },
-    )
+    await storageService.put(this.#storeName, item as unknown as Record<string, unknown>)
   }
 
   public async delete(key: string): Promise<void> {
-    await storageService.executeTransaction<void>(
-      this.#storeName,
-      'readwrite',
-      (store) => {
-        store.delete(key)
-      },
-    )
+    await storageService.delete(this.#storeName, key)
   }
 }
 

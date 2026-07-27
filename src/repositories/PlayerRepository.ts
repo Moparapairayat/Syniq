@@ -9,39 +9,19 @@ export class PlayerRepository implements IRepository<PlayerProfile, string> {
   readonly #storeName = 'player_profiles'
 
   public async get(key: string): Promise<PlayerProfile | undefined> {
-    return storageService.executeTransaction<PlayerProfile>(
-      this.#storeName,
-      'readonly',
-      (store) => store.get(key),
-    )
+    return storageService.get<PlayerProfile>(this.#storeName, key)
   }
 
   public async getAll(): Promise<ReadonlyArray<PlayerProfile>> {
-    return storageService.executeTransaction<PlayerProfile[]>(
-      this.#storeName,
-      'readonly',
-      (store) => store.getAll(),
-    )
+    return storageService.getAll<PlayerProfile>(this.#storeName)
   }
 
   public async put(item: PlayerProfile): Promise<void> {
-    await storageService.executeTransaction<void>(
-      this.#storeName,
-      'readwrite',
-      (store) => {
-        store.put(item)
-      },
-    )
+    await storageService.put(this.#storeName, item as unknown as Record<string, unknown>)
   }
 
   public async delete(key: string): Promise<void> {
-    await storageService.executeTransaction<void>(
-      this.#storeName,
-      'readwrite',
-      (store) => {
-        store.delete(key)
-      },
-    )
+    await storageService.delete(this.#storeName, key)
   }
 }
 

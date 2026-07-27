@@ -80,12 +80,8 @@ export class AchievementService {
 
   public async getAchievements(): Promise<ReadonlyArray<Achievement>> {
     try {
-      const stored = await storageService.executeTransaction<Achievement[]>(
-        this.#storeName,
-        'readonly',
-        (store) => store.getAll(),
-      )
-      
+      const stored = await storageService.getAll<Achievement>(this.#storeName)
+
       const storedMap = new Map<string, Achievement>(
         (stored || []).map((item) => [item.id, item])
       )
@@ -133,13 +129,7 @@ export class AchievementService {
       if (isConditionMet) {
         const unlockedItem: Achievement = { ...ach, unlockedAt: now }
         try {
-          await storageService.executeTransaction<void>(
-            this.#storeName,
-            'readwrite',
-            (store) => {
-              store.put(unlockedItem)
-            },
-          )
+          await storageService.put(this.#storeName, unlockedItem as unknown as Record<string, unknown>)
           newlyUnlocked.push(unlockedItem)
         } catch (err) {
           console.error(`Failed to persist unlocked achievement ${ach.id}:`, err)
