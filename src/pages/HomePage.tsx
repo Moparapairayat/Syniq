@@ -62,18 +62,23 @@ export default function HomePage() {
         <div className="simon-landing-sky" aria-hidden="true" />
         <div className="simon-landing-hills" aria-hidden="true" />
         <div className="simon-landing-topbar">
-          <button
-            onClick={() => navigate(RoutePath.profile)}
-            type="button"
-            className="simon-home-profile-token"
-            aria-label="Open profile"
-            title="Profile"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="8" r="3.25" />
-              <path d="M5.5 20c.6-3.4 3-5.25 6.5-5.25s5.9 1.85 6.5 5.25" />
-            </svg>
-          </button>
+          <div className="group relative flex items-center">
+            <button
+              onClick={() => navigate(RoutePath.profile)}
+              type="button"
+              className="simon-home-profile-token"
+              aria-label="Open profile"
+              title="Profile"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.25" />
+                <path d="M5.5 20c.6-3.4 3-5.25 6.5-5.25s5.9 1.85 6.5 5.25" />
+              </svg>
+            </button>
+            <div className="pointer-events-none absolute left-full z-20 ml-2 flex rounded-full border border-[#fcd34d]/60 bg-gradient-to-b from-[#5a2e12] to-[#2a1307] px-2.5 py-1 text-[10px] font-black tracking-wider whitespace-nowrap text-[#ffe49e] uppercase opacity-0 shadow-[0_4px_10px_rgba(0,0,0,0.8)] transition-all duration-200 group-focus-within:opacity-100 group-hover:opacity-100">
+              👤 Profile
+            </div>
+          </div>
           <div className="flex items-center gap-1.5">
             <span className="simon-coin-counter font-mono font-black text-[#fcd34d]">
               🔥 {streakData?.currentStreak || 0} DAY STREAK
@@ -119,40 +124,53 @@ export default function HomePage() {
             <b className="is-muted">★</b>
           </div>
         </div>
-        <div className="simon-home-shortcuts" aria-label="Quick navigation">
-          <button
-            onClick={() => navigate(RoutePath.settings)}
-            type="button"
-            className="simon-shortcut-card is-settings"
-            aria-label="Open settings"
-            title="Settings"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M19 12a7.1 7.1 0 0 0-.08-1l2-1.55-2-3.46-2.35.94a7.7 7.7 0 0 0-1.72-1L14.5 3h-4.02l-.35 2.93a7.7 7.7 0 0 0-1.72 1L6.06 5.99l-2 3.46L6.08 11a7.1 7.1 0 0 0 0 2l-2.02 1.55 2 3.46 2.35-.94a7.7 7.7 0 0 0 1.72 1l.35 2.93h4.02l.35-2.93a7.7 7.7 0 0 0 1.72-1l2.35.94 2-3.46L18.92 13c.05-.33.08-.66.08-1z" />
-            </svg>
-          </button>
-          <button
-            onClick={() => navigate(RoutePath.about)}
-            type="button"
-            className="simon-shortcut-card border border-[#fcd34d]/50 bg-[#2a1307] text-[#fcd34d] hover:brightness-125"
-            aria-label="Open About & Academic info"
-            title="About Project"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+        <div className="simon-home-shortcuts relative" aria-label="Quick navigation">
+          {/* Settings Button */}
+          <div className="group relative flex items-center">
+            <button
+              onClick={() => navigate(RoutePath.settings)}
+              type="button"
+              className="simon-shortcut-card is-settings"
+              aria-label="Open settings"
+              title="Settings"
             >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="16" x2="12" y2="12" />
-              <line x1="12" y1="8" x2="12.01" y2="8" />
-            </svg>
-          </button>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19 12a7.1 7.1 0 0 0-.08-1l2-1.55-2-3.46-2.35.94a7.7 7.7 0 0 0-1.72-1L14.5 3h-4.02l-.35 2.93a7.7 7.7 0 0 0-1.72 1L6.06 5.99l-2 3.46L6.08 11a7.1 7.1 0 0 0 0 2l-2.02 1.55 2 3.46 2.35-.94a7.7 7.7 0 0 0 1.72 1l.35 2.93h4.02l.35-2.93a7.7 7.7 0 0 0 1.72-1l2.35.94 2-3.46L18.92 13c.05-.33.08-.66.08-1z" />
+              </svg>
+            </button>
+            <div className="pointer-events-none absolute left-full z-20 ml-2 flex rounded-full border border-[#fcd34d]/60 bg-gradient-to-b from-[#5a2e12] to-[#2a1307] px-2.5 py-1 text-[10px] font-black tracking-wider whitespace-nowrap text-[#ffe49e] uppercase opacity-0 shadow-[0_4px_10px_rgba(0,0,0,0.8)] transition-all duration-200 group-focus-within:opacity-100 group-hover:opacity-100">
+              ⚙️ Settings
+            </div>
+          </div>
+
+          {/* About / Academic Project Button */}
+          <div className="group relative flex items-center">
+            <button
+              onClick={() => navigate(RoutePath.about)}
+              type="button"
+              className="simon-shortcut-card border border-[#fcd34d]/50 bg-[#2a1307] text-[#fcd34d] hover:brightness-125"
+              aria-label="Open About & Academic info"
+              title="About Project"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="16" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12.01" y2="8" />
+              </svg>
+            </button>
+            <div className="pointer-events-none absolute left-full z-20 ml-2 flex rounded-full border border-[#fcd34d]/60 bg-gradient-to-b from-[#5a2e12] to-[#2a1307] px-2.5 py-1 text-[10px] font-black tracking-wider whitespace-nowrap text-[#ffe49e] uppercase opacity-0 shadow-[0_4px_10px_rgba(0,0,0,0.8)] transition-all duration-200 group-focus-within:opacity-100 group-hover:opacity-100">
+              📜 About Project
+            </div>
+          </div>
         </div>
         <div className="simon-launch-actions">
           <button
@@ -172,13 +190,6 @@ export default function HomePage() {
           >
             🎯 Daily Challenge{' '}
             <small>🔥 {streakData?.currentStreak || 0} Day Streak</small>
-          </button>
-          <button
-            onClick={() => navigate(RoutePath.about)}
-            type="button"
-            className="w-full cursor-pointer rounded-2xl border border-[#8a4e22] bg-[#2a1307]/90 py-2.5 text-xs font-black tracking-wider text-[#ffe49e] uppercase shadow-md transition-transform outline-none hover:border-[#fcd34d] hover:text-[#fcd34d] active:scale-95"
-          >
-            📜 Academic Info & About Project
           </button>
         </div>
       </motion.div>
