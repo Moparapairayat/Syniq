@@ -25,7 +25,7 @@ export default function AboutPage() {
         <div className="simon-landing-hills" aria-hidden="true" />
 
         {/* ── 3D Wood About Plaque Box ── */}
-        <div className="custom-scrollbar relative z-10 my-auto flex max-h-[88vh] w-full max-w-[440px] flex-col justify-between gap-3 overflow-y-auto rounded-[22px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-3 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md sm:max-h-[90vh] sm:rounded-[26px] sm:p-6">
+        <div className="relative z-10 my-auto flex w-full max-w-[440px] flex-col gap-3 overflow-hidden rounded-[24px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-3.5 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md sm:rounded-[26px] sm:p-6">
           {/* Header Bar inside Plaque */}
           <div className="flex items-center justify-between border-b border-[#8a4e22]/50 pb-1.5">
             <button
