@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useGame } from '@/hooks/useGame'
 import { useSettings } from '@/hooks/useSettings'
-import { useShareScore } from '@/hooks/useShareScore'
 import { Modal, ConfirmationDialog } from '@/components/ui'
 import { GameBoard } from './GameBoard'
 import { StatusPanel } from './StatusPanel'
@@ -23,7 +22,6 @@ export function GameContainer() {
 
   const { settings, updateSetting } = useSettings()
   const { state, engine, activeLitColor, timeLeft, startGame, submitInput, resetGame, nextRound, isPlaybackActive } = useGame()
-  const { shareScore, shareResult, isSharing } = useShareScore()
 
   const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [showQuitDialog, setShowQuitDialog] = useState(false)
@@ -310,22 +308,6 @@ export function GameContainer() {
             >
               🔄 PLAY AGAIN
             </button>
-
-            <button
-              type="button"
-              disabled={isSharing}
-              onClick={() => shareScore(state.score, state.round, routeMode, engine.difficulty)}
-              className="w-full rounded-xl border border-[#0284c7] bg-gradient-to-b from-[#38bdf8] via-[#0284c7] to-[#0369a1] py-2.5 text-xs font-black uppercase tracking-widest text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_2px_0_#075985] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:brightness-110 disabled:opacity-60"
-            >
-              {shareResult === 'copied'
-                ? '📋 SCORE COPIED!'
-                : shareResult === 'shared' || shareResult === 'twitter'
-                ? '✨ SHARED!'
-                : isSharing
-                ? 'SHARING...'
-                : '📤 SHARE SCORE'}
-            </button>
-
             <button
               type="button"
               onClick={() => { setShowGameOverModal(false); navigate('/leaderboard') }}
