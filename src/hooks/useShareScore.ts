@@ -22,10 +22,10 @@ function buildShareText(score: number, round: number, mode: GameMode, difficulty
   const modeLabel = MODE_LABELS[mode] ?? 'Classic'
   const diffLabel = DIFF_LABELS[difficulty] ?? 'Easy'
   return [
-    `?? Syniq Memory Challenge`,
-    `?? I scored ${score} pts on Round ${round} (${modeLabel} � ${diffLabel})!`,
-    `?? Can you beat me? Try Syniq free:`,
-    `?? ${APP_URL}`,
+    `🎮 Syniq Memory Challenge`,
+    `🏆 I scored ${score} pts on Round ${round} (${modeLabel} · ${diffLabel})!`,
+    `🧠 Can you beat me? Try Syniq free:`,
+    `👉 ${APP_URL}`,
     `#Syniq #MemoryGame #BrainTraining`,
   ].join('\n')
 }
@@ -43,7 +43,6 @@ export function useShareScore() {
       let result: ShareResult = 'failed'
 
       try {
-        // 1. Try native Web Share API (Android Chrome, iOS Safari, modern desktop)
         if (typeof navigator !== 'undefined' && navigator.share) {
           await navigator.share({
             title: 'Syniq Memory Challenge',
@@ -52,17 +51,14 @@ export function useShareScore() {
           })
           result = 'shared'
         } else {
-          // 2. Fallback: open Twitter/X intent URL in new tab
           const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`
           window.open(twitterUrl, '_blank', 'noopener,noreferrer')
           result = 'twitter'
         }
       } catch (err) {
         if (err instanceof Error && err.name === 'AbortError') {
-          // User dismissed native share sheet � not an error
           result = 'failed'
         } else {
-          // 3. Last resort: copy to clipboard
           try {
             await navigator.clipboard.writeText(text)
             result = 'copied'
