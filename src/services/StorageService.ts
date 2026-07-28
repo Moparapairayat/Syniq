@@ -21,39 +21,43 @@ const DB_VERSION = 3
  * async/await operations without manual Promise plumbing.
  */
 export class StorageService {
-  #db: IDBPDatabase<SyniqDBSchema> | null = null
+  #dbPromise: Promise<IDBPDatabase<SyniqDBSchema>> | null = null
 
   /**
    * Lazily opens and returns the database connection.
-   * Runs schema upgrades on first open or version bump.
+   * Caches the connection promise so concurrent callers reuse the single open attempt.
+   * Resets cache on failure for automatic reconnection attempts.
    */
   public async getDatabase(): Promise<IDBPDatabase<SyniqDBSchema>> {
-    if (this.#db) return this.#db
+    if (!this.#dbPromise) {
+      this.#dbPromise = openDB<SyniqDBSchema>(DB_NAME, DB_VERSION, {
+        upgrade(db) {
+          if (!db.objectStoreNames.contains('player_profiles')) {
+            db.createObjectStore('player_profiles', { keyPath: 'id' })
+          }
+          if (!db.objectStoreNames.contains('leaderboard')) {
+            db.createObjectStore('leaderboard', { keyPath: 'id' })
+          }
+          if (!db.objectStoreNames.contains('settings')) {
+            db.createObjectStore('settings', { keyPath: 'id' })
+          }
+          if (!db.objectStoreNames.contains('achievements')) {
+            db.createObjectStore('achievements', { keyPath: 'id' })
+          }
+        },
+        blocked() {
+          console.warn('SyniqDB: upgrade blocked by an older tab.')
+        },
+        blocking() {
+          console.warn('SyniqDB: this tab is blocking a newer version upgrade.')
+        },
+      }).catch((err) => {
+        this.#dbPromise = null
+        throw err
+      })
+    }
 
-    this.#db = await openDB<SyniqDBSchema>(DB_NAME, DB_VERSION, {
-      upgrade(db) {
-        if (!db.objectStoreNames.contains('player_profiles')) {
-          db.createObjectStore('player_profiles', { keyPath: 'id' })
-        }
-        if (!db.objectStoreNames.contains('leaderboard')) {
-          db.createObjectStore('leaderboard', { keyPath: 'id' })
-        }
-        if (!db.objectStoreNames.contains('settings')) {
-          db.createObjectStore('settings', { keyPath: 'id' })
-        }
-        if (!db.objectStoreNames.contains('achievements')) {
-          db.createObjectStore('achievements', { keyPath: 'id' })
-        }
-      },
-      blocked() {
-        console.warn('SyniqDB: upgrade blocked by an older tab.')
-      },
-      blocking() {
-        console.warn('SyniqDB: this tab is blocking a newer version upgrade.')
-      },
-    })
-
-    return this.#db
+    return this.#dbPromise
   }
 
   /**

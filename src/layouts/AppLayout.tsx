@@ -99,6 +99,21 @@ const NavIcons: Record<string, (active: boolean) => ReactNode> = {
       <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
     </svg>
   ),
+  '/about': (a) => (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={a ? '#0f172a' : 'currentColor'}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-5 w-5"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
+    </svg>
+  ),
 }
 
 export function AppLayout() {
@@ -344,7 +359,7 @@ export function AppLayout() {
 
       {/* ── Floating Modern Navigation ── */}
       <nav className="hidden" style={{ width: 'calc(100% - 32px)', maxWidth: '420px' }}>
-        <div className="nature-nav-shell flex items-center justify-around rounded-2xl px-2 py-2 shadow-2xl">
+        <div className="flex items-center justify-around rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-r from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-1.5 shadow-[inset_0_1.5px_0_rgba(255,226,162,0.5),0_10px_24px_rgba(0,0,0,0.85)] backdrop-blur-md">
           {mainNavigationItems.map((item) => {
             const IconFn = NavIcons[item.path]
             return (
@@ -353,10 +368,10 @@ export function AppLayout() {
                 to={item.path}
                 className={({ isActive }) =>
                   cn(
-                    'flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-all duration-150 outline-none',
+                    'flex flex-col items-center gap-0.5 rounded-xl px-2.5 py-1 transition-all duration-150 outline-none',
                     isActive
-                      ? 'bg-[#38bdf8] font-bold text-[#0f172a] shadow-sm'
-                      : 'text-slate-400 hover:bg-slate-800/50 hover:text-white',
+                      ? 'border border-[#78350f] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] font-black text-[#3a1d0d] shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_2px_0_#78350f]'
+                      : 'text-[#ffe49e]/70 hover:bg-[#3a1d0d]/60 hover:text-[#fff3cd]',
                   )
                 }
               >
@@ -365,8 +380,8 @@ export function AppLayout() {
                     {IconFn ? IconFn(isActive) : <span>❓</span>}
                     <span
                       className={cn(
-                        'text-[10px] font-bold tracking-wide uppercase',
-                        isActive ? 'text-[#0f172a]' : 'text-slate-400',
+                        'text-[9px] font-black tracking-wider uppercase',
+                        isActive ? 'text-[#3a1d0d]' : 'text-[#ffe49e]/80',
                       )}
                     >
                       {item.label}

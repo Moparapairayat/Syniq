@@ -5,6 +5,7 @@ export const RoutePath = {
   leaderboard: '/leaderboard',
   settings: '/settings',
   achievements: '/achievements',
+  about: '/about',
 } as const
 
 export type RouteKey = keyof typeof RoutePath

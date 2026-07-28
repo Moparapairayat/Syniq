@@ -4,6 +4,7 @@ import LeaderboardPage from '@/pages/LeaderboardPage'
 import SettingsPage from '@/pages/SettingsPage'
 import ProfilePage from '@/pages/ProfilePage'
 import AchievementsPage from '@/pages/AchievementsPage'
+import AboutPage from '@/pages/AboutPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
 export {
@@ -13,5 +14,6 @@ export {
   SettingsPage,
   ProfilePage,
   AchievementsPage,
+  AboutPage,
   NotFoundPage,
 }

@@ -10,6 +10,7 @@ import {
   SettingsPage,
   ProfilePage,
   AchievementsPage,
+  AboutPage,
 } from './lazyPages'
 
 function lazyRoute(page: ReactNode) {
@@ -44,6 +45,10 @@ export const appRouter = createBrowserRouter([
       {
         path: 'achievements',
         element: lazyRoute(<AchievementsPage />),
+      },
+      {
+        path: 'about',
+        element: lazyRoute(<AboutPage />),
       },
       {
         path: '*',

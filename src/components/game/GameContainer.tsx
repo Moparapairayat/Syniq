@@ -142,7 +142,7 @@ export function GameContainer() {
       return () => clearTimeout(timer)
     }
     prevStatusRef.current = state.status
-  }, [state.status, state.round])
+  }, [state.status, state.round, addPopup])
 
   const handlePlayAgain = () => {
     setShowGameOverModal(false)

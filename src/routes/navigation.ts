@@ -23,4 +23,8 @@ export const mainNavigationItems = [
     label: 'Settings',
     path: RoutePath.settings,
   },
+  {
+    label: 'About',
+    path: RoutePath.about,
+  },
 ] as const satisfies readonly NavigationItem[]
