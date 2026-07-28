@@ -13,19 +13,19 @@ export default function AboutPage() {
   const navigate = useNavigate()
 
   return (
-    <div className="simon-home-screen select-none">
+    <div className="simon-about-screen select-none">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.05 }}
-        className="simon-landing-card relative flex flex-col items-center justify-center overflow-y-auto p-4"
+        className="simon-landing-card relative flex flex-col items-center justify-center overflow-y-auto p-2 sm:p-4"
         style={{ backgroundImage: `url(${simonForestBackground})` }}
       >
         <div className="simon-landing-sky" aria-hidden="true" />
         <div className="simon-landing-hills" aria-hidden="true" />
 
         {/* ── 3D Wood About Plaque Box ── */}
-        <div className="xs:p-4 custom-scrollbar relative z-10 my-auto flex max-h-[90vh] min-h-[500px] w-full max-w-[440px] flex-col justify-between gap-3.5 overflow-y-auto rounded-[24px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-3.5 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md sm:min-h-[660px] sm:rounded-[26px] sm:p-6">
+        <div className="custom-scrollbar relative z-10 my-auto flex max-h-[88vh] w-full max-w-[440px] flex-col justify-between gap-3 overflow-y-auto rounded-[22px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-3 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md sm:max-h-[90vh] sm:rounded-[26px] sm:p-6">
           {/* Header Bar inside Plaque */}
           <div className="flex items-center justify-between border-b border-[#8a4e22]/50 pb-1.5">
             <button
@@ -43,31 +43,31 @@ export default function AboutPage() {
           </div>
 
           {/* Card 1: Academic & Institution Details */}
-          <div className="rounded-2xl border-2 border-[#78431e] bg-[#2a1307]/75 p-3.5 shadow-inner sm:p-4">
-            <div className="mb-2.5 flex items-center gap-2 border-b border-[#8a4e22]/50 pb-1.5">
-              <span className="text-base sm:text-lg">🎓</span>
-              <h2 className="text-xs font-black tracking-widest text-[#fcd34d] uppercase">
+          <div className="rounded-2xl border-2 border-[#78431e] bg-[#2a1307]/75 p-3 shadow-inner sm:p-4">
+            <div className="mb-2 flex items-center gap-2 border-b border-[#8a4e22]/50 pb-1.5">
+              <span className="text-sm sm:text-lg">🎓</span>
+              <h2 className="text-[11px] font-black tracking-widest text-[#fcd34d] uppercase sm:text-xs">
                 Course & Academic Details
               </h2>
             </div>
 
-            <div className="flex flex-col gap-2 text-xs">
+            <div className="flex flex-col gap-1.5 text-xs">
               {/* Student */}
-              <div className="flex items-center justify-between gap-2 rounded-xl border border-[#78431e] bg-[#2a1307]/90 px-3 py-1.5">
+              <div className="flex items-center justify-between gap-1.5 rounded-xl border border-[#78431e] bg-[#2a1307]/90 px-2.5 py-1.5">
                 <div
                   className="flex shrink-0 items-center gap-1.5"
                   style={{ color: '#ffe49e' }}
                 >
                   <span>👤</span>
                   <span
-                    className="text-[10px] font-bold tracking-wider uppercase"
+                    className="text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]"
                     style={{ color: '#ffe49e' }}
                   >
                     Student / Developer
                   </span>
                 </div>
                 <span
-                  className="text-[11px] font-black sm:text-xs"
+                  className="text-[10.5px] font-black sm:text-xs"
                   style={{ color: '#fcd34d', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
                 >
                   Mopara Pair Ayat
@@ -75,23 +75,23 @@ export default function AboutPage() {
               </div>
 
               {/* Instructor */}
-              <div className="flex items-center justify-between gap-1.5 rounded-xl border border-[#b8732a]/80 bg-gradient-to-r from-[#3a1d0d] via-[#2a1307] to-[#3a1d0d] px-2.5 py-1.5 whitespace-nowrap shadow-md">
+              <div className="flex items-center justify-between gap-1.5 rounded-xl border border-[#b8732a]/80 bg-gradient-to-r from-[#3a1d0d] via-[#2a1307] to-[#3a1d0d] px-2.5 py-1.5 shadow-md">
                 <div
                   className="flex shrink-0 items-center gap-1.5"
                   style={{ color: '#ffe49e' }}
                 >
                   <span>👩‍🏫</span>
                   <span
-                    className="text-[9.5px] font-bold tracking-wider whitespace-nowrap uppercase"
+                    className="text-[9px] font-bold tracking-wider uppercase sm:text-[9.5px]"
                     style={{ color: '#ffe49e' }}
                   >
                     Course Instructor
                   </span>
                 </div>
-                <div className="flex shrink-0 items-center gap-1 rounded-full border border-[#fcd34d]/70 bg-gradient-to-r from-[#945525] via-[#82461a] to-[#54290c] px-2 py-0.5 whitespace-nowrap shadow-[inset_0_1px_0_rgba(255,226,162,0.6),0_2px_4px_rgba(0,0,0,0.6)]">
-                  <span className="text-[10px]">👑</span>
+                <div className="flex shrink-0 items-center gap-1 rounded-full border border-[#fcd34d]/70 bg-gradient-to-r from-[#945525] via-[#82461a] to-[#54290c] px-2 py-0.5 shadow-[inset_0_1px_0_rgba(255,226,162,0.6),0_2px_4px_rgba(0,0,0,0.6)]">
+                  <span className="text-[9.5px]">👑</span>
                   <span
-                    className="text-[10.5px] font-black tracking-wide whitespace-nowrap sm:text-xs"
+                    className="text-[10px] font-black tracking-wide sm:text-xs"
                     style={{ color: '#fff3cd', textShadow: '0 1px 3px rgba(0,0,0,0.9)' }}
                   >
                     Ziana Mehnaz Ruhee

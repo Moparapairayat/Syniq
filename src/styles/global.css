@@ -2286,7 +2286,8 @@
 .simon-home-screen .simon-landing-card,
 .simon-settings-screen .simon-landing-card,
 .simon-profile-screen .simon-landing-card,
-.simon-leaderboard-screen .simon-landing-card {
+.simon-leaderboard-screen .simon-landing-card,
+.simon-about-screen .simon-landing-card {
   flex: 1;
   min-height: clamp(450px, 85dvh, 680px);
   height: calc(100dvh - 32px);
@@ -2325,10 +2326,12 @@
   .simon-settings-screen,
   .simon-profile-screen,
   .simon-leaderboard-screen,
+  .simon-about-screen,
   .simon-home-screen .simon-landing-card,
   .simon-settings-screen .simon-landing-card,
   .simon-profile-screen .simon-landing-card,
   .simon-leaderboard-screen .simon-landing-card,
+  .simon-about-screen .simon-landing-card,
   .is-home-route .simon-home-screen,
   .is-home-route .simon-home-screen .simon-landing-card {
     min-height: 100dvh !important;
