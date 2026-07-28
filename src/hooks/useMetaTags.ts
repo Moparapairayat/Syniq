@@ -42,7 +42,7 @@ export function useMetaTags({ title, description, url, image }: MetaTagOptions) 
     setMeta('twitter:url', pageUrl, true)
     setMeta('twitter:image', pageImage, true)
     setMeta('twitter:image:src', pageImage, true)
-    setMeta('twitter:card', 'summary_large_image', true)
+    setMeta('twitter:card', 'summary', true)
 
     setMeta('description', description, true)
   }, [title, description, url, image])
