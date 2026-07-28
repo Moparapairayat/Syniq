@@ -1,11 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import {
-  VolumeSlider,
-  ToggleSwitch,
-  ConfirmationDialog,
-} from '@/components/ui'
+import { VolumeSlider, ToggleSwitch, ConfirmationDialog } from '@/components/ui'
 import { useSettings } from '@/hooks/useSettings'
 import { useMetaTags } from '@/hooks/useMetaTags'
 import { ForestParticles } from '@/components/effects/ForestParticles'
@@ -50,10 +46,14 @@ function WoodDropdown<T extends string>({
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex w-full items-center justify-between rounded-xl border border-[#78431e] bg-[#2a1307] px-3.5 py-2 text-xs font-black text-[#fff3cd] shadow-inner outline-none transition-all hover:border-[#fcd34d] cursor-pointer"
+        className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-[#78431e] bg-[#2a1307] px-3.5 py-2 text-xs font-black text-[#fff3cd] shadow-inner transition-all outline-none hover:border-[#fcd34d]"
       >
         <span>{selectedOption.label}</span>
-        <span className={`text-[10px] text-[#fcd34d] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+        <span
+          className={`text-[10px] text-[#fcd34d] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        >
+          ▼
+        </span>
       </button>
 
       {/* 3D Wood Options Menu */}
@@ -64,7 +64,7 @@ function WoodDropdown<T extends string>({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.15 }}
-            className="absolute left-0 right-0 top-full z-40 mt-1 flex flex-col gap-1 rounded-2xl border-2 border-[#78431e] bg-[#3a1d0d] p-1.5 shadow-[0_12px_30px_rgba(0,0,0,0.85)] backdrop-blur-md"
+            className="absolute top-full right-0 left-0 z-40 mt-1 flex flex-col gap-1 rounded-2xl border-2 border-[#78431e] bg-[#3a1d0d] p-1.5 shadow-[0_12px_30px_rgba(0,0,0,0.85)] backdrop-blur-md"
           >
             {options.map((opt) => {
               const isSelected = value === opt.value
@@ -76,10 +76,11 @@ function WoodDropdown<T extends string>({
                     onChange(opt.value)
                     setIsOpen(false)
                   }}
-                  className={`flex items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-black transition-all cursor-pointer ${isSelected
-                    ? 'bg-gradient-to-r from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-sm'
-                    : 'text-[#ffe49e] hover:bg-[#4a2713]/80 hover:text-white'
-                    }`}
+                  className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-black transition-all ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-sm'
+                      : 'text-[#ffe49e] hover:bg-[#4a2713]/80 hover:text-white'
+                  }`}
                 >
                   <span>{opt.label}</span>
                   {isSelected && <span className="text-sm font-black">✓</span>}
@@ -96,7 +97,8 @@ function WoodDropdown<T extends string>({
 export default function SettingsPage() {
   useMetaTags({
     title: 'Settings',
-    description: 'Customize your Syniq experience — adjust sound, music, color schemes, and difficulty preferences.',
+    description:
+      'Customize your Syniq experience — adjust sound, music, color schemes, and difficulty preferences.',
     url: 'https://syniq.moparapairayat.dev/settings',
   })
   const { settings, updateSetting, resetSettings } = useSettings()
@@ -122,7 +124,7 @@ export default function SettingsPage() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.05 }}
-        className="simon-landing-card relative flex flex-col items-center justify-center p-3.5 sm:p-4 overflow-hidden overflow-y-auto"
+        className="simon-landing-card relative flex flex-col items-center justify-center overflow-hidden overflow-y-auto p-3.5 sm:p-4"
         style={{ backgroundImage: `url(${simonForestBackground})` }}
       >
         {/* Ambient Forest Particles Overlay */}
@@ -132,27 +134,26 @@ export default function SettingsPage() {
         <div className="simon-landing-hills" aria-hidden="true" />
 
         {/* ── 3D Wood Settings Plaque Box ── */}
-        <div className="relative z-10 my-auto flex w-full max-w-[440px] flex-col gap-3 rounded-[24px] sm:rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-3.5 xs:p-4 sm:p-6 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md overflow-y-auto custom-scrollbar max-h-[90vh]">
-
+        <div className="xs:p-4 custom-scrollbar relative z-10 my-auto flex max-h-[90vh] w-full max-w-[440px] flex-col gap-3 overflow-y-auto rounded-[24px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-3.5 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md sm:rounded-[26px] sm:p-6">
           {/* Header Bar inside Plaque */}
-          <div className="flex items-center justify-between pb-1.5 sm:pb-2 border-b border-[#8a4e22]/50">
+          <div className="flex items-center justify-between border-b border-[#8a4e22]/50 pb-1.5 sm:pb-2">
             <button
               onClick={() => navigate('/')}
               type="button"
               aria-label="Return home"
-              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-base sm:text-lg font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform active:scale-95 cursor-pointer outline-none hover:scale-105"
+              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-base font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform outline-none hover:scale-105 active:scale-95 sm:h-10 sm:w-10 sm:text-lg"
             >
               ⌂
             </button>
-            <div className="rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-3.5 sm:px-5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black uppercase tracking-wider sm:tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408]">
+            <div className="rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-3.5 py-0.5 text-[10px] font-black tracking-wider text-[#fff3cd] uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408] sm:px-5 sm:py-1 sm:text-xs sm:tracking-widest">
               GAME SETTINGS
             </div>
             <div className="w-9 sm:w-10" />
           </div>
 
           {/* Group 1: Volume Controls */}
-          <div className="flex flex-col gap-2 sm:gap-3 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 sm:p-3.5 shadow-inner">
-            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
+          <div className="flex flex-col gap-2 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 shadow-inner sm:gap-3 sm:p-3.5">
+            <span className="text-[10px] font-black tracking-widest text-[#ffe49e] uppercase sm:text-[11px]">
               🔊 Audio & Sound Effects
             </span>
             <VolumeSlider
@@ -168,8 +169,8 @@ export default function SettingsPage() {
           </div>
 
           {/* Group 2: Animation & Speed */}
-          <div className="flex flex-col gap-2 sm:gap-2.5 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 sm:p-3.5 shadow-inner">
-            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
+          <div className="flex flex-col gap-2 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 shadow-inner sm:gap-2.5 sm:p-3.5">
+            <span className="text-[10px] font-black tracking-widest text-[#ffe49e] uppercase sm:text-[11px]">
               ⚡ Animation Speed
             </span>
             <div className="flex rounded-xl border border-[#5a341a] bg-[#2a1307] p-1">
@@ -180,10 +181,11 @@ export default function SettingsPage() {
                     key={speed}
                     onClick={() => updateSetting({ animationSpeed: speed })}
                     type="button"
-                    className={`flex-1 rounded-lg py-1 sm:py-1.5 text-center text-[11px] sm:text-xs font-black uppercase tracking-wide transition-all outline-none cursor-pointer ${isActive
-                      ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
-                      : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
-                      }`}
+                    className={`flex-1 cursor-pointer rounded-lg py-1 text-center text-[11px] font-black tracking-wide uppercase transition-all outline-none sm:py-1.5 sm:text-xs ${
+                      isActive
+                        ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
+                        : 'text-[#ffe49e]/70 hover:text-[#ffe49e]'
+                    }`}
                   >
                     {speed}
                   </button>
@@ -193,8 +195,8 @@ export default function SettingsPage() {
           </div>
 
           {/* Group 3: Accessibility Customization */}
-          <div className="flex flex-col gap-2 sm:gap-2.5 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 sm:p-3.5 shadow-inner">
-            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#ffe49e]">
+          <div className="flex flex-col gap-2 rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3 shadow-inner sm:gap-2.5 sm:p-3.5">
+            <span className="text-[10px] font-black tracking-widest text-[#ffe49e] uppercase sm:text-[11px]">
               👁️ Accessibility
             </span>
             <ToggleSwitch
@@ -218,21 +220,23 @@ export default function SettingsPage() {
           </div>
 
           {/* Developer Credit Badge */}
-          <div className="flex items-center justify-center gap-1 xs:gap-1.5 rounded-xl border border-[#78431e]/60 bg-gradient-to-r from-[#2a1307]/70 via-[#3a1d0d]/90 to-[#2a1307]/70 px-2 xs:px-3 sm:px-4 py-2 text-[10px] xs:text-[11px] sm:text-xs select-none shadow-[inset_0_1px_0_rgba(255,226,162,0.15)] whitespace-nowrap">
+          <div className="xs:gap-1.5 xs:px-3 xs:text-[11px] flex items-center justify-center gap-1 rounded-xl border border-[#78431e]/60 bg-gradient-to-r from-[#2a1307]/70 via-[#3a1d0d]/90 to-[#2a1307]/70 px-2 py-2 text-[10px] whitespace-nowrap shadow-[inset_0_1px_0_rgba(255,226,162,0.15)] select-none sm:px-4 sm:text-xs">
             <span className="text-[#fcd34d]">✦</span>
-            <span className="font-semibold tracking-tight xs:tracking-wide text-[#d4b896]">Designed & Developed by</span>
-            <span className="font-black text-[#fcd34d] tracking-normal xs:tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+            <span className="xs:tracking-wide font-semibold tracking-tight text-[#d4b896]">
+              Designed & Developed by
+            </span>
+            <span className="xs:tracking-wider font-black tracking-normal text-[#fcd34d] drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
               Mopara Pair Ayat
             </span>
             <span className="text-[#fcd34d]">✦</span>
           </div>
 
           {/* Reset Action Button */}
-          <div className="mt-0.5 sm:mt-1 flex justify-center">
+          <div className="mt-0.5 flex justify-center sm:mt-1">
             <button
               onClick={() => setIsResetOpen(true)}
               type="button"
-              className="w-full rounded-xl border border-[#78281a] bg-gradient-to-b from-[#c93b2b] to-[#801b10] py-2 sm:py-2.5 text-xs font-black uppercase tracking-widest text-[#ffe49e] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_3px_0_#4a0d06] transition-transform active:translate-y-0.5 cursor-pointer hover:border-[#fca5a5]"
+              className="w-full cursor-pointer rounded-xl border border-[#78281a] bg-gradient-to-b from-[#c93b2b] to-[#801b10] py-2 text-xs font-black tracking-widest text-[#ffe49e] uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_3px_0_#4a0d06] transition-transform hover:border-[#fca5a5] active:translate-y-0.5 sm:py-2.5"
             >
               Reset All Preferences
             </button>

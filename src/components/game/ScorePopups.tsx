@@ -21,9 +21,10 @@ export function ScorePopups({ popups }: ScorePopupsProps) {
             animate={{ opacity: 1, y: -45, scale: 1.15, rotate: 0 }}
             exit={{ opacity: 0, y: -80, scale: 0.9 }}
             transition={{ duration: 0.75, ease: 'easeOut' }}
-            className="absolute rounded-full px-4 py-1 font-mono text-sm font-black tracking-wider uppercase text-[#3a1d0d] shadow-[0_4px_20px_rgba(0,0,0,0.6)] backdrop-blur-sm border-2 border-white"
+            className="absolute rounded-full border-2 border-white px-4 py-1 font-mono text-sm font-black tracking-wider text-[#3a1d0d] uppercase shadow-[0_4px_20px_rgba(0,0,0,0.6)] backdrop-blur-sm"
             style={{
-              background: popup.color || 'linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%)',
+              background:
+                popup.color || 'linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%)',
               textShadow: '0 1px 2px rgba(255,255,255,0.6)',
             }}
           >

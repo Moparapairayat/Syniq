@@ -2,9 +2,9 @@
 
   <img src="./public/favicon.svg" alt="SYNIQ Logo" width="130" height="130" />
 
-  # SYNIQ — Modern Memory Challenge
+# SYNIQ — Modern Memory Challenge
 
-  **Enterprise Cognitive Training Platform & 3D Memory Arena**
+**Enterprise Cognitive Training Platform & 3D Memory Arena**
 
   <p align="center">
     <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=20&pause=1400&color=38BDF8&center=true&vCenter=true&width=900&lines=SYNIQ+3D+Memory+Challenge;React+19+%E2%80%A2+TypeScript+%E2%80%A2+Vite+%E2%80%A2+idb+IndexedDB;Clean+SOLID+OOP+Architecture+%E2%80%A2+Zero-Warning+Quality" alt="Typing animation" />
@@ -33,7 +33,7 @@
 
 <div align="center">
 
-  <a id="academic-submission"></a>
+<a id="academic-submission"></a>
 
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3987-4801-a50e-c67081e2b58b.gif" width="100%" alt="Header Divider Animation" />
 
@@ -164,12 +164,12 @@ Featuring a **3D Wood & Gemstone Gaming Aesthetic**, Web Audio API sound synthes
 
 <a id="game-modes"></a>
 
-| Mode | Badge | Description |
-| :--- | :---: | :--- |
-| **Classic** | 🧠 | Replicate the generated memory sequence step-by-step in forward order. |
-| **Reverse** | 🔄 | Memorize the sequence and input items in **exact reverse order**. |
-| **Speed Rush** | ⚡ | Flash duration speeds up by **8% each round** (clamping at 2.5x max speed). |
-| **Time Attack** | ⏱️ | Race against a 45-second countdown timer. Earn **+1 sec** per step and **+5 sec** per round clear. |
+| Mode            | Badge | Description                                                                                        |
+| :-------------- | :---: | :------------------------------------------------------------------------------------------------- |
+| **Classic**     |  🧠   | Replicate the generated memory sequence step-by-step in forward order.                             |
+| **Reverse**     |  🔄   | Memorize the sequence and input items in **exact reverse order**.                                  |
+| **Speed Rush**  |  ⚡   | Flash duration speeds up by **8% each round** (clamping at 2.5x max speed).                        |
+| **Time Attack** |  ⏱️   | Race against a 45-second countdown timer. Earn **+1 sec** per step and **+5 sec** per round clear. |
 
 ---
 
@@ -204,6 +204,7 @@ src/
 ```
 
 ### SOLID Compliance & Design Patterns
+
 - **Dependency Injection (DI)**: `GameEngine` receives `SequenceManager`, `InputValidator`, `ScoreCalculator`, and `RandomGenerator` via constructor injection.
 - **Repository Pattern**: Data persistence uses `IRepository<T, K>` abstractions over IndexedDB object stores.
 - **Observer Pattern**: `GameEngine.subscribe(listener)` notifies UI components of state transitions reactively.
@@ -216,23 +217,27 @@ src/
 <a id="getting-started"></a>
 
 ### Prerequisites
+
 - **Node.js**: `v18.0.0` or higher
 - **npm**: `v9.0.0` or higher
 
 ### Steps
 
 1. **Clone Repository**:
+
    ```bash
    git clone https://github.com/Moparapairayat/Syniq.git
    cd Syniq
    ```
 
 2. **Install Dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Start Development Server**:
+
    ```bash
    npm run dev
    ```
@@ -259,11 +264,11 @@ npm run lint
 npm run build
 ```
 
-| Test Suite | Status | Coverage |
-| :--- | :---: | :--- |
-| `tests/unit/GameEngine.test.ts` | ✅ PASS | Core state transitions, sequence generation, reverse recall validation. |
-| `tests/unit/Leaderboard.test.ts` | ✅ PASS | Top 10 deduplication, high score sorting, duplicate purging. |
-| `tests/unit/Settings.test.ts` | ✅ PASS | Default settings load, partial updates, factory resets. |
+| Test Suite                       | Status  | Coverage                                                                |
+| :------------------------------- | :-----: | :---------------------------------------------------------------------- |
+| `tests/unit/GameEngine.test.ts`  | ✅ PASS | Core state transitions, sequence generation, reverse recall validation. |
+| `tests/unit/Leaderboard.test.ts` | ✅ PASS | Top 10 deduplication, high score sorting, duplicate purging.            |
+| `tests/unit/Settings.test.ts`    | ✅ PASS | Default settings load, partial updates, factory resets.                 |
 
 ---
 
@@ -275,6 +280,6 @@ This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE)
 
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3987-4801-a50e-c67081e2b58b.gif" width="100%" alt="Footer Divider Animation" />
 
-  <sub>Built with care for cognitive training & visual memory precision.</sub>
+<sub>Built with care for cognitive training & visual memory precision.</sub>
 
 </div>

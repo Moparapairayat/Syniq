@@ -50,26 +50,26 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
           {/* Modal content - 3D Wood Plaque Card */}
           <motion.div
             animate={{ opacity: 1, scale: 1 }}
-            className="relative w-full max-w-sm sm:max-w-md select-none"
+            className="relative w-full max-w-sm select-none sm:max-w-md"
             exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.96 }}
             initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.96 }}
             transition={{ type: 'spring', duration: 0.35, bounce: 0.15 }}
           >
             <div
               aria-modal="true"
-              className="relative flex flex-col gap-4 rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] p-5 sm:p-6 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.85)]"
+              className="relative flex flex-col gap-4 rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] p-5 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.85)] sm:p-6"
               role="dialog"
             >
               {/* Header Ribbon Bar */}
-              <div className="flex items-center justify-between pb-1.5 border-b border-[#8a4e22]/50">
-                <div className="rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-4 py-0.5 text-xs font-black uppercase tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408]">
+              <div className="flex items-center justify-between border-b border-[#8a4e22]/50 pb-1.5">
+                <div className="rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-4 py-0.5 text-xs font-black tracking-widest text-[#fff3cd] uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408]">
                   {title}
                 </div>
                 <button
                   aria-label="Close dialog"
                   onClick={onClose}
                   type="button"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-sm font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform active:scale-95 cursor-pointer outline-none"
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-sm font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform outline-none active:scale-95"
                 >
                   ✕
                 </button>

@@ -22,20 +22,20 @@ describe('AchievementService', () => {
     service = new AchievementService()
   })
 
-  test('should return all 9 initial achievements', async () => {
+  test('should return all 8 initial achievements', async () => {
     const list = await service.getAchievements()
-    expect(list).toHaveLength(9)
+    expect(list).toHaveLength(8)
     expect(list.every((a) => a.unlockedAt === null)).toBe(true)
   })
 
-  test('should unlock first_step achievement when reaching round 2', async () => {
+  test('should unlock memory_apprentice achievement when reaching round 5 in Classic Mode', async () => {
     const unlocked = await service.evaluateGameRun({
-      round: 2,
-      score: 20,
+      round: 5,
+      score: 50,
       mode: GameMode.Classic,
     })
 
-    expect(unlocked.some((a) => a.id === 'first_step')).toBe(true)
+    expect(unlocked.some((a) => a.id === 'memory_apprentice')).toBe(true)
   })
 
   test('should unlock century_club achievement when score is 100 or higher', async () => {

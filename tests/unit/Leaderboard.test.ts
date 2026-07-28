@@ -80,8 +80,24 @@ describe('LeaderboardService', () => {
 
   test('should delete all existing lower entries for the same player when a higher score is achieved', async () => {
     let list: ScoreEntry[] = [
-      { id: '1', playerId: 'p1', playerName: 'Charlie', score: 100, roundReached: 2, difficulty: Difficulty.Easy, timestamp: new Date() },
-      { id: '2', playerId: 'p1', playerName: 'Charlie', score: 200, roundReached: 3, difficulty: Difficulty.Easy, timestamp: new Date() },
+      {
+        id: '1',
+        playerId: 'p1',
+        playerName: 'Charlie',
+        score: 100,
+        roundReached: 2,
+        difficulty: Difficulty.Easy,
+        timestamp: new Date(),
+      },
+      {
+        id: '2',
+        playerId: 'p1',
+        playerName: 'Charlie',
+        score: 200,
+        roundReached: 3,
+        difficulty: Difficulty.Easy,
+        timestamp: new Date(),
+      },
     ]
 
     vi.mocked(leaderboardRepository.getAll).mockImplementation(async () => list)

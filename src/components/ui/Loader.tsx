@@ -31,9 +31,12 @@ export function CardSkeleton() {
 
 export function TableSkeleton() {
   return (
-    <div className="w-full animate-pulse flex flex-col gap-2 p-2">
+    <div className="flex w-full animate-pulse flex-col gap-2 p-2">
       {[1, 2, 3, 4, 5].map((i) => (
-        <div key={i} className="h-10 w-full rounded-xl bg-[#3a1d0d]/60 border border-[#78431e]/40" />
+        <div
+          key={i}
+          className="h-10 w-full rounded-xl border border-[#78431e]/40 bg-[#3a1d0d]/60"
+        />
       ))}
     </div>
   )

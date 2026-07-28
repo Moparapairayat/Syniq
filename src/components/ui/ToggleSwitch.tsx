@@ -25,10 +25,8 @@ export function ToggleSwitch({
   }
 
   return (
-    <label className="flex cursor-pointer items-center justify-between gap-3 py-1.5 sm:py-2 select-none">
-      <span className="text-xs sm:text-sm font-bold text-[#fff3cd]">
-        {label}
-      </span>
+    <label className="flex cursor-pointer items-center justify-between gap-3 py-1.5 select-none sm:py-2">
+      <span className="text-xs font-bold text-[#fff3cd] sm:text-sm">{label}</span>
       <button
         aria-checked={checked}
         className="relative h-6 w-11 rounded-full border border-white/[0.08] bg-white/[0.04] p-0.5 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)] disabled:cursor-not-allowed disabled:opacity-40"

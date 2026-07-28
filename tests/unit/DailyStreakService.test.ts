@@ -7,9 +7,13 @@ vi.mock('@/services/StorageService', () => {
   return {
     storageService: {
       get: vi.fn().mockImplementation(async () => mockStore),
-      put: vi.fn().mockImplementation(async (_storeName: string, item: { id: string; data: unknown }) => {
-        mockStore = item
-      }),
+      put: vi
+        .fn()
+        .mockImplementation(
+          async (_storeName: string, item: { id: string; data: unknown }) => {
+            mockStore = item
+          },
+        ),
     },
   }
 })

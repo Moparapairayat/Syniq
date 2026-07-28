@@ -83,7 +83,7 @@ export class AchievementService {
       const stored = await storageService.getAll<Achievement>(this.#storeName)
 
       const storedMap = new Map<string, Achievement>(
-        (stored || []).map((item) => [item.id, item])
+        (stored || []).map((item) => [item.id, item]),
       )
 
       return INITIAL_ACHIEVEMENTS.map((def) => {
@@ -98,7 +98,9 @@ export class AchievementService {
     }
   }
 
-  public async evaluateGameRun(ctx: EvaluationContext): Promise<ReadonlyArray<Achievement>> {
+  public async evaluateGameRun(
+    ctx: EvaluationContext,
+  ): Promise<ReadonlyArray<Achievement>> {
     const achievements = await this.getAchievements()
     const newlyUnlocked: Achievement[] = []
     const now = new Date().toISOString()
@@ -108,17 +110,37 @@ export class AchievementService {
 
       let isConditionMet = false
 
-      if (ach.id === 'memory_apprentice' && ctx.mode === GameMode.Classic && ctx.round >= 5) {
+      if (
+        ach.id === 'memory_apprentice' &&
+        ctx.mode === GameMode.Classic &&
+        ctx.round >= 5
+      ) {
         isConditionMet = true
-      } else if (ach.id === 'memory_master' && ctx.mode === GameMode.Classic && ctx.round >= 10) {
+      } else if (
+        ach.id === 'memory_master' &&
+        ctx.mode === GameMode.Classic &&
+        ctx.round >= 10
+      ) {
         isConditionMet = true
       } else if (ach.id === 'century_club' && ctx.score >= 100) {
         isConditionMet = true
-      } else if (ach.id === 'reverse_genius' && ctx.mode === GameMode.Reverse && ctx.round >= 5) {
+      } else if (
+        ach.id === 'reverse_genius' &&
+        ctx.mode === GameMode.Reverse &&
+        ctx.round >= 5
+      ) {
         isConditionMet = true
-      } else if (ach.id === 'speed_demon' && ctx.mode === GameMode.SpeedRush && ctx.round >= 5) {
+      } else if (
+        ach.id === 'speed_demon' &&
+        ctx.mode === GameMode.SpeedRush &&
+        ctx.round >= 5
+      ) {
         isConditionMet = true
-      } else if (ach.id === 'time_warrior' && ctx.mode === GameMode.TimeAttack && ctx.round >= 5) {
+      } else if (
+        ach.id === 'time_warrior' &&
+        ctx.mode === GameMode.TimeAttack &&
+        ctx.round >= 5
+      ) {
         isConditionMet = true
       } else if (ach.id === 'titan_mind' && ctx.round >= 15) {
         isConditionMet = true

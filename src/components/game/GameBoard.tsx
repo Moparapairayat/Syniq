@@ -90,7 +90,7 @@ function SectorButton({
       onClick={handleClick}
       whileHover={{ scale: isDisabled ? 1 : 1.02 }}
       whileTap={{ scale: isDisabled ? 1 : 0.92 }}
-      className="relative select-none focus:outline-none w-full h-full cursor-pointer"
+      className="relative h-full w-full cursor-pointer select-none focus:outline-none"
       style={{
         aspectRatio: '1',
         cursor: isDisabled ? 'not-allowed' : 'pointer',
@@ -110,29 +110,34 @@ function SectorButton({
       >
         {/* Top glossy glare line */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+          className="pointer-events-none absolute left-1/2 -translate-x-1/2 rounded-full"
           style={{
             top: '6%',
             width: '64%',
             height: '22%',
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%)',
+            background:
+              'linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%)',
           }}
         />
 
         {/* Keystroke Hint Badge */}
-        <span className="absolute top-3 right-3 font-mono text-[9px] font-extrabold text-slate-100 bg-slate-950/70 border border-white/20 rounded-md px-1.5 py-0.5 backdrop-none">
+        <span className="backdrop-none absolute top-3 right-3 rounded-md border border-white/20 bg-slate-950/70 px-1.5 py-0.5 font-mono text-[9px] font-extrabold text-slate-100">
           {c.keyHint}
         </span>
 
         {/* Center Pad Label inside 3D Dark Wood Capsule Badge */}
         <div className="relative z-10 flex h-full w-full items-center justify-center">
           <span
-            className="font-mono text-[11px] font-black tracking-widest uppercase rounded-full px-3 py-0.5 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+            className="rounded-full px-3 py-0.5 font-mono text-[11px] font-black tracking-widest uppercase shadow-[0_2px_8px_rgba(0,0,0,0.6)] transition-all"
             style={{
               color: isActive ? '#3a1d0d' : '#ffe49e',
-              backgroundColor: isActive ? 'rgba(255,255,255,0.95)' : 'rgba(28, 11, 4, 0.88)',
+              backgroundColor: isActive
+                ? 'rgba(255,255,255,0.95)'
+                : 'rgba(28, 11, 4, 0.88)',
               border: isActive ? '1.5px solid #ffffff' : '1.5px solid #78431e',
-              boxShadow: isActive ? '0 0 12px rgba(255,255,255,0.8)' : '0 2px 8px rgba(0,0,0,0.6)',
+              boxShadow: isActive
+                ? '0 0 12px rgba(255,255,255,0.8)'
+                : '0 2px 8px rgba(0,0,0,0.6)',
             }}
           >
             {c.label}
@@ -167,11 +172,14 @@ function CenterHub({
   const isClickable = status === GameStatus.Idle || status === GameStatus.GameOver
 
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-20">
+    <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
       {/* Outer Metallic Ring */}
       <div
         className="flex items-center justify-center rounded-full p-1 shadow-xl"
-        style={{ background: 'linear-gradient(145deg, #754820, #3d2b1e)', border: '2px solid #c9903b' }}
+        style={{
+          background: 'linear-gradient(145deg, #754820, #3d2b1e)',
+          border: '2px solid #c9903b',
+        }}
       >
         <button
           type="button"
@@ -179,7 +187,8 @@ function CenterHub({
           disabled={!isClickable}
           className="pointer-events-auto relative flex flex-col items-center justify-center rounded-full outline-none"
           style={{
-            width: 82, height: 82,
+            width: 82,
+            height: 82,
             background: 'linear-gradient(180deg, #fef08a 0%, #fbbf24 50%, #d97706 100%)',
             border: '2px solid #fef08a',
             boxShadow: 'inset 0 2px 0 rgba(255,255,255,0.8), 0 4px 14px rgba(0,0,0,0.4)',
@@ -187,10 +196,12 @@ function CenterHub({
           }}
         >
           <div
-            className="absolute top-[8%] left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+            className="pointer-events-none absolute top-[8%] left-1/2 -translate-x-1/2 rounded-full"
             style={{
-              width: '55%', height: '24%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.75) 0%, transparent 100%)',
+              width: '55%',
+              height: '24%',
+              background:
+                'linear-gradient(180deg, rgba(255,255,255,0.75) 0%, transparent 100%)',
             }}
           />
 
@@ -201,7 +212,7 @@ function CenterHub({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.1 }}
               transition={{ duration: 0.15 }}
-              className="relative z-10 flex flex-col items-center leading-none pointer-events-none"
+              className="pointer-events-none relative z-10 flex flex-col items-center leading-none"
             >
               <span
                 className="font-mono font-black text-slate-950"
@@ -212,9 +223,7 @@ function CenterHub({
                 {c.main}
               </span>
               {c.sub && (
-                <span
-                  className="text-[7.5px] font-black tracking-widest uppercase text-slate-950 mt-0.5"
-                >
+                <span className="mt-0.5 text-[7.5px] font-black tracking-widest text-slate-950 uppercase">
                   {c.sub}
                 </span>
               )}
@@ -246,11 +255,32 @@ export function GameBoard({
       let targetColor: SimonColor | null = null
       const k = e.key.toLowerCase()
       switch (k) {
-        case '1': case 'q': case 'w': case 'arrowup': targetColor = SimonColor.Green; break
-        case '2': case 'e': case 'arrowright': targetColor = SimonColor.Red; break
-        case '3': case 'a': case 'z': case 'arrowleft': targetColor = SimonColor.Blue; break
-        case '4': case 's': case 'd': case 'x': case 'arrowdown': targetColor = SimonColor.Yellow; break
-        default: break
+        case '1':
+        case 'q':
+        case 'w':
+        case 'arrowup':
+          targetColor = SimonColor.Green
+          break
+        case '2':
+        case 'e':
+        case 'arrowright':
+          targetColor = SimonColor.Red
+          break
+        case '3':
+        case 'a':
+        case 'z':
+        case 'arrowleft':
+          targetColor = SimonColor.Blue
+          break
+        case '4':
+        case 's':
+        case 'd':
+        case 'x':
+        case 'arrowdown':
+          targetColor = SimonColor.Yellow
+          break
+        default:
+          break
       }
       if (targetColor) {
         e.preventDefault()
@@ -265,8 +295,9 @@ export function GameBoard({
     <div
       aria-label="Simon Game Board"
       role="region"
-      className={`relative mx-auto w-full max-w-[min(350px,85vw,48vh)] select-none ${status === GameStatus.PlayerTurn ? 'memory-board-ready' : ''
-        }`}
+      className={`relative mx-auto w-full max-w-[min(350px,85vw,48vh)] select-none ${
+        status === GameStatus.PlayerTurn ? 'memory-board-ready' : ''
+      }`}
     >
       {/* Floating Animated Score & Celebration Popups */}
       <ScorePopups popups={popups} />
@@ -277,7 +308,8 @@ export function GameBoard({
         style={{
           background: 'linear-gradient(145deg, #6a4528, #372b20)',
           border: '2px solid #c39a55',
-          boxShadow: 'inset 0 2px 0 rgba(255,228,164,0.25), 0 12px 32px -4px rgba(16,31,13,0.65)',
+          boxShadow:
+            'inset 0 2px 0 rgba(255,228,164,0.25), 0 12px 32px -4px rgba(16,31,13,0.65)',
         }}
       >
         {/* 2x2 Sector Grid */}

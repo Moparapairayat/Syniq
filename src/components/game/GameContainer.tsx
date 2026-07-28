@@ -12,7 +12,12 @@ import type { PopupItem } from './ScorePopups'
 import { GameStatus } from '@/core/game/GameStatus'
 import { GameMode } from '@/core/game/GameMode'
 import { Difficulty } from '@/core/game/Difficulty'
-import { playerService, achievementService, dailyStreakService, audioService } from '@/services'
+import {
+  playerService,
+  achievementService,
+  dailyStreakService,
+  audioService,
+} from '@/services'
 import type { Achievement } from '@/models/Achievement'
 
 export function GameContainer() {
@@ -21,7 +26,17 @@ export function GameContainer() {
   const routeMode = (location.state as { mode?: GameMode })?.mode || GameMode.Classic
 
   const { settings, updateSetting } = useSettings()
-  const { state, engine, activeLitColor, timeLeft, startGame, submitInput, resetGame, nextRound, isPlaybackActive } = useGame()
+  const {
+    state,
+    engine,
+    activeLitColor,
+    timeLeft,
+    startGame,
+    submitInput,
+    resetGame,
+    nextRound,
+    isPlaybackActive,
+  } = useGame()
 
   const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [showQuitDialog, setShowQuitDialog] = useState(false)
@@ -56,12 +71,17 @@ export function GameContainer() {
 
   useEffect(() => {
     let isMounted = true
-    playerService.getOrCreateProfile().then((profile) => {
-      if (!isMounted) return
-      bestScoreRef.current = profile.highestScore
-      setBestScore(profile.highestScore)
-    }).catch(() => undefined)
-    return () => { isMounted = false }
+    playerService
+      .getOrCreateProfile()
+      .then((profile) => {
+        if (!isMounted) return
+        bestScoreRef.current = profile.highestScore
+        setBestScore(profile.highestScore)
+      })
+      .catch(() => undefined)
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   useEffect(() => {
@@ -79,18 +99,23 @@ export function GameContainer() {
       Promise.resolve().then(() => setScreenFlash(true))
       const timer = setTimeout(() => setScreenFlash(false), 600)
 
-      achievementService.evaluateGameRun({
-        round: state.round,
-        score: state.score,
-        mode: routeMode,
-      }).then((unlocked) => {
-        setNewlyUnlocked(unlocked)
-        if (unlocked.length > 0) {
-          setShowConfetti(true)
-        }
-      }).catch(() => undefined)
+      achievementService
+        .evaluateGameRun({
+          round: state.round,
+          score: state.score,
+          mode: routeMode,
+        })
+        .then((unlocked) => {
+          setNewlyUnlocked(unlocked)
+          if (unlocked.length > 0) {
+            setShowConfetti(true)
+          }
+        })
+        .catch(() => undefined)
 
-      dailyStreakService.recordPlayToday(routeMode === GameMode.DailyChallenge).catch(() => undefined)
+      dailyStreakService
+        .recordPlayToday(routeMode === GameMode.DailyChallenge)
+        .catch(() => undefined)
 
       Promise.resolve().then(() => setShowGameOverModal(true))
       return () => clearTimeout(timer)
@@ -104,7 +129,10 @@ export function GameContainer() {
 
   /* Screen flash, popups, and harmonic chime on round clear */
   useEffect(() => {
-    if (prevStatusRef.current !== GameStatus.RoundCompleted && state.status === GameStatus.RoundCompleted) {
+    if (
+      prevStatusRef.current !== GameStatus.RoundCompleted &&
+      state.status === GameStatus.RoundCompleted
+    ) {
       setScreenFlash(true)
       const isMilestone = state.round % 5 === 0
       addPopup(isMilestone ? 'PERFECT! 🔥' : 'ROUND CLEAR! ✨')
@@ -152,7 +180,12 @@ export function GameContainer() {
       {screenFlash && (
         <div
           className="screen-flash"
-          style={{ background: state.status === GameStatus.GameOver ? 'rgba(244,63,94,0.15)' : 'rgba(255,255,255,0.08)' }}
+          style={{
+            background:
+              state.status === GameStatus.GameOver
+                ? 'rgba(244,63,94,0.15)'
+                : 'rgba(255,255,255,0.08)',
+          }}
         />
       )}
 
@@ -164,17 +197,26 @@ export function GameContainer() {
             onClick={handleReturnToDashboard}
             type="button"
             aria-label="Return home"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] text-xl font-black text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),inset_0_-2px_0_rgba(30,12,4,0.6),0_4px_0_#381c0d,0_8px_16px_rgba(5,15,5,0.6)] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:scale-105"
+            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] text-xl font-black text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),inset_0_-2px_0_rgba(30,12,4,0.6),0_4px_0_#381c0d,0_8px_16px_rgba(5,15,5,0.6)] transition-transform outline-none hover:scale-105 active:translate-y-0.5"
           >
             ⌂
           </button>
 
           <div className="memory-hud flex-1" aria-label="Game metrics">
-            <div className="memory-hud-metric"><span>Round</span><strong>{state.round || '—'}</strong></div>
+            <div className="memory-hud-metric">
+              <span>Round</span>
+              <strong>{state.round || '—'}</strong>
+            </div>
             <div className="memory-hud-divider" aria-hidden="true" />
-            <div className="memory-hud-metric memory-hud-score"><span>Score</span><strong>{state.score.toLocaleString()}</strong></div>
+            <div className="memory-hud-metric memory-hud-score">
+              <span>Score</span>
+              <strong>{state.score.toLocaleString()}</strong>
+            </div>
             <div className="memory-hud-divider" aria-hidden="true" />
-            <div className="memory-hud-metric"><span>Best</span><strong>{bestScore.toLocaleString()}</strong></div>
+            <div className="memory-hud-metric">
+              <span>Best</span>
+              <strong>{bestScore.toLocaleString()}</strong>
+            </div>
           </div>
 
           {/* Quick HUD Sound Toggle Button */}
@@ -182,12 +224,16 @@ export function GameContainer() {
             onClick={handleSoundToggle}
             type="button"
             aria-label="Toggle sound effects"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] text-lg font-black text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),inset_0_-2px_0_rgba(30,12,4,0.6),0_4px_0_#381c0d,0_8px_16px_rgba(5,15,5,0.6)] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:scale-105"
+            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border-[2px] border-[#3e2211] bg-gradient-to-b from-[#945525] via-[#753f1a] to-[#54290c] text-lg font-black text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),inset_0_-2px_0_rgba(30,12,4,0.6),0_4px_0_#381c0d,0_8px_16px_rgba(5,15,5,0.6)] transition-transform outline-none hover:scale-105 active:translate-y-0.5"
           >
             {settings.soundVolume > 0 ? '🔊' : '🔇'}
           </button>
         </div>
-        <StatusPanel playerInputLength={state.playerInput.length} status={state.status} targetSequenceLength={state.sequence.length} />
+        <StatusPanel
+          playerInputLength={state.playerInput.length}
+          status={state.status}
+          targetSequenceLength={state.sequence.length}
+        />
       </div>
 
       {/* ── Simon Wheel GameBoard ── */}
@@ -197,15 +243,20 @@ export function GameContainer() {
           isDisabled={isBoardDisabled}
           popups={popups}
           onColorClick={(color) => {
-            if (state.status === GameStatus.Idle || state.status === GameStatus.GameOver) {
+            if (
+              state.status === GameStatus.Idle ||
+              state.status === GameStatus.GameOver
+            ) {
               startGame(routeMode)
             } else if (state.status === GameStatus.PlayerTurn) {
               // BUG-02 fix: compute the actual round score using the same difficulty
               // multiplier as ScoreCalculator instead of always showing +10
               const diffMultiplier =
-                engine.difficulty === Difficulty.Medium ? 1.5
-                : engine.difficulty === Difficulty.Hard ? 2
-                : 1
+                engine.difficulty === Difficulty.Medium
+                  ? 1.5
+                  : engine.difficulty === Difficulty.Hard
+                    ? 2
+                    : 1
               const roundPoints = Math.round(state.round * 10 * diffMultiplier)
               addPopup(`+${roundPoints}`)
               submitInput(color)
@@ -215,7 +266,10 @@ export function GameContainer() {
           status={state.status}
           timeLeft={timeLeft}
           onCenterHubClick={() => {
-            if (state.status === GameStatus.Idle || state.status === GameStatus.GameOver) {
+            if (
+              state.status === GameStatus.Idle ||
+              state.status === GameStatus.GameOver
+            ) {
               startGame(routeMode)
             }
           }}
@@ -224,7 +278,12 @@ export function GameContainer() {
 
       {/* Control Panel */}
       <div className="relative z-10 w-full">
-        <ControlPanel onNextRound={nextRound} onQuitRequest={() => setShowQuitDialog(true)} onReturnToDashboard={handleReturnToDashboard} status={state.status} />
+        <ControlPanel
+          onNextRound={nextRound}
+          onQuitRequest={() => setShowQuitDialog(true)}
+          onReturnToDashboard={handleReturnToDashboard}
+          status={state.status}
+        />
       </div>
 
       {/* ── Game Over Modal ── */}
@@ -234,14 +293,13 @@ export function GameContainer() {
         title="GAME OVER"
       >
         <div className="flex flex-col items-center gap-3.5 py-1 text-center select-none">
-
           {/* New Record Banner if player achieved a new High Score */}
           {isNewRecord && (
             <motion.div
               initial={{ scale: 0.8, y: -10, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
               transition={{ type: 'spring', bounce: 0.6 }}
-              className="flex w-full items-center justify-center gap-1.5 rounded-2xl border-2 border-[#fcd34d] bg-gradient-to-r from-[#d97706] via-[#f59e0b] to-[#d97706] px-4 py-1.5 text-xs font-black uppercase tracking-widest text-[#3a1d0d] shadow-[0_0_20px_rgba(252,211,77,0.7)]"
+              className="flex w-full items-center justify-center gap-1.5 rounded-2xl border-2 border-[#fcd34d] bg-gradient-to-r from-[#d97706] via-[#f59e0b] to-[#d97706] px-4 py-1.5 text-xs font-black tracking-widest text-[#3a1d0d] uppercase shadow-[0_0_20px_rgba(252,211,77,0.7)]"
             >
               <span>👑</span>
               <span>NEW PERSONAL HIGH SCORE!</span>
@@ -261,20 +319,24 @@ export function GameContainer() {
           </motion.div>
 
           <div>
-            <h2 className="text-xl font-black uppercase tracking-wider text-[#fca5a5]">
+            <h2 className="text-xl font-black tracking-wider text-[#fca5a5] uppercase">
               {isNewRecord ? 'NEW RECORD!' : 'PATTERN LOST!'}
             </h2>
-            <p className="mt-1 text-xs font-bold text-[#ffe49e]/70 uppercase tracking-widest">
+            <p className="mt-1 text-xs font-bold tracking-widest text-[#ffe49e]/70 uppercase">
               REACHED ROUND {state.round}
             </p>
             {newlyUnlocked.length > 0 && (
-              <div className="mx-auto mt-2 flex flex-col items-center gap-1 rounded-2xl border border-[#fcd34d] bg-gradient-to-r from-[#d97706]/40 via-[#fcd34d]/20 to-[#d97706]/40 p-2 text-center shadow-[0_0_15px_rgba(252,211,77,0.3)] animate-pulse">
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#fcd34d]">
-                  🎉 {newlyUnlocked.length} NEW ACHIEVEMENT{newlyUnlocked.length > 1 ? 'S' : ''} UNLOCKED!
+              <div className="mx-auto mt-2 flex animate-pulse flex-col items-center gap-1 rounded-2xl border border-[#fcd34d] bg-gradient-to-r from-[#d97706]/40 via-[#fcd34d]/20 to-[#d97706]/40 p-2 text-center shadow-[0_0_15px_rgba(252,211,77,0.3)]">
+                <span className="text-[10px] font-black tracking-widest text-[#fcd34d] uppercase">
+                  🎉 {newlyUnlocked.length} NEW ACHIEVEMENT
+                  {newlyUnlocked.length > 1 ? 'S' : ''} UNLOCKED!
                 </span>
-                <div className="flex flex-wrap items-center justify-center gap-1.5 mt-0.5">
+                <div className="mt-0.5 flex flex-wrap items-center justify-center gap-1.5">
                   {newlyUnlocked.map((ach) => (
-                    <span key={ach.id} className="inline-flex items-center gap-1 rounded-lg bg-[#3a1d0d] px-2 py-0.5 text-xs font-bold text-[#fff3cd] border border-[#fcd34d]/50">
+                    <span
+                      key={ach.id}
+                      className="inline-flex items-center gap-1 rounded-lg border border-[#fcd34d]/50 bg-[#3a1d0d] px-2 py-0.5 text-xs font-bold text-[#fff3cd]"
+                    >
                       <span>{ach.icon}</span> {ach.title}
                     </span>
                   ))}
@@ -284,34 +346,49 @@ export function GameContainer() {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid w-full grid-cols-3 gap-2 mt-1">
+          <div className="mt-1 grid w-full grid-cols-3 gap-2">
             <div className="flex flex-col items-center justify-center rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-2.5 shadow-inner">
-              <p className="text-[9px] font-black tracking-widest uppercase text-[#ffe49e]">SCORE</p>
-              <p className="mt-0.5 font-mono text-lg font-black text-[#fcd34d]">{state.score}</p>
+              <p className="text-[9px] font-black tracking-widest text-[#ffe49e] uppercase">
+                SCORE
+              </p>
+              <p className="mt-0.5 font-mono text-lg font-black text-[#fcd34d]">
+                {state.score}
+              </p>
             </div>
             <div className="flex flex-col items-center justify-center rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-2.5 shadow-inner">
-              <p className="text-[9px] font-black tracking-widest uppercase text-[#ffe49e]">ROUND</p>
-              <p className="mt-0.5 font-mono text-lg font-black text-white">{state.round}</p>
+              <p className="text-[9px] font-black tracking-widest text-[#ffe49e] uppercase">
+                ROUND
+              </p>
+              <p className="mt-0.5 font-mono text-lg font-black text-white">
+                {state.round}
+              </p>
             </div>
             <div className="flex flex-col items-center justify-center rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-2.5 shadow-inner">
-              <p className="text-[9px] font-black tracking-widest uppercase text-[#ffe49e]">BEST</p>
-              <p className="mt-0.5 font-mono text-lg font-black text-[#38bdf8]">{bestScore}</p>
+              <p className="text-[9px] font-black tracking-widest text-[#ffe49e] uppercase">
+                BEST
+              </p>
+              <p className="mt-0.5 font-mono text-lg font-black text-[#38bdf8]">
+                {bestScore}
+              </p>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex w-full flex-col gap-2.5 mt-2">
+          <div className="mt-2 flex w-full flex-col gap-2.5">
             <button
               type="button"
               onClick={handlePlayAgain}
-              className="w-full rounded-xl border border-[#78350f] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] py-3 text-xs font-black uppercase tracking-widest text-[#3a1d0d] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_3px_0_#78350f,0_6px_12px_rgba(0,0,0,0.4)] transition-transform active:translate-y-0.5 cursor-pointer outline-none"
+              className="w-full cursor-pointer rounded-xl border border-[#78350f] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] py-3 text-xs font-black tracking-widest text-[#3a1d0d] uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_3px_0_#78350f,0_6px_12px_rgba(0,0,0,0.4)] transition-transform outline-none active:translate-y-0.5"
             >
               🔄 PLAY AGAIN
             </button>
             <button
               type="button"
-              onClick={() => { setShowGameOverModal(false); navigate('/leaderboard') }}
-              className="w-full rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] py-2.5 text-xs font-black uppercase tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:border-[#fcd34d]"
+              onClick={() => {
+                setShowGameOverModal(false)
+                navigate('/leaderboard')
+              }}
+              className="w-full cursor-pointer rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] py-2.5 text-xs font-black tracking-widest text-[#fff3cd] uppercase shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform outline-none hover:border-[#fcd34d] active:translate-y-0.5"
             >
               🏆 VIEW LEADERBOARD
             </button>
@@ -332,4 +409,3 @@ export function GameContainer() {
     </div>
   )
 }
-

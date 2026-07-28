@@ -14,7 +14,8 @@ export default defineConfig({
       manifest: {
         name: 'Syniq - Modern Memory Challenge',
         short_name: 'Syniq',
-        description: 'A Modern Simon-Inspired Memory Challenge & Cognitive Training Laboratory',
+        description:
+          'A Modern Simon-Inspired Memory Challenge & Cognitive Training Laboratory',
         theme_color: '#101215',
         background_color: '#101215',
         display: 'standalone',

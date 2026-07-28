@@ -30,14 +30,18 @@ const STATUS_CONFIG = {
   },
 } as const
 
-export function StatusPanel({ status, playerInputLength, targetSequenceLength }: StatusPanelProps) {
+export function StatusPanel({
+  status,
+  playerInputLength,
+  targetSequenceLength,
+}: StatusPanelProps) {
   const isIdle = status === GameStatus.Idle
   const cfg = isIdle ? null : STATUS_CONFIG[status as keyof typeof STATUS_CONFIG]
   const progress = targetSequenceLength > 0 ? playerInputLength / targetSequenceLength : 0
   const segmentCount = Math.min(10, Math.max(1, targetSequenceLength))
 
   return (
-    <div className="flex w-full flex-col items-center gap-1.5 min-h-[32px]">
+    <div className="flex min-h-[32px] w-full flex-col items-center gap-1.5">
       {/* Status chip */}
       {cfg ? (
         <motion.div
@@ -52,21 +56,38 @@ export function StatusPanel({ status, playerInputLength, targetSequenceLength }:
       ) : null}
 
       {/* Progress bar */}
-      <div className="h-10 w-full max-w-[320px] flex flex-col justify-center">
+      <div className="flex h-10 w-full max-w-[320px] flex-col justify-center">
         {status === GameStatus.PlayerTurn && targetSequenceLength > 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="w-full flex flex-col gap-1"
+            className="flex w-full flex-col gap-1"
           >
-            <div className="memory-progress-segments" aria-label={`${playerInputLength} of ${targetSequenceLength} inputs completed`}>
+            <div
+              className="memory-progress-segments"
+              aria-label={`${playerInputLength} of ${targetSequenceLength} inputs completed`}
+            >
               {Array.from({ length: segmentCount }, (_, index) => {
                 const isComplete = index < Math.floor(progress * segmentCount)
-                return <motion.span key={index} animate={{ opacity: isComplete ? 1 : 0.45, scaleY: isComplete ? 1 : 0.8 }} className={isComplete ? 'memory-progress-segment is-complete' : 'memory-progress-segment'} transition={{ duration: 0.18 }} />
+                return (
+                  <motion.span
+                    key={index}
+                    animate={{
+                      opacity: isComplete ? 1 : 0.45,
+                      scaleY: isComplete ? 1 : 0.8,
+                    }}
+                    className={
+                      isComplete
+                        ? 'memory-progress-segment is-complete'
+                        : 'memory-progress-segment'
+                    }
+                    transition={{ duration: 0.18 }}
+                  />
+                )
               })}
             </div>
-            <div className="flex justify-between text-[9.5px] font-black tracking-widest text-[#ffe49e] uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] bg-[#2a1307]/90 px-3 py-0.5 rounded-md border border-[#78431e]">
+            <div className="flex justify-between rounded-md border border-[#78431e] bg-[#2a1307]/90 px-3 py-0.5 text-[9.5px] font-black tracking-widest text-[#ffe49e] uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
               <span>{playerInputLength} RECALLED</span>
               <span>{targetSequenceLength} SEQUENCE</span>
             </div>

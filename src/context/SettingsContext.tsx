@@ -1,9 +1,4 @@
-import {
-  useState,
-  useEffect,
-  useCallback,
-  type ReactNode,
-} from 'react'
+import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import type { AppSettings } from '@/repositories/SettingsRepository'
 import { settingsService } from '@/services/SettingsService'
 import { audioService } from '@/services/AudioService'

@@ -50,24 +50,22 @@ export function ConfirmationDialog({
 
         {/* Message Container */}
         <div className="w-full rounded-2xl border border-[#8a4e22]/50 bg-[#3a1d0d]/85 p-3.5 shadow-inner">
-          <p className="text-xs font-bold leading-relaxed text-[#ffe49e]">
-            {message}
-          </p>
+          <p className="text-xs leading-relaxed font-bold text-[#ffe49e]">{message}</p>
         </div>
 
         {/* Action Buttons Grid */}
-        <div className="grid w-full grid-cols-2 gap-2.5 mt-1">
+        <div className="mt-1 grid w-full grid-cols-2 gap-2.5">
           <button
             type="button"
             onClick={onClose}
-            className="w-full rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] py-2.5 text-xs font-black uppercase tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:border-[#fcd34d]"
+            className="w-full cursor-pointer rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] py-2.5 text-xs font-black tracking-widest text-[#fff3cd] uppercase shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform outline-none hover:border-[#fcd34d] active:translate-y-0.5"
           >
             {cancelLabel}
           </button>
           <button
             type="button"
             onClick={handleConfirm}
-            className={`w-full rounded-xl border py-2.5 text-xs font-black uppercase tracking-widest transition-transform active:translate-y-0.5 cursor-pointer outline-none ${
+            className={`w-full cursor-pointer rounded-xl border py-2.5 text-xs font-black tracking-widest uppercase transition-transform outline-none active:translate-y-0.5 ${
               isDanger
                 ? 'border-[#78281a] bg-gradient-to-b from-[#c93b2b] via-[#a82416] to-[#6e140b] text-[#ffe49e] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_3px_0_#4a0d06] hover:brightness-110'
                 : 'border-[#78350f] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] text-[#3a1d0d] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_3px_0_#78350f]'

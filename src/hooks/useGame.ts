@@ -11,7 +11,12 @@ import {
 } from '@/core'
 import type { GameState, SimonColor } from '@/core'
 import { Player } from '@/models'
-import { audioService, playerService, leaderboardService, dailyStreakService } from '@/services'
+import {
+  audioService,
+  playerService,
+  leaderboardService,
+  dailyStreakService,
+} from '@/services'
 import { useSettings } from './useSettings'
 
 /**
@@ -173,10 +178,10 @@ export function useGame() {
     }
 
     return () => clearCountdown()
-  // NOTE: timeLeft is intentionally NOT in deps — the setTimeLeft(prev => ...) functional
-  // updater already captures the latest value. Including timeLeft would spawn a new interval
-  // every second, causing the countdown to accelerate exponentially.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // NOTE: timeLeft is intentionally NOT in deps — the setTimeLeft(prev => ...) functional
+    // updater already captures the latest value. Including timeLeft would spawn a new interval
+    // every second, causing the countdown to accelerate exponentially.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.status, engine.mode, engine])
 
   // Reactive time bonus adjustments for Time Attack mode
@@ -240,7 +245,9 @@ export function useGame() {
           // BUG-18 fix: pass isDailyCompleted: true when this was a Daily Challenge run,
           // so lastDailyCompletedDate is updated and the streak records the daily as done.
           await playerService.updateStats(state.score, state.round)
-          await dailyStreakService.recordPlayToday(engine.mode === GameMode.DailyChallenge)
+          await dailyStreakService.recordPlayToday(
+            engine.mode === GameMode.DailyChallenge,
+          )
         } catch (error) {
           console.error('Failed to save score or update profile stats:', error)
         }

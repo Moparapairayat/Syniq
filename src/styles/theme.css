@@ -10,7 +10,7 @@
   --color-surface-muted: rgba(24, 27, 25, 0.88);
   --color-surface-elevated: rgba(35, 38, 35, 0.94);
 
-  --color-border-subtle: rgba(122, 158, 126, 0.10);
+  --color-border-subtle: rgba(122, 158, 126, 0.1);
   --color-border: rgba(122, 158, 126, 0.18);
   --color-border-strong: rgba(122, 158, 126, 0.32);
 
@@ -36,7 +36,7 @@
 
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.25);
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  --shadow-mark: 0 6px 16px rgba(0, 0, 0, 0.20);
+  --shadow-mark: 0 6px 16px rgba(0, 0, 0, 0.2);
   --shadow-soft: 0 8px 20px rgba(122, 158, 126, 0.08);
 }
 

@@ -7,7 +7,11 @@ import { useMetaTags } from '@/hooks/useMetaTags'
 import { RoutePath } from '@/routes/routePaths'
 
 export default function NotFoundPage() {
-  useMetaTags({ title: '404 — Page Not Found', description: 'This page does not exist. Return to Syniq and start a memory challenge.' })
+  useMetaTags({
+    title: '404 — Page Not Found',
+    description:
+      'This page does not exist. Return to Syniq and start a memory challenge.',
+  })
 
   return (
     <Container className="py-12 sm:py-16">

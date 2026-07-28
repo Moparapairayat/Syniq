@@ -51,7 +51,11 @@ export class AudioService {
   }
 
   #vibrate(pattern: number | number[]): void {
-    if (this.#hapticsEnabled && typeof window !== 'undefined' && 'vibrate' in window.navigator) {
+    if (
+      this.#hapticsEnabled &&
+      typeof window !== 'undefined' &&
+      'vibrate' in window.navigator
+    ) {
       try {
         window.navigator.vibrate(pattern)
       } catch {
@@ -170,11 +174,15 @@ export class AudioService {
           o1.stop(startTime + chord.duration)
           o2.stop(startTime + chord.duration)
         })
-      } else if (type === 'level_up' || type === 'high_score' || type === 'streak_milestone') {
+      } else if (
+        type === 'level_up' ||
+        type === 'high_score' ||
+        type === 'streak_milestone'
+      ) {
         this.#vibrate([40, 50, 90])
         // Triad fanfare chime: C4/G4 -> E4/B4 -> G4/D5 -> C5/E5/G5
         const notes = [
-          { f1: 261.63, f2: 392.0 },  // C4 + G4
+          { f1: 261.63, f2: 392.0 }, // C4 + G4
           { f1: 329.63, f2: 493.88 }, // E4 + B4
           { f1: 392.0, f2: 587.33 }, // G4 + D5
           { f1: 523.25, f2: 659.25 }, // C5 + E5

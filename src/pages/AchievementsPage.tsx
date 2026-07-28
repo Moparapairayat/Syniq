@@ -24,7 +24,8 @@ const RARITY_MAP: Record<AchievementRarity, RarityStyle> = {
     borderCls: 'border-[#fcd34d]',
     bgCls: 'bg-gradient-to-b from-[#ffd700]/30 via-[#78350f]/90 to-[#2a1307]/90',
     badgeRim: 'border-2 border-[#fcd34d] bg-gradient-to-b from-[#fbbf24] to-[#78350f]',
-    ribbonCls: 'bg-gradient-to-r from-[#fbbf24] via-[#f59e0b] to-[#d97706] text-[#3a1d0d]',
+    ribbonCls:
+      'bg-gradient-to-r from-[#fbbf24] via-[#f59e0b] to-[#d97706] text-[#3a1d0d]',
     glowShadow: 'shadow-[0_0_18px_rgba(252,211,77,0.5)]',
     label: 'LEGENDARY 👑',
   },
@@ -48,7 +49,8 @@ const RARITY_MAP: Record<AchievementRarity, RarityStyle> = {
     borderCls: 'border-[#34d399]',
     bgCls: 'bg-gradient-to-b from-[#34d399]/20 via-[#064e3b]/90 to-[#2a1307]/90',
     badgeRim: 'border-2 border-[#34d399] bg-gradient-to-b from-[#059669] to-[#064e3b]',
-    ribbonCls: 'bg-gradient-to-r from-[#34d399] via-[#059669] to-[#047857] text-[#064e3b]',
+    ribbonCls:
+      'bg-gradient-to-r from-[#34d399] via-[#059669] to-[#047857] text-[#064e3b]',
     glowShadow: 'shadow-[0_0_10px_rgba(52,211,153,0.35)]',
     label: 'COMMON 🔰',
   },
@@ -57,7 +59,8 @@ const RARITY_MAP: Record<AchievementRarity, RarityStyle> = {
 export default function AchievementsPage() {
   useMetaTags({
     title: 'Trophy Vault — Achievements',
-    description: 'Unlock 8 epic Syniq memory badges. From Memory Apprentice to Cognitive Titan — prove your skills across all game modes and difficulties.',
+    description:
+      'Unlock 8 epic Syniq memory badges. From Memory Apprentice to Cognitive Titan — prove your skills across all game modes and difficulties.',
     url: 'https://syniq.moparapairayat.dev/achievements',
   })
   const navigate = useNavigate()
@@ -99,15 +102,16 @@ export default function AchievementsPage() {
 
   const unlockedCount = achievements.filter((a) => Boolean(a.unlockedAt)).length
   const totalCount = achievements.length
-  const progressPercent = totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0
+  const progressPercent =
+    totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0
 
   return (
-    <div className="simon-home-screen select-none w-full min-h-screen">
+    <div className="simon-home-screen min-h-screen w-full select-none">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.05 }}
-        className="simon-landing-card relative flex w-full flex-col items-center justify-center p-2 xs:p-3 sm:p-4 overflow-hidden overflow-y-auto min-h-[92vh]"
+        className="simon-landing-card xs:p-3 relative flex min-h-[92vh] w-full flex-col items-center justify-center overflow-hidden overflow-y-auto p-2 sm:p-4"
         style={{ backgroundImage: `url(${simonForestBackground})` }}
       >
         {/* Ambient Forest Particles Overlay */}
@@ -117,31 +121,32 @@ export default function AchievementsPage() {
         <div className="simon-landing-hills" aria-hidden="true" />
 
         {/* ── 3D Wood Achievements Plaque Container ── */}
-        <div className="relative z-10 my-auto flex w-full max-w-full sm:max-w-[520px] flex-col gap-2.5 sm:gap-3.5 rounded-[20px] xs:rounded-[24px] sm:rounded-[26px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-2.5 xs:p-3.5 sm:p-5 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md overflow-y-auto custom-scrollbar max-h-[86vh] sm:max-h-[90vh]">
-
+        <div className="xs:rounded-[24px] xs:p-3.5 custom-scrollbar relative z-10 my-auto flex max-h-[86vh] w-full max-w-full flex-col gap-2.5 overflow-y-auto rounded-[20px] border-[3px] border-[#3e2211] bg-gradient-to-b from-[#945525]/95 via-[#753f1a]/95 to-[#54290c]/95 p-2.5 text-[#fff3cd] shadow-[inset_0_2px_0_rgba(255,226,162,0.6),inset_0_-4px_0_rgba(30,12,4,0.7),0_8px_0_#381c0d,0_20px_40px_rgba(5,15,5,0.75)] backdrop-blur-md sm:max-h-[90vh] sm:max-w-[520px] sm:gap-3.5 sm:rounded-[26px] sm:p-5">
           {/* Header Bar inside Plaque */}
-          <div className="flex items-center justify-between pb-1.5 sm:pb-2 border-b border-[#8a4e22]/50">
+          <div className="flex items-center justify-between border-b border-[#8a4e22]/50 pb-1.5 sm:pb-2">
             <button
               onClick={() => navigate('/')}
               type="button"
               aria-label="Return home"
-              className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-sm sm:text-lg font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform active:scale-95 cursor-pointer outline-none hover:scale-105 shrink-0"
+              className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] text-sm font-bold text-[#fff3cd] shadow-[inset_0_1.5px_0_rgba(255,226,162,0.6),0_3px_6px_rgba(0,0,0,0.5)] transition-transform outline-none hover:scale-105 active:scale-95 sm:h-10 sm:w-10 sm:text-lg"
             >
               ⌂
             </button>
-            <div className="rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-3 sm:px-6 py-0.5 sm:py-1 text-[10.5px] xs:text-xs sm:text-sm font-black uppercase tracking-wider sm:tracking-widest text-[#fff3cd] shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408] whitespace-nowrap">
+            <div className="xs:text-xs rounded-full border-2 border-[#3d200e] bg-gradient-to-b from-[#d99043] to-[#8c4b18] px-3 py-0.5 text-[10.5px] font-black tracking-wider whitespace-nowrap text-[#fff3cd] uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_0_#2b1408] sm:px-6 sm:py-1 sm:text-sm sm:tracking-widest">
               🏆 TROPHY VAULT
             </div>
-            <div className="w-8 sm:w-10 shrink-0" />
+            <div className="w-8 shrink-0 sm:w-10" />
           </div>
 
           {/* Overall Completion Progress Box */}
-          <div className="rounded-2xl border border-[#fcd34d]/50 bg-gradient-to-r from-[#78350f]/90 via-[#3a1d0d]/95 to-[#78350f]/90 p-2.5 sm:p-3 shadow-[0_0_15px_rgba(252,211,77,0.2)]">
-            <div className="flex items-center justify-between text-[10px] xs:text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#ffe49e]">
+          <div className="rounded-2xl border border-[#fcd34d]/50 bg-gradient-to-r from-[#78350f]/90 via-[#3a1d0d]/95 to-[#78350f]/90 p-2.5 shadow-[0_0_15px_rgba(252,211,77,0.2)] sm:p-3">
+            <div className="xs:text-[11px] flex items-center justify-between text-[10px] font-black tracking-wider text-[#ffe49e] uppercase sm:text-xs">
               <span>Vault Collection</span>
-              <span className="font-mono text-[#fcd34d]">{unlockedCount} / {totalCount} ({progressPercent}%)</span>
+              <span className="font-mono text-[#fcd34d]">
+                {unlockedCount} / {totalCount} ({progressPercent}%)
+              </span>
             </div>
-            <div className="mt-1.5 sm:mt-2 h-2.5 sm:h-3 w-full overflow-hidden rounded-full border border-[#4a2713] bg-[#2a1307] p-0.5 shadow-inner">
+            <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full border border-[#4a2713] bg-[#2a1307] p-0.5 shadow-inner sm:mt-2 sm:h-3">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercent}%` }}
@@ -152,7 +157,7 @@ export default function AchievementsPage() {
           </div>
 
           {/* Category Filter Tabs — 5-column grid, always fits on one row */}
-          <div className="grid grid-cols-5 gap-1 p-1 rounded-xl border border-[#5a341a] bg-[#2a1307]">
+          <div className="grid grid-cols-5 gap-1 rounded-xl border border-[#5a341a] bg-[#2a1307] p-1">
             {categories.map((cat) => {
               const isActive = activeCategory === cat.id
               return (
@@ -161,14 +166,14 @@ export default function AchievementsPage() {
                   onClick={() => setActiveCategory(cat.id)}
                   type="button"
                   aria-pressed={isActive}
-                  className={`flex flex-col xs:flex-row items-center justify-center gap-0.5 xs:gap-1 rounded-lg px-1 py-1.5 xs:py-1 text-[8px] xs:text-[9.5px] sm:text-[11px] font-black uppercase tracking-wide transition-all cursor-pointer outline-none w-full ${
+                  className={`xs:flex-row xs:gap-1 xs:py-1 xs:text-[9.5px] flex w-full cursor-pointer flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-[8px] font-black tracking-wide uppercase transition-all outline-none sm:text-[11px] ${
                     isActive
                       ? 'bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-[#3a1d0d] shadow-[0_2px_4px_rgba(0,0,0,0.4)]'
-                      : 'text-[#ffe49e]/70 hover:text-[#ffe49e] hover:bg-white/5'
+                      : 'text-[#ffe49e]/70 hover:bg-white/5 hover:text-[#ffe49e]'
                   }`}
                 >
-                  <span className="text-sm xs:text-base leading-none">{cat.icon}</span>
-                  <span className="leading-tight truncate">{cat.label}</span>
+                  <span className="xs:text-base text-sm leading-none">{cat.icon}</span>
+                  <span className="truncate leading-tight">{cat.label}</span>
                 </button>
               )
             })}
@@ -184,7 +189,7 @@ export default function AchievementsPage() {
               No badges found in this category.
             </div>
           ) : (
-            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 gap-1.5 sm:gap-2.5 py-0.5">
+            <div className="xs:grid-cols-3 grid grid-cols-2 gap-1.5 py-0.5 sm:grid-cols-3 sm:gap-2.5">
               {filteredAchievements.map((ach) => {
                 const isUnlocked = Boolean(ach.unlockedAt)
                 const rarityStyle = RARITY_MAP[ach.rarity || 'common']
@@ -195,39 +200,57 @@ export default function AchievementsPage() {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedBadge(ach)}
                     type="button"
-                    className={`relative flex flex-col items-center justify-between rounded-2xl border-2 p-2 sm:p-2.5 text-center transition-all cursor-pointer outline-none select-none min-h-[110px] xs:min-h-[120px] overflow-hidden ${isUnlocked
+                    className={`xs:min-h-[120px] relative flex min-h-[110px] cursor-pointer flex-col items-center justify-between overflow-hidden rounded-2xl border-2 p-2 text-center transition-all outline-none select-none sm:p-2.5 ${
+                      isUnlocked
                         ? `${rarityStyle.borderCls} ${rarityStyle.bgCls} ${rarityStyle.glowShadow}`
                         : 'border-[#78431e]/40 bg-[#2a1307]/60 opacity-60 hover:opacity-85'
-                      }`}
+                    }`}
                   >
                     {/* Animated Hologram Gloss Sheen Beam for Unlocked Badges */}
                     {isUnlocked && (
                       <motion.div
                         animate={{ x: ['-100%', '200%'] }}
-                        transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut', repeatDelay: 2 }}
-                        className="pointer-events-none absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+                        transition={{
+                          repeat: Infinity,
+                          duration: 3.5,
+                          ease: 'easeInOut',
+                          repeatDelay: 2,
+                        }}
+                        className="pointer-events-none absolute inset-0 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                       />
                     )}
 
                     {/* 3D Gemstone Shield Rim */}
-                    <div className={`relative my-0.5 sm:my-1 flex h-10 w-10 xs:h-11 xs:w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl text-xl xs:text-2xl sm:text-3xl shadow-lg transition-transform ${isUnlocked ? rarityStyle.badgeRim : 'border-2 border-[#78431e]/50 bg-[#3a1d0d] text-[#ffe49e]/40'
-                      }`}>
-                      <span style={{ filter: isUnlocked ? 'none' : 'grayscale(1)' }}>{ach.icon}</span>
+                    <div
+                      className={`xs:h-11 xs:w-11 xs:text-2xl relative my-0.5 flex h-10 w-10 items-center justify-center rounded-2xl text-xl shadow-lg transition-transform sm:my-1 sm:h-12 sm:w-12 sm:text-3xl ${
+                        isUnlocked
+                          ? rarityStyle.badgeRim
+                          : 'border-2 border-[#78431e]/50 bg-[#3a1d0d] text-[#ffe49e]/40'
+                      }`}
+                    >
+                      <span style={{ filter: isUnlocked ? 'none' : 'grayscale(1)' }}>
+                        {ach.icon}
+                      </span>
                       {!isUnlocked && (
-                        <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#1a0c04] border border-[#78431e] text-[9px]">🔒</span>
+                        <span className="absolute -right-1 -bottom-1 flex h-4 w-4 items-center justify-center rounded-full border border-[#78431e] bg-[#1a0c04] text-[9px]">
+                          🔒
+                        </span>
                       )}
                     </div>
 
                     {/* Title */}
-                    <span className="mt-0.5 sm:mt-1 text-[10px] xs:text-[10.5px] sm:text-xs font-black text-[#fff3cd] leading-tight line-clamp-1 w-full px-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                    <span className="xs:text-[10.5px] mt-0.5 line-clamp-1 w-full px-0.5 text-[10px] leading-tight font-black text-[#fff3cd] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] sm:mt-1 sm:text-xs">
                       {ach.title}
                     </span>
 
                     {/* 3D Tier Ribbon / Status */}
-                    <span className={`mt-1 w-full rounded-full py-0.5 text-[7.5px] xs:text-[8px] sm:text-[8.5px] font-black uppercase tracking-wider shadow-sm ${isUnlocked
-                        ? rarityStyle.ribbonCls
-                        : 'bg-black/40 text-[#ffe49e]/40 border border-[#78431e]/30'
-                      }`}>
+                    <span
+                      className={`xs:text-[8px] mt-1 w-full rounded-full py-0.5 text-[7.5px] font-black tracking-wider uppercase shadow-sm sm:text-[8.5px] ${
+                        isUnlocked
+                          ? rarityStyle.ribbonCls
+                          : 'border border-[#78431e]/30 bg-black/40 text-[#ffe49e]/40'
+                      }`}
+                    >
                       {isUnlocked ? rarityStyle.label : 'LOCKED'}
                     </span>
                   </motion.button>
@@ -240,7 +263,7 @@ export default function AchievementsPage() {
           <button
             onClick={() => navigate('/profile')}
             type="button"
-            className="mt-0.5 sm:mt-1 w-full rounded-xl border border-[#78431e] bg-gradient-to-b from-[#5a2e12] to-[#2a1307] py-2 text-center text-xs font-black uppercase tracking-wider text-[#ffe49e] shadow-sm transition-transform active:scale-98 cursor-pointer hover:bg-white/5"
+            className="mt-0.5 w-full cursor-pointer rounded-xl border border-[#78431e] bg-gradient-to-b from-[#5a2e12] to-[#2a1307] py-2 text-center text-xs font-black tracking-wider text-[#ffe49e] uppercase shadow-sm transition-transform hover:bg-white/5 active:scale-98 sm:mt-1"
           >
             ← Back to Profile
           </button>
@@ -259,13 +282,16 @@ export default function AchievementsPage() {
               const rStyle = RARITY_MAP[selectedBadge.rarity || 'common']
               const unlocked = Boolean(selectedBadge.unlockedAt)
               return (
-                <div className="flex flex-col items-center gap-3 text-center select-none py-1">
+                <div className="flex flex-col items-center gap-3 py-1 text-center select-none">
                   {/* Rotating 3D Gemstone Shield Pedestal */}
                   <motion.div
                     animate={{ rotateY: [0, 360] }}
                     transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-                    className={`relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-3xl ${unlocked ? rStyle.badgeRim + ' ' + rStyle.glowShadow : 'border-2 border-[#78431e] bg-[#2a1307]'
-                      } text-4xl sm:text-5xl shadow-2xl`}
+                    className={`relative flex h-20 w-20 items-center justify-center rounded-3xl sm:h-24 sm:w-24 ${
+                      unlocked
+                        ? rStyle.badgeRim + ' ' + rStyle.glowShadow
+                        : 'border-2 border-[#78431e] bg-[#2a1307]'
+                    } text-4xl shadow-2xl sm:text-5xl`}
                   >
                     <span style={{ filter: unlocked ? 'none' : 'grayscale(1)' }}>
                       {selectedBadge.icon}
@@ -273,32 +299,44 @@ export default function AchievementsPage() {
                   </motion.div>
 
                   <div>
-                    <h3 className="text-lg sm:text-xl font-black text-[#fcd34d] uppercase tracking-wide drop-shadow-md">
+                    <h3 className="text-lg font-black tracking-wide text-[#fcd34d] uppercase drop-shadow-md sm:text-xl">
                       {selectedBadge.title}
                     </h3>
 
                     {/* Rarity Ribbon Tag */}
-                    <div className="mt-1 inline-flex items-center gap-1.5 rounded-full px-3 py-0.5 text-[10px] font-black uppercase tracking-widest border border-white/20 shadow-inner"
+                    <div
+                      className="mt-1 inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3 py-0.5 text-[10px] font-black tracking-widest uppercase shadow-inner"
                       style={{
-                        background: unlocked ? 'rgba(252,211,77,0.15)' : 'rgba(0,0,0,0.3)',
+                        background: unlocked
+                          ? 'rgba(252,211,77,0.15)'
+                          : 'rgba(0,0,0,0.3)',
                       }}
                     >
                       <span>{rStyle.label}</span>
                     </div>
 
-                    <p className="mt-3 text-xs font-bold text-[#fff3cd] px-2 leading-relaxed">
+                    <p className="mt-3 px-2 text-xs leading-relaxed font-bold text-[#fff3cd]">
                       {selectedBadge.description}
                     </p>
                   </div>
 
-                  <div className="w-full rounded-2xl border border-[#78431e] bg-[#2a1307]/90 p-3 text-center mt-1 shadow-inner">
+                  <div className="mt-1 w-full rounded-2xl border border-[#78431e] bg-[#2a1307]/90 p-3 text-center shadow-inner">
                     {selectedBadge.unlockedAt ? (
                       <div className="flex flex-col gap-0.5">
                         <span className="text-xs font-black text-[#4ade80]">
                           ✨ UNLOCKED & RECORDED
                         </span>
                         <span className="text-[10px] font-bold text-[#ffe49e]/70">
-                          {new Date(selectedBadge.unlockedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                          {new Date(selectedBadge.unlockedAt).toLocaleDateString(
+                            undefined,
+                            {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            },
+                          )}
                         </span>
                       </div>
                     ) : (

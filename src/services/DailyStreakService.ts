@@ -50,7 +50,9 @@ export class DailyStreakService {
     }
   }
 
-  public async recordPlayToday(isDailyCompleted: boolean = false): Promise<DailyStreakData> {
+  public async recordPlayToday(
+    isDailyCompleted: boolean = false,
+  ): Promise<DailyStreakData> {
     const current = await this.getStreakData()
     const today = this.getTodayDateString()
     const yesterday = this.getYesterdayDateString()
