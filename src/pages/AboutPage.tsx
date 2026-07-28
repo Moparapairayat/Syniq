@@ -270,26 +270,26 @@ export default function AboutPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-1 flex flex-col gap-2 sm:flex-row">
+          <div className="mt-1 flex flex-row items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               onClick={() => navigate('/')}
-              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#78350f] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] px-3 py-2.5 text-xs font-black tracking-widest text-[#3a1d0d] uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_3px_0_#78350f,0_6px_12px_rgba(0,0,0,0.4)] transition-transform outline-none hover:brightness-110 active:translate-y-0.5 sm:flex-1"
+              className="flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#78350f] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] px-1.5 py-2.5 text-[10px] font-black tracking-wider text-[#3a1d0d] uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_3px_0_#78350f,0_6px_12px_rgba(0,0,0,0.4)] transition-transform outline-none hover:brightness-110 active:translate-y-0.5 sm:gap-2 sm:px-3 sm:text-xs sm:tracking-widest"
             >
-              <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border border-[#613b22] bg-gradient-to-b from-[#b8753c] via-[#865027] to-[#693a22] text-[11px] text-[#fff1bc] shadow-[inset_0_1px_0_rgba(255,225,161,0.6),0_1px_2px_rgba(0,0,0,0.5)]">
+              <span className="flex h-4.5 w-4.5 flex-shrink-0 items-center justify-center rounded-full border border-[#613b22] bg-gradient-to-b from-[#b8753c] via-[#865027] to-[#693a22] text-[10px] text-[#fff1bc] shadow-[inset_0_1px_0_rgba(255,225,161,0.6),0_1px_2px_rgba(0,0,0,0.5)] sm:h-5 sm:w-5 sm:text-[11px]">
                 🏠
               </span>
-              <span>RETURN HOME</span>
+              <span className="whitespace-nowrap">RETURN HOME</span>
             </button>
             <button
               type="button"
               onClick={() => navigate('/game')}
-              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] px-3 py-2.5 text-xs font-black tracking-widest text-[#fff3cd] uppercase shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform outline-none hover:border-[#fcd34d] active:translate-y-0.5 sm:flex-1"
+              className="flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#5a341a] bg-gradient-to-b from-[#9e5d2b] to-[#5a2e12] px-1.5 py-2.5 text-[10px] font-black tracking-wider text-[#fff3cd] uppercase shadow-[inset_0_1px_0_rgba(255,226,162,0.4),0_2px_0_#2b1408] transition-transform outline-none hover:border-[#fcd34d] active:translate-y-0.5 sm:gap-2 sm:px-3 sm:text-xs sm:tracking-widest"
             >
-              <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border border-[#613b22] bg-gradient-to-b from-[#b8753c] via-[#865027] to-[#693a22] text-[11px] text-[#fff1bc] shadow-[inset_0_1px_0_rgba(255,226,162,0.6),0_1px_2px_rgba(0,0,0,0.5)]">
+              <span className="flex h-4.5 w-4.5 flex-shrink-0 items-center justify-center rounded-full border border-[#613b22] bg-gradient-to-b from-[#b8753c] via-[#865027] to-[#693a22] text-[10px] text-[#fff1bc] shadow-[inset_0_1px_0_rgba(255,226,162,0.6),0_1px_2px_rgba(0,0,0,0.5)] sm:h-5 sm:w-5 sm:text-[11px]">
                 🎮
               </span>
-              <span>PLAY SYNIQ</span>
+              <span className="whitespace-nowrap">PLAY SYNIQ</span>
             </button>
           </div>
         </div>
