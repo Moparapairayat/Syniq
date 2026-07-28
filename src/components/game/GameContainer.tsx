@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useGame } from '@/hooks/useGame'
 import { useSettings } from '@/hooks/useSettings'
+import { useShareScore } from '@/hooks/useShareScore'
 import { Modal, ConfirmationDialog } from '@/components/ui'
 import { GameBoard } from './GameBoard'
 import { StatusPanel } from './StatusPanel'
@@ -11,6 +12,7 @@ import { ConfettiEffect } from '@/components/effects/ConfettiEffect'
 import type { PopupItem } from './ScorePopups'
 import { GameStatus } from '@/core/game/GameStatus'
 import { GameMode } from '@/core/game/GameMode'
+import { Difficulty } from '@/core/game/Difficulty'
 import { playerService, achievementService, dailyStreakService, audioService } from '@/services'
 import type { Achievement } from '@/models/Achievement'
 
@@ -20,7 +22,8 @@ export function GameContainer() {
   const routeMode = (location.state as { mode?: GameMode })?.mode || GameMode.Classic
 
   const { settings, updateSetting } = useSettings()
-  const { state, activeLitColor, timeLeft, startGame, submitInput, resetGame, nextRound, isPlaybackActive } = useGame()
+  const { state, engine, activeLitColor, timeLeft, startGame, submitInput, resetGame, nextRound, isPlaybackActive } = useGame()
+  const { shareScore, shareResult, isSharing } = useShareScore()
 
   const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [showQuitDialog, setShowQuitDialog] = useState(false)
@@ -32,14 +35,26 @@ export function GameContainer() {
   const [newlyUnlocked, setNewlyUnlocked] = useState<ReadonlyArray<Achievement>>([])
   const prevStatusRef = useRef(state.status)
   const bestScoreRef = useRef(0)
+  const popupTimersRef = useRef<number[]>([])
 
-  const addPopup = (text: string, color?: string) => {
+  const addPopup = useCallback((text: string, color?: string) => {
     const id = `${Date.now()}-${Math.random()}`
     setPopups((prev) => [...prev.slice(-2), { id, text, color }])
-    setTimeout(() => {
+    // BUG-12 fix: store timer handle so it can be cleared on unmount
+    const timer = window.setTimeout(() => {
       setPopups((prev) => prev.filter((p) => p.id !== id))
+      popupTimersRef.current = popupTimersRef.current.filter((t) => t !== timer)
     }, 850)
-  }
+    popupTimersRef.current.push(timer)
+  }, [])
+
+  // BUG-12 fix: cleanup pending popup timers when the component unmounts
+  useEffect(() => {
+    return () => {
+      popupTimersRef.current.forEach((t) => window.clearTimeout(t))
+      popupTimersRef.current = []
+    }
+  }, [])
 
   useEffect(() => {
     let isMounted = true
@@ -187,7 +202,14 @@ export function GameContainer() {
             if (state.status === GameStatus.Idle || state.status === GameStatus.GameOver) {
               startGame(routeMode)
             } else if (state.status === GameStatus.PlayerTurn) {
-              addPopup('+10')
+              // BUG-02 fix: compute the actual round score using the same difficulty
+              // multiplier as ScoreCalculator instead of always showing +10
+              const diffMultiplier =
+                engine.difficulty === Difficulty.Medium ? 1.5
+                : engine.difficulty === Difficulty.Hard ? 2
+                : 1
+              const roundPoints = Math.round(state.round * 10 * diffMultiplier)
+              addPopup(`+${roundPoints}`)
               submitInput(color)
             }
           }}
@@ -288,6 +310,22 @@ export function GameContainer() {
             >
               🔄 PLAY AGAIN
             </button>
+
+            <button
+              type="button"
+              disabled={isSharing}
+              onClick={() => shareScore(state.score, state.round, routeMode, engine.difficulty)}
+              className="w-full rounded-xl border border-[#0284c7] bg-gradient-to-b from-[#38bdf8] via-[#0284c7] to-[#0369a1] py-2.5 text-xs font-black uppercase tracking-widest text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_2px_0_#075985] transition-transform active:translate-y-0.5 cursor-pointer outline-none hover:brightness-110 disabled:opacity-60"
+            >
+              {shareResult === 'copied'
+                ? '📋 SCORE COPIED!'
+                : shareResult === 'shared' || shareResult === 'twitter'
+                ? '✨ SHARED!'
+                : isSharing
+                ? 'SHARING...'
+                : '📤 SHARE SCORE'}
+            </button>
+
             <button
               type="button"
               onClick={() => { setShowGameOverModal(false); navigate('/leaderboard') }}

@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
+import type { ReactNode } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 export interface ModalProps {
   readonly isOpen: boolean
   readonly onClose: () => void
   readonly title: string
-  readonly children: React.ReactNode
+  readonly children: ReactNode
 }
 
 /**

@@ -11,7 +11,7 @@ import {
 } from '@/core'
 import type { GameState, SimonColor } from '@/core'
 import { Player } from '@/models'
-import { audioService, playerService, leaderboardService } from '@/services'
+import { audioService, playerService, leaderboardService, dailyStreakService } from '@/services'
 import { useSettings } from './useSettings'
 
 /**
@@ -173,7 +173,11 @@ export function useGame() {
     }
 
     return () => clearCountdown()
-  }, [state.status, engine.mode, engine, timeLeft])
+  // NOTE: timeLeft is intentionally NOT in deps — the setTimeLeft(prev => ...) functional
+  // updater already captures the latest value. Including timeLeft would spawn a new interval
+  // every second, causing the countdown to accelerate exponentially.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.status, engine.mode, engine])
 
   // Reactive time bonus adjustments for Time Attack mode
   useEffect(() => {
@@ -233,7 +237,10 @@ export function useGame() {
           }
 
           // Update career statistics count
+          // BUG-18 fix: pass isDailyCompleted: true when this was a Daily Challenge run,
+          // so lastDailyCompletedDate is updated and the streak records the daily as done.
           await playerService.updateStats(state.score, state.round)
+          await dailyStreakService.recordPlayToday(engine.mode === GameMode.DailyChallenge)
         } catch (error) {
           console.error('Failed to save score or update profile stats:', error)
         }
@@ -253,9 +260,12 @@ export function useGame() {
     mode: GameMode = GameMode.Classic,
     difficulty: Difficulty = Difficulty.Easy,
   ) => {
+    // BUG-05 fix: these must be reset BEFORE the try/catch so they are guaranteed
+    // to run even if getOrCreateProfile() throws and the catch-path is taken.
+    hasSavedGameOverRef.current = false
+    prevInputLengthRef.current = 0
+
     try {
-      hasSavedGameOverRef.current = false
-      prevInputLengthRef.current = 0
       audioService.playStart()
       clearCountdown()
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { Outlet, useLocation, NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { mainNavigationItems } from '@/routes/navigation'
@@ -20,7 +21,7 @@ function CoinBadge({ amount }: { amount: number }) {
   )
 }
 
-const NavIcons: Record<string, (active: boolean) => React.ReactNode> = {
+const NavIcons: Record<string, (active: boolean) => ReactNode> = {
   '/': (a) => (
     <svg viewBox="0 0 24 24" fill="none" stroke={a ? '#0f172a' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -101,7 +102,8 @@ export function AppLayout() {
       window.removeEventListener('syniq-profile-updated', syncProfile)
       if (authTimer) clearTimeout(authTimer)
     }
-  }, [location.pathname])
+  }, []) // BUG-03 fix: removed location.pathname — profile sync must run only once on mount.
+           // The syniq-profile-updated event already handles subsequent re-syncs after rename etc.
 
   useEffect(() => {
     progressRef.current = setInterval(() => setSplashProgress((p) => Math.min(p + 4, 100)), 40)

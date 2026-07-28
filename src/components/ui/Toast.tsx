@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { createContext, useContext, useState, useRef, useEffect, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export interface ToastMessage {
@@ -23,15 +23,26 @@ export function useToast() {
 
 export function ToastProvider({ children }: { readonly children: ReactNode }) {
   const [toasts, setToasts] = useState<ReadonlyArray<ToastMessage>>([])
+  // BUG-14 fix: track pending timer IDs so they can be cleared on unmount
+  const timerRefs = useRef<number[]>([])
+
+  useEffect(() => {
+    return () => {
+      timerRefs.current.forEach((t) => window.clearTimeout(t))
+      timerRefs.current = []
+    }
+  }, [])
 
   const showToast = (message: string) => {
     const id = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
     setToasts((prev) => [...prev, { id, message }])
 
     // Auto remove after 3.5 seconds
-    setTimeout(() => {
+    const timer = window.setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id))
+      timerRefs.current = timerRefs.current.filter((t) => t !== timer)
     }, 3500)
+    timerRefs.current.push(timer)
   }
 
   return (

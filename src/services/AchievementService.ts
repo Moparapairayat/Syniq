@@ -4,14 +4,6 @@ import { GameMode } from '@/core/game/GameMode'
 
 export const INITIAL_ACHIEVEMENTS: ReadonlyArray<Omit<Achievement, 'unlockedAt'>> = [
   {
-    id: 'first_step',
-    title: 'First Step',
-    description: 'Complete Round 1 in any mode',
-    icon: '🔰',
-    category: 'beginner',
-    rarity: 'common',
-  },
-  {
     id: 'memory_apprentice',
     title: 'Memory Apprentice',
     description: 'Reach Round 5 in Classic Mode',
@@ -116,9 +108,7 @@ export class AchievementService {
 
       let isConditionMet = false
 
-      if (ach.id === 'first_step' && ctx.round >= 1) {
-        isConditionMet = true
-      } else if (ach.id === 'memory_apprentice' && ctx.mode === GameMode.Classic && ctx.round >= 5) {
+      if (ach.id === 'memory_apprentice' && ctx.mode === GameMode.Classic && ctx.round >= 5) {
         isConditionMet = true
       } else if (ach.id === 'memory_master' && ctx.mode === GameMode.Classic && ctx.round >= 10) {
         isConditionMet = true

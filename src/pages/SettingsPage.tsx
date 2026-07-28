@@ -7,7 +7,7 @@ import {
   ConfirmationDialog,
 } from '@/components/ui'
 import { useSettings } from '@/hooks/useSettings'
-import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { useMetaTags } from '@/hooks/useMetaTags'
 import { ForestParticles } from '@/components/effects/ForestParticles'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
@@ -94,13 +94,19 @@ function WoodDropdown<T extends string>({
 }
 
 export default function SettingsPage() {
-  useDocumentTitle('Settings')
+  useMetaTags({
+    title: 'Settings',
+    description: 'Customize your Syniq experience — adjust sound, music, color schemes, and difficulty preferences.',
+    url: 'https://syniq.vercel.app/settings',
+  })
   const { settings, updateSetting, resetSettings } = useSettings()
   const [isResetOpen, setIsResetOpen] = useState(false)
   const navigate = useNavigate()
 
   const handleReset = async () => {
     await resetSettings()
+    // BUG-08 fix: close the dialog after reset completes — previously it stayed open
+    setIsResetOpen(false)
   }
 
   const colorBlindOptions = [

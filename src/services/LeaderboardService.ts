@@ -78,7 +78,9 @@ export class LeaderboardService {
 
       if (matchingEntries.length > 0) {
         const maxExistingScore = Math.max(...matchingEntries.map((s) => s.score))
-        if (entry.score > maxExistingScore) {
+        // BUG-04 fix: use >= so a tied score still updates the entry with the latest
+        // timestamp and round data, instead of silently discarding the new run.
+        if (entry.score >= maxExistingScore) {
           for (const match of matchingEntries) {
             await leaderboardRepository.delete(match.id)
           }

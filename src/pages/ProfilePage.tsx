@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { PlayerProfileCard } from '@/components/profile'
-import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { useMetaTags } from '@/hooks/useMetaTags'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 export default function ProfilePage() {
-  useDocumentTitle('Profile')
+  useMetaTags({
+    title: 'My Player Profile',
+    description: 'View your Syniq stats, rank, achievements, and daily streak. Track your memory training progress across all game modes.',
+    url: 'https://syniq.vercel.app/profile',
+  })
   const navigate = useNavigate()
   return (
     <div className="simon-home-screen simon-profile-screen select-none">

@@ -31,6 +31,8 @@ export function TopTenTable() {
   const [scores, setScores] = useState<ReadonlyArray<ScoreEntry>>([])
   const [playerProfile, setPlayerProfile] = useState<PlayerProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  // BUG-16 fix: read localStorage once in a state initializer, not on every render
+  const [myAvatarId] = useState(() => parseInt(localStorage.getItem('syniq-avatar-id') ?? '1', 10) || 1)
 
   useEffect(() => {
     let active = true
@@ -68,11 +70,16 @@ export function TopTenTable() {
 
   if (uniqueScores.length === 0) return <EmptyState description="No scores recorded yet. Play a game to rank up!" icon="🏆" title="Leaderboard Ready" />
 
-  // Filter for tabs UX
+  // BUG-15 fix: use real date-based filtering instead of a fake slice(0, N)
+  const now = new Date()
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const startOfWeek = new Date(startOfToday)
+  startOfWeek.setDate(startOfToday.getDate() - 6) // last 7 days
+
   const displayScores = timeframe === 'today'
-    ? uniqueScores.slice(0, 5)
+    ? uniqueScores.filter((s) => new Date(s.timestamp) >= startOfToday)
     : timeframe === 'week'
-      ? uniqueScores.slice(0, 8)
+      ? uniqueScores.filter((s) => new Date(s.timestamp) >= startOfWeek)
       : uniqueScores
 
   const top3 = [0, 1, 2].map((i) => displayScores[i] ?? { playerName: `Player ${i + 1}`, score: 0, id: `ph-${i}` })
@@ -209,7 +216,7 @@ export function TopTenTable() {
             </span>
             <div className="relative shrink-0">
               <AvatarDisplay
-                avatarId={parseInt(localStorage.getItem('syniq-avatar-id') ?? '1', 10) || 1}
+                avatarId={myAvatarId}
                 size={30}
                 ringClass="avatar-ring-neon"
               />

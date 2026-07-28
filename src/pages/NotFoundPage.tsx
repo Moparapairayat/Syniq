@@ -3,11 +3,11 @@ import { Container } from '@/components/ui/Container'
 import { getButtonClassName } from '@/components/ui/buttonStyles'
 import { PageTitle } from '@/components/ui/PageTitle'
 import { Section } from '@/components/ui/Section'
-import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { useMetaTags } from '@/hooks/useMetaTags'
 import { RoutePath } from '@/routes/routePaths'
 
 export default function NotFoundPage() {
-  useDocumentTitle('Page Not Found')
+  useMetaTags({ title: '404 — Page Not Found', description: 'This page does not exist. Return to Syniq and start a memory challenge.' })
 
   return (
     <Container className="py-12 sm:py-16">

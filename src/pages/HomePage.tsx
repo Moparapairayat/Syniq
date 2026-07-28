@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { useMetaTags } from '@/hooks/useMetaTags'
 import { RoutePath } from '@/routes/routePaths'
 import { playerService, dailyStreakService } from '@/services'
 import type { DailyStreakData } from '@/services'
@@ -11,7 +11,11 @@ import { ForestParticles } from '@/components/effects/ForestParticles'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 export default function HomePage() {
-  useDocumentTitle('Syniq - Memory Training')
+  useMetaTags({
+    title: 'Memory Training Game',
+    description: 'Syniq is a premium Simon-inspired memory challenge. Train your brain with Classic, Speed Rush, Reverse, Time Attack & Daily Challenge modes. Free to play — no sign-up needed.',
+    url: 'https://syniq.vercel.app/',
+  })
   const navigate = useNavigate()
 
   const [highScore, setHighScore] = useState(0)

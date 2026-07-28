@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { useMetaTags } from '@/hooks/useMetaTags'
 import { TopTenTable } from '@/components/profile'
 import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
 
 export default function LeaderboardPage() {
-  useDocumentTitle('Leaderboard')
+  useMetaTags({
+    title: 'Hall of Fame — Top Rankings',
+    description: 'See the top Syniq memory champions. Who reached the highest round and scored the most points? Challenge the leaderboard!',
+    url: 'https://syniq.vercel.app/leaderboard',
+  })
   const navigate = useNavigate()
   return (
     <div className="simon-home-screen simon-leaderboard-screen select-none">

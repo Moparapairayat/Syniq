@@ -6,7 +6,7 @@ import { ForestParticles } from '@/components/effects/ForestParticles'
 import { Modal } from '@/components/ui/Modal'
 import { achievementService } from '@/services/AchievementService'
 import type { Achievement, AchievementRarity } from '@/models/Achievement'
-import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { useMetaTags } from '@/hooks/useMetaTags'
 
 type CategoryFilter = 'all' | 'beginner' | 'mastery' | 'speed' | 'score'
 
@@ -55,7 +55,11 @@ const RARITY_MAP: Record<AchievementRarity, RarityStyle> = {
 }
 
 export default function AchievementsPage() {
-  useDocumentTitle('Trophy Vault - Syniq Memory')
+  useMetaTags({
+    title: 'Trophy Vault — Achievements',
+    description: 'Unlock 8 epic Syniq memory badges. From Memory Apprentice to Cognitive Titan — prove your skills across all game modes and difficulties.',
+    url: 'https://syniq.vercel.app/achievements',
+  })
   const navigate = useNavigate()
   const [achievements, setAchievements] = useState<ReadonlyArray<Achievement>>([])
   const [isLoading, setIsLoading] = useState(true)
