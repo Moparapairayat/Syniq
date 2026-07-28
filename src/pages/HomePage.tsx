@@ -12,8 +12,8 @@ import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg
 
 export default function HomePage() {
   useMetaTags({
-    title: 'Memory Training Game',
-    description: 'Syniq is a premium Simon-inspired memory challenge. Train your brain with Classic, Speed Rush, Reverse, Time Attack & Daily Challenge modes. Free to play — no sign-up needed.',
+    title: 'Memory Challenge',
+    description: 'Train your memory, test your focus, and beat high scores in a fun cognitive challenge.',
     url: 'https://syniq.moparapairayat.dev/',
   })
   const navigate = useNavigate()
