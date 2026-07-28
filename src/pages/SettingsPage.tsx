@@ -97,7 +97,7 @@ export default function SettingsPage() {
   useMetaTags({
     title: 'Settings',
     description: 'Customize your Syniq experience — adjust sound, music, color schemes, and difficulty preferences.',
-    url: 'https://syniq.vercel.app/settings',
+    url: 'https://syniq.moparapairayat.dev/settings',
   })
   const { settings, updateSetting, resetSettings } = useSettings()
   const [isResetOpen, setIsResetOpen] = useState(false)

@@ -14,7 +14,7 @@ export default function HomePage() {
   useMetaTags({
     title: 'Memory Training Game',
     description: 'Syniq is a premium Simon-inspired memory challenge. Train your brain with Classic, Speed Rush, Reverse, Time Attack & Daily Challenge modes. Free to play — no sign-up needed.',
-    url: 'https://syniq.vercel.app/',
+    url: 'https://syniq.moparapairayat.dev/',
   })
   const navigate = useNavigate()
 

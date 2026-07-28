@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { GameMode } from '@/core/game/GameMode'
 import { Difficulty } from '@/core/game/Difficulty'
 
-const APP_URL = 'https://syniq.vercel.app'
+const APP_URL = 'https://syniq.moparapairayat.dev'
 
 const MODE_LABELS: Record<GameMode, string> = {
   [GameMode.Classic]: 'Classic',

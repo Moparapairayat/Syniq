@@ -8,7 +8,7 @@ export default function ProfilePage() {
   useMetaTags({
     title: 'My Player Profile',
     description: 'View your Syniq stats, rank, achievements, and daily streak. Track your memory training progress across all game modes.',
-    url: 'https://syniq.vercel.app/profile',
+    url: 'https://syniq.moparapairayat.dev/profile',
   })
   const navigate = useNavigate()
   return (

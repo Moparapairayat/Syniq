@@ -8,7 +8,7 @@ export default function LeaderboardPage() {
   useMetaTags({
     title: 'Hall of Fame — Top Rankings',
     description: 'See the top Syniq memory champions. Who reached the highest round and scored the most points? Challenge the leaderboard!',
-    url: 'https://syniq.vercel.app/leaderboard',
+    url: 'https://syniq.moparapairayat.dev/leaderboard',
   })
   const navigate = useNavigate()
   return (

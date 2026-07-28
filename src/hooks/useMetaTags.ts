@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const BASE_URL = 'https://syniq.vercel.app'
+const BASE_URL = 'https://syniq.moparapairayat.dev'
 const OG_IMAGE = `${BASE_URL}/og-image.png`
 
 export interface MetaTagOptions {
@@ -33,12 +33,15 @@ export function useMetaTags({ title, description, url, image }: MetaTagOptions) 
     setMeta('og:description', description)
     setMeta('og:url', pageUrl)
     setMeta('og:image', pageImage)
+    setMeta('og:image:secure_url', pageImage)
+    setMeta('og:image:type', 'image/png')
     setMeta('og:type', 'website')
 
     setMeta('twitter:title', fullTitle, true)
     setMeta('twitter:description', description, true)
     setMeta('twitter:url', pageUrl, true)
     setMeta('twitter:image', pageImage, true)
+    setMeta('twitter:image:src', pageImage, true)
     setMeta('twitter:card', 'summary_large_image', true)
 
     setMeta('description', description, true)

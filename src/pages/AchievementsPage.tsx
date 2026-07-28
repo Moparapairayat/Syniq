@@ -58,7 +58,7 @@ export default function AchievementsPage() {
   useMetaTags({
     title: 'Trophy Vault — Achievements',
     description: 'Unlock 8 epic Syniq memory badges. From Memory Apprentice to Cognitive Titan — prove your skills across all game modes and difficulties.',
-    url: 'https://syniq.vercel.app/achievements',
+    url: 'https://syniq.moparapairayat.dev/achievements',
   })
   const navigate = useNavigate()
   const [achievements, setAchievements] = useState<ReadonlyArray<Achievement>>([])
