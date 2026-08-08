@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { TableSkeleton, EmptyState } from '@/components/ui'
-import { leaderboardService, playerService } from '@/services'
+import { leaderboardService, playerService, DEFAULT_DEMO_USERS } from '@/services'
 import type { ScoreEntry } from '@/models/ScoreEntry'
 import type { PlayerProfile } from '@/models/Player'
 import { AvatarDisplay, AVATARS } from '@/components/avatar'
@@ -97,6 +97,18 @@ export function TopTenTable() {
       uniqueScoresMap.set(key, s)
     }
   }
+
+  // Ensure uniqueScores has demo fallback if needed
+  if (uniqueScoresMap.size < 10) {
+    for (const demo of DEFAULT_DEMO_USERS) {
+      const key = demo.playerName.trim().toLowerCase()
+      if (!uniqueScoresMap.has(key)) {
+        uniqueScoresMap.set(key, demo)
+      }
+      if (uniqueScoresMap.size >= 10) break
+    }
+  }
+
   const uniqueScores = Array.from(uniqueScoresMap.values()).sort(
     (a, b) => b.score - a.score,
   )
@@ -110,18 +122,38 @@ export function TopTenTable() {
       />
     )
 
-  // BUG-15 fix: use real date-based filtering instead of a fake slice(0, N)
+  // BUG-15 fix: use real date-based filtering with fallback padding to guarantee 10 entries always
   const now = new Date()
   const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   const startOfWeek = new Date(startOfToday)
   startOfWeek.setDate(startOfToday.getDate() - 6) // last 7 days
 
-  const displayScores =
+  const displayScoresRaw =
     timeframe === 'today'
       ? uniqueScores.filter((s) => new Date(s.timestamp) >= startOfToday)
       : timeframe === 'week'
         ? uniqueScores.filter((s) => new Date(s.timestamp) >= startOfWeek)
         : uniqueScores
+
+  const displayScoresMap = new Map<string, ScoreEntry>()
+  for (const s of displayScoresRaw) {
+    const key = (s.playerName || '').trim().toLowerCase()
+    displayScoresMap.set(key, s)
+  }
+
+  if (displayScoresMap.size < 10) {
+    for (const demo of DEFAULT_DEMO_USERS) {
+      const key = demo.playerName.trim().toLowerCase()
+      if (!displayScoresMap.has(key)) {
+        displayScoresMap.set(key, { ...demo, timestamp: now })
+      }
+      if (displayScoresMap.size >= 10) break
+    }
+  }
+
+  const displayScores = Array.from(displayScoresMap.values())
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 10)
 
   const top3 = [0, 1, 2].map(
     (i) => displayScores[i] ?? { playerName: `Player ${i + 1}`, score: 0, id: `ph-${i}` },

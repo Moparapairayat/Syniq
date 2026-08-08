@@ -2,7 +2,7 @@ import type { ScoreEntry } from '@/models/ScoreEntry'
 import { Difficulty } from '@/core/game/Difficulty'
 import { leaderboardRepository } from '@/repositories/LeaderboardRepository'
 
-const DEFAULT_DEMO_USERS: ReadonlyArray<ScoreEntry> = [
+export const DEFAULT_DEMO_USERS: ReadonlyArray<ScoreEntry> = [
   {
     id: 'demo-1',
     playerId: 'p-1',
