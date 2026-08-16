@@ -270,6 +270,8 @@ npm run build
 | `tests/unit/Leaderboard.test.ts` | ✅ PASS | Top 10 deduplication, high score sorting, duplicate purging.            |
 | `tests/unit/Settings.test.ts`    | ✅ PASS | Default settings load, partial updates, factory resets.                 |
 
+See [BUGFIXES.md](./docs/BUGFIXES.md) for a log of bugs found and fixed during testing.
+
 ---
 
 ## 📄 License
