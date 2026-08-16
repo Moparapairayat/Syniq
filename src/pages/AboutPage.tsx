@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useMetaTags } from '@/hooks/useMetaTags'
-import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
+import simonForestBackground from '@/assets/simon-forest-background.png'
 
 export default function AboutPage() {
   useMetaTags({

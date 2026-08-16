@@ -5,7 +5,7 @@ import { VolumeSlider, ToggleSwitch, ConfirmationDialog } from '@/components/ui'
 import { useSettings } from '@/hooks/useSettings'
 import { useMetaTags } from '@/hooks/useMetaTags'
 import { ForestParticles } from '@/components/effects/ForestParticles'
-import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
+import simonForestBackground from '@/assets/simon-forest-background.png'
 
 interface OptionItem<T extends string> {
   value: T

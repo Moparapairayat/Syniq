@@ -8,7 +8,7 @@ import type { DailyStreakData } from '@/services'
 import { GameMode } from '@/core/game/GameMode'
 import { PWAInstallBanner } from '@/components/ui'
 import { ForestParticles } from '@/components/effects/ForestParticles'
-import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
+import simonForestBackground from '@/assets/simon-forest-background.png'
 
 export default function HomePage() {
   useMetaTags({

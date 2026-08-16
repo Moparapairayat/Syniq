@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
+import simonForestBackground from '@/assets/simon-forest-background.png'
 
 export function RouteLoadingState() {
   return (

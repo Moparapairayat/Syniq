@@ -7,7 +7,7 @@ import { cn } from '@/utils/classNames'
 import { playerService } from '@/services'
 import { getRandomGamingName } from '@/services/PlayerService'
 import { NicknameAuthModal } from '@/components/auth/NicknameAuthModal'
-import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
+import simonForestBackground from '@/assets/simon-forest-background.png'
 
 import { AvatarDisplay, AVATARS, AVATAR_SETS } from '@/components/avatar'
 export { AvatarDisplay, AVATARS, AVATAR_SETS }

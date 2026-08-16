@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import simonForestBackground from '@/assets/Gemini_Generated_Image_g2o2jfg2o2jfg2o2.png'
+import simonForestBackground from '@/assets/simon-forest-background.png'
 import { ForestParticles } from '@/components/effects/ForestParticles'
 import { Modal } from '@/components/ui/Modal'
 import { achievementService } from '@/services/AchievementService'
