@@ -6,7 +6,7 @@ code). Most of these were caught by manually playing through the game after each
 added, a few by TypeScript/ESLint flagging something on save, and a couple by just noticing odd
 behaviour in the browser console during testing. All of them are still marked inline in the code
 with a `BUG-XX fix` comment next to the line that changed, and the batch of fixes below were
-committed together in `415ee69 — "Fixed all Bugs"`.
+committed together in `415ee69 — "Fixed all Bugs"`..
 
 ---
 
